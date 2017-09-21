@@ -28,8 +28,8 @@
                                 </constraints>
                                 <items>
                                     <navigationItem title="Read Trouble Code" id="fva-Si-CeC">
-                                        <barButtonItem key="leftBarButtonItem" title="Clear DTC" id="rWx-LI-dhd"/>
-                                        <barButtonItem key="rightBarButtonItem" title="Refresh" id="NnY-ct-vWg"/>
+                                        <barButtonItem key="leftBarButtonItem" image="nav_trash.png" id="rWx-LI-dhd"/>
+                                        <barButtonItem key="rightBarButtonItem" image="nav_refresh.png" id="NnY-ct-vWg"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -111,4 +111,8 @@
             <point key="canvasLocation" x="508" y="-297"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="nav_refresh.png" width="24" height="24"/>
+        <image name="nav_trash.png" width="24" height="24"/>
+    </resources>
 </document>

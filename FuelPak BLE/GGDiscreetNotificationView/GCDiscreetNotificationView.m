@@ -347,9 +347,9 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
         label = [[UILabel alloc] init];
 
         //label.font = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:[[EAController sharedController] getCellTextLabelFontSize]];
-        label.font = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:12.0f];
-        
-        label.textColor = [[EAController sharedController] getActiveTextLabelTextColor]; //[UIColor whiteColor];
+//        label.font = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:12.0f];
+//        
+//        label.textColor = [[EAController sharedController] getActiveTextLabelTextColor]; //[UIColor whiteColor];
         
         
         label.shadowColor = [UIColor clearColor];

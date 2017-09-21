@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EAController.h"
+//#import "EAController.h"
 
 //The presentation mode of the notification, it sticks to the top or buttom of the content view
 typedef enum {
