@@ -12,7 +12,7 @@
         <!--Read DTC-->
         <scene sceneID="PuB-Ub-uBe">
             <objects>
-                <viewController id="TIm-Ee-YLN" sceneMemberID="viewController">
+                <viewController id="TIm-Ee-YLN" customClass="DTCViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zUj-oX-god"/>
                         <viewControllerLayoutGuide type="bottom" id="LXb-a6-7bj"/>
@@ -20,9 +20,34 @@
                     <view key="view" contentMode="scaleToFill" id="aLX-ww-4sl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gVr-Ob-7A1">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="8wP-eV-2q6"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Read Trouble Code" id="fva-Si-CeC">
+                                        <barButtonItem key="leftBarButtonItem" title="Clear DTC" id="rWx-LI-dhd"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Refresh" id="NnY-ct-vWg"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gVr-Ob-7A1" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="TkT-52-Jis"/>
+                            <constraint firstItem="gVr-Ob-7A1" firstAttribute="top" secondItem="zUj-oX-god" secondAttribute="bottom" id="VNJ-pk-clk"/>
+                            <constraint firstAttribute="trailing" secondItem="gVr-Ob-7A1" secondAttribute="trailing" id="xX6-Fk-mIK"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Read DTC" id="IuE-Ch-ze5"/>
+                    <connections>
+                        <outlet property="uibtnClear" destination="rWx-LI-dhd" id="4ZQ-iz-33U"/>
+                        <outlet property="uinavbarMain" destination="gVr-Ob-7A1" id="Wud-pi-xwS"/>
+                        <outlet property="uinavbtnRefresh" destination="NnY-ct-vWg" id="M8l-zG-DiG"/>
+                        <outlet property="uinavitemMainTitle" destination="fva-Si-CeC" id="oa5-6g-rUe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yax-OD-rc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
