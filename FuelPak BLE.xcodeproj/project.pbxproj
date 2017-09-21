@@ -40,6 +40,8 @@
 		5EF8CB831F742B6000D5FDBF /* nav_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */; };
 		5EF8CB841F742B6000D5FDBF /* nav_undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB691F742B6000D5FDBF /* nav_undo.png */; };
 		5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */; };
+		5EF8CB881F74304C00D5FDBF /* EAController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB871F74304C00D5FDBF /* EAController.m */; };
+		5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +83,10 @@
 		5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_trash@2x.png"; sourceTree = "<group>"; };
 		5EF8CB691F742B6000D5FDBF /* nav_undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_undo.png; sourceTree = "<group>"; };
 		5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_undo@2x.png"; sourceTree = "<group>"; };
+		5EF8CB861F74304C00D5FDBF /* EAController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
+		5EF8CB871F74304C00D5FDBF /* EAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
+		5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
+		5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +162,10 @@
 		5EF8CB431F74243100D5FDBF /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */,
+				5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */,
+				5EF8CB861F74304C00D5FDBF /* EAController.h */,
+				5EF8CB871F74304C00D5FDBF /* EAController.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -342,10 +352,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */,
 				5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */,
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
+				5EF8CB881F74304C00D5FDBF /* EAController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

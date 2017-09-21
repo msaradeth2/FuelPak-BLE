@@ -33,11 +33,19 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3R-nZ-psO">
+                                <rect key="frame" x="0.0" y="81" width="375" height="529"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="J3R-nZ-psO" firstAttribute="top" secondItem="gVr-Ob-7A1" secondAttribute="bottom" constant="17" id="0fp-Hn-Qp7"/>
+                            <constraint firstItem="LXb-a6-7bj" firstAttribute="top" secondItem="J3R-nZ-psO" secondAttribute="bottom" constant="8" id="4f4-xR-Mmi"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="TkT-52-Jis"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="top" secondItem="zUj-oX-god" secondAttribute="bottom" id="VNJ-pk-clk"/>
+                            <constraint firstItem="J3R-nZ-psO" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="by6-mc-5WE"/>
+                            <constraint firstAttribute="trailing" secondItem="J3R-nZ-psO" secondAttribute="trailing" id="hsF-WI-hWd"/>
                             <constraint firstAttribute="trailing" secondItem="gVr-Ob-7A1" secondAttribute="trailing" id="xX6-Fk-mIK"/>
                         </constraints>
                     </view>
@@ -47,11 +55,12 @@
                         <outlet property="uinavbarMain" destination="gVr-Ob-7A1" id="Wud-pi-xwS"/>
                         <outlet property="uinavbtnRefresh" destination="NnY-ct-vWg" id="M8l-zG-DiG"/>
                         <outlet property="uinavitemMainTitle" destination="fva-Si-CeC" id="oa5-6g-rUe"/>
+                        <outlet property="uitableviewDTCcode" destination="J3R-nZ-psO" id="HmN-C3-mJK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yax-OD-rc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-244" y="252"/>
+            <point key="canvasLocation" x="-244" y="251.42428785607197"/>
         </scene>
         <!--Peripherals-->
         <scene sceneID="aHi-wz-UeV">
