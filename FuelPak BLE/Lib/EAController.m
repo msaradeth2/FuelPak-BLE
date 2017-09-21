@@ -8,15 +8,15 @@
 
 #import "EAController.h"
 
-@interface EAController ()
-{
-    
-    NSString    *localeAlertTitle;
-    NSString    *localeAlertButtonZero;
-    NSString    *localeAlertButtonOne;
-}
-
-@end
+//@interface EAController ()
+//{
+//    
+//    NSString    *localeAlertTitle;
+//    NSString    *localeAlertButtonZero;
+//    NSString    *localeAlertButtonOne;
+//}
+//
+//@end
 
 
 @implementation EAController
@@ -27,26 +27,24 @@
 @synthesize langBundle;
 
 
-+ (EAController *)sharedController
+static EAController *_eaController=nil;
+
++ (id)sharedController
 {
-    static EAController *_eaController=nil;
-    
-    
+        
     if (_eaController == nil)
     {
         _eaController = [[EAController alloc] init];
+        [_eaController initVariables];
     }
-    
-    //printf ("eacontroller %p\n", _eaController ); // unique pointer
     
     return _eaController;
 }
 
 
-- (id)init
+- (void) initVariables
 {
-    
-    printf("FP3GenericTables init() creating class\n");
+    printf("EAController init() creating class\n");
     
     
     NSString *languagecode = [[EAController sharedController] getPreferredLanguageCode];
@@ -59,8 +57,6 @@
     
     _themeIndex = 0;
     [self initThemeDefault];
-    
-    return self;
     
 }
 

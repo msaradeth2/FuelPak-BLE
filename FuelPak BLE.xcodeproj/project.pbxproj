@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E57E6C61F74462400B83A7D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E57E6C51F74462400B83A7D /* Util.m */; };
 		5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */; };
 		5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8D1F7330E9008D9373 /* ViewController.swift */; };
 		5EB54C911F7330E9008D9373 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C8F1F7330E9008D9373 /* Main.storyboard */; };
@@ -45,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E57E6C41F74462400B83A7D /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		5E57E6C51F74462400B83A7D /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		5EB54C881F7330E9008D9373 /* FuelPak BLE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FuelPak BLE.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EB54C8D1F7330E9008D9373 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 				5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */,
 				5EF8CB861F74304C00D5FDBF /* EAController.h */,
 				5EF8CB871F74304C00D5FDBF /* EAController.m */,
+				5E57E6C41F74462400B83A7D /* Util.h */,
+				5E57E6C51F74462400B83A7D /* Util.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
+				5E57E6C61F74462400B83A7D /* Util.m in Sources */,
 				5EF8CB881F74304C00D5FDBF /* EAController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

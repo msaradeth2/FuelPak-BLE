@@ -16,8 +16,7 @@
 
 }
 
-+(EAController *)sharedController;
-
++ (id)sharedController;
 
 //@property (atomic, readonly) EAAccessory *selectedAccessory;
 @property (nonatomic, readonly) NSString *protocolString;

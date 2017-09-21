@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "GCDiscreetNotificationView.h"
+#import "EAController.h"
+#import "Util.h"
 
 @interface DTCViewController : UIViewController
 {
