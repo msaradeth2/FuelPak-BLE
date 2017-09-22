@@ -80,15 +80,6 @@
 		5ED6EF471F75872000380934 /* dtc2014touring.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF2D1F75872000380934 /* dtc2014touring.plist */; };
 		5ED6EF481F75872000380934 /* dtc_generic.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF2E1F75872000380934 /* dtc_generic.plist */; };
 		5ED6EF491F75872000380934 /* dtcdic.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF2F1F75872000380934 /* dtcdic.plist */; };
-		5ED6EF4A1F75872000380934 /* enginesize.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF301F75872000380934 /* enginesize.plist */; };
-		5ED6EF4B1F75872000380934 /* exhaustmaker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF311F75872000380934 /* exhaustmaker.plist */; };
-		5ED6EF4C1F75872000380934 /* exhaustname.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF321F75872000380934 /* exhaustname.plist */; };
-		5ED6EF4D1F75872000380934 /* FP3-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF331F75872000380934 /* FP3-Info.plist */; };
-		5ED6EF4E1F75872000380934 /* FP3-Info_BACKUP_4325.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF341F75872000380934 /* FP3-Info_BACKUP_4325.plist */; };
-		5ED6EF4F1F75872000380934 /* FP3-Info_BASE_4325.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF351F75872000380934 /* FP3-Info_BASE_4325.plist */; };
-		5ED6EF501F75872000380934 /* FP3-Info_LOCAL_4325.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF361F75872000380934 /* FP3-Info_LOCAL_4325.plist */; };
-		5ED6EF511F75872000380934 /* FP3-Info_REMOTE_4325.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF371F75872000380934 /* FP3-Info_REMOTE_4325.plist */; };
-		5ED6EF521F75872000380934 /* FP3Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF381F75872000380934 /* FP3Tests-Info.plist */; };
 		5ED6EF531F75872000380934 /* livedata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF391F75872000380934 /* livedata.plist */; };
 		5ED6EF541F75872000380934 /* livedata0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3A1F75872000380934 /* livedata0.plist */; };
 		5ED6EF551F75872000380934 /* livedata1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3B1F75872000380934 /* livedata1.plist */; };
@@ -206,15 +197,6 @@
 		5ED6EF2D1F75872000380934 /* dtc2014touring.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dtc2014touring.plist; sourceTree = "<group>"; };
 		5ED6EF2E1F75872000380934 /* dtc_generic.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dtc_generic.plist; sourceTree = "<group>"; };
 		5ED6EF2F1F75872000380934 /* dtcdic.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dtcdic.plist; sourceTree = "<group>"; };
-		5ED6EF301F75872000380934 /* enginesize.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = enginesize.plist; sourceTree = "<group>"; };
-		5ED6EF311F75872000380934 /* exhaustmaker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = exhaustmaker.plist; sourceTree = "<group>"; };
-		5ED6EF321F75872000380934 /* exhaustname.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = exhaustname.plist; sourceTree = "<group>"; };
-		5ED6EF331F75872000380934 /* FP3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3-Info.plist"; sourceTree = "<group>"; };
-		5ED6EF341F75872000380934 /* FP3-Info_BACKUP_4325.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3-Info_BACKUP_4325.plist"; sourceTree = "<group>"; };
-		5ED6EF351F75872000380934 /* FP3-Info_BASE_4325.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3-Info_BASE_4325.plist"; sourceTree = "<group>"; };
-		5ED6EF361F75872000380934 /* FP3-Info_LOCAL_4325.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3-Info_LOCAL_4325.plist"; sourceTree = "<group>"; };
-		5ED6EF371F75872000380934 /* FP3-Info_REMOTE_4325.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3-Info_REMOTE_4325.plist"; sourceTree = "<group>"; };
-		5ED6EF381F75872000380934 /* FP3Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FP3Tests-Info.plist"; sourceTree = "<group>"; };
 		5ED6EF391F75872000380934 /* livedata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata.plist; sourceTree = "<group>"; };
 		5ED6EF3A1F75872000380934 /* livedata0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata0.plist; sourceTree = "<group>"; };
 		5ED6EF3B1F75872000380934 /* livedata1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata1.plist; sourceTree = "<group>"; };
@@ -318,15 +300,6 @@
 				5ED6EF2D1F75872000380934 /* dtc2014touring.plist */,
 				5ED6EF2E1F75872000380934 /* dtc_generic.plist */,
 				5ED6EF2F1F75872000380934 /* dtcdic.plist */,
-				5ED6EF301F75872000380934 /* enginesize.plist */,
-				5ED6EF311F75872000380934 /* exhaustmaker.plist */,
-				5ED6EF321F75872000380934 /* exhaustname.plist */,
-				5ED6EF331F75872000380934 /* FP3-Info.plist */,
-				5ED6EF341F75872000380934 /* FP3-Info_BACKUP_4325.plist */,
-				5ED6EF351F75872000380934 /* FP3-Info_BASE_4325.plist */,
-				5ED6EF361F75872000380934 /* FP3-Info_LOCAL_4325.plist */,
-				5ED6EF371F75872000380934 /* FP3-Info_REMOTE_4325.plist */,
-				5ED6EF381F75872000380934 /* FP3Tests-Info.plist */,
 				5ED6EF391F75872000380934 /* livedata.plist */,
 				5ED6EF3A1F75872000380934 /* livedata0.plist */,
 				5ED6EF3B1F75872000380934 /* livedata1.plist */,
@@ -578,7 +551,6 @@
 			files = (
 				5E57E7231F747D6500B83A7D /* gauge_bkg_itouch35.png in Resources */,
 				5E57E72B1F747D6500B83A7D /* ipad_landscape_1024x768.png in Resources */,
-				5ED6EF4A1F75872000380934 /* enginesize.plist in Resources */,
 				5ED6EF481F75872000380934 /* dtc_generic.plist in Resources */,
 				5E57E7121F747D6500B83A7D /* background36_568h@2x.png in Resources */,
 				5E57E7101F747D6500B83A7D /* background33.png in Resources */,
@@ -596,7 +568,6 @@
 				5ED6EF401F75872000380934 /* dialcodes.plist in Resources */,
 				5ED6EF571F75872000380934 /* livedata2.plist in Resources */,
 				5E57E7261F747D6500B83A7D /* gauge_bkg_itouch40_land@2x.png in Resources */,
-				5ED6EF521F75872000380934 /* FP3Tests-Info.plist in Resources */,
 				5ED6EF471F75872000380934 /* dtc2014touring.plist in Resources */,
 				5ED6EF431F75872000380934 /* dtc2012softail.plist in Resources */,
 				5EF8CB781F742B6000D5FDBF /* nav_info4@2x.png in Resources */,
@@ -607,16 +578,13 @@
 				5EF8CB7E1F742B6000D5FDBF /* nav_right.png in Resources */,
 				5EF8CB6C1F742B6000D5FDBF /* nav_back.png in Resources */,
 				5EF8CB6E1F742B6000D5FDBF /* nav_bulkedit.png in Resources */,
-				5ED6EF511F75872000380934 /* FP3-Info_REMOTE_4325.plist in Resources */,
 				5E57E7211F747D6500B83A7D /* gauge_bkg_itouch35_land.png in Resources */,
 				5E57E7191F747D6500B83A7D /* gauge_bkg_iphone35_land.png in Resources */,
-				5ED6EF4B1F75872000380934 /* exhaustmaker.plist in Resources */,
 				5E57E73C1F747D6500B83A7D /* throttle_bkg_itouch35_land@2x.png in Resources */,
 				5E57E71A1F747D6500B83A7D /* gauge_bkg_iphone35_land@2x.png in Resources */,
 				5E57E73A1F747D6500B83A7D /* throttle_bkg_iphone40@2x.png in Resources */,
 				5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */,
 				5E57E7171F747D6500B83A7D /* Default.png in Resources */,
-				5ED6EF4C1F75872000380934 /* exhaustname.plist in Resources */,
 				5E57E72D1F747D6500B83A7D /* ipad_portrait_768x1004.png in Resources */,
 				5ED6EF411F75872000380934 /* dtc2011softail.plist in Resources */,
 				5E57E70F1F747D6500B83A7D /* background_square.png in Resources */,
@@ -635,15 +603,12 @@
 				5E57E7141F747D6500B83A7D /* background36@2x.png in Resources */,
 				5E57E7181F747D6500B83A7D /* Default~iphone.png in Resources */,
 				5EF8CB751F742B6000D5FDBF /* nav_home@2x.png in Resources */,
-				5ED6EF4D1F75872000380934 /* FP3-Info.plist in Resources */,
 				5ED6EF461F75872000380934 /* dtc2014sportster.plist in Resources */,
 				5E57E7341F747D6500B83A7D /* throttle_bkg_iphone35_land@2x.png in Resources */,
 				5E57E7271F747D6500B83A7D /* gauge_bkg_itouch40.png in Resources */,
 				5EF8CB821F742B6000D5FDBF /* nav_trash.png in Resources */,
 				5ED6EF451F75872000380934 /* dtc2013softail.plist in Resources */,
-				5ED6EF4E1F75872000380934 /* FP3-Info_BACKUP_4325.plist in Resources */,
 				5EB54C961F7330E9008D9373 /* LaunchScreen.storyboard in Resources */,
-				5ED6EF501F75872000380934 /* FP3-Info_LOCAL_4325.plist in Resources */,
 				5EF8CB811F742B6000D5FDBF /* nav_save@2x.png in Resources */,
 				5E57E7451F747DD600B83A7D /* background33.png in Resources */,
 				5EF8CB731F742B6000D5FDBF /* nav_flash@2x.png in Resources */,
@@ -654,7 +619,6 @@
 				5EF8CB761F742B6000D5FDBF /* nav_info.png in Resources */,
 				5E57E7221F747D6500B83A7D /* gauge_bkg_itouch35_land@2x.png in Resources */,
 				5E57E73D1F747D6500B83A7D /* throttle_bkg_itouch35.png in Resources */,
-				5ED6EF4F1F75872000380934 /* FP3-Info_BASE_4325.plist in Resources */,
 				5E57E7351F747D6500B83A7D /* throttle_bkg_iphone35.png in Resources */,
 				5E57E7281F747D6500B83A7D /* gauge_bkg_itouch40@2x.png in Resources */,
 				5E57E7291F747D6500B83A7D /* ipad_landscape_1024x748.png in Resources */,
