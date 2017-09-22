@@ -9,6 +9,7 @@
 #import "DTCViewController.h"
 #import "EAController.h"
 
+
 @interface DTCViewController ()
 
 @end
@@ -41,6 +42,383 @@
 
 
 
+
+
+#pragma mark - UITableView Methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+
+// Customize the number of rows in the table view.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger nCount;
+    nCount = [listOfItems count];
+    return nCount;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //return ( [[EAController sharedController] getCellHeight] );
+    
+    TCCellData *cellData = listOfItems[[indexPath row]];
+    if (cellData.isParent) {
+        return ( [[EAController sharedController] getCellHeight] );
+        
+    }else {
+        
+        NSString    *text;
+        NSInteger   ncount;
+        float       fval;
+        unsigned int divisor;
+        unsigned int ipadmultiplier;
+        
+        text = cellData.troubleCodeDescriptionDetail;
+        ncount = [text length];
+        
+        
+        ipadmultiplier =1.0;
+        NSString *deviceType = [UIDevice currentDevice].model;
+        if([deviceType isEqualToString:@"iPad"])
+        {
+            ipadmultiplier = 4;
+        }
+        
+        
+        fval = 0;
+        
+        if (currinterfaceOrientation==1 || currinterfaceOrientation==2)
+        {
+            divisor = 30*ipadmultiplier;
+        }
+        
+        
+        if (currinterfaceOrientation==3 || currinterfaceOrientation==4)
+        {
+            divisor = 60*ipadmultiplier;
+        }
+        
+        
+        fval = fval + [[EAController sharedController] getCellTextLabelFontSize]*2.0 +  ([[EAController sharedController] getCellTextLabelFontSize] * ((ncount / divisor)+2) );
+        
+        //NSLog(@"%ld %ld %f", index, ncount, fval  );
+        //Parent cell height is the Minimum height for child cells
+        if (fval < [[EAController sharedController] getCellHeight] ) {
+            return [[EAController sharedController] getCellHeight];
+        }else {
+            return fval;
+        }
+    }
+    
+    
+}
+
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor =[[EAController sharedController] getCellBackgroundColor];
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    //static NSString *CellIdentifier = @"Cell";
+    NSString *CellIdentifier = [NSString stringWithFormat:@"Cells%ld", (long)[indexPath row] ];
+    
+    UITableViewCell *cell = [self.uitableviewDTCcode dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:CellIdentifier];
+        [self.cellPtr addObject:cell];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = CGRectMake(0, 0, [[EAController sharedController] getMaxScreenSize], 93/2); //cell.bounds;
+        gradient.colors = [NSArray arrayWithObjects:(id)[[[UIColor alloc] initWithRed:0.120 green:0.118 blue:0.118 alpha:1.0]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor], nil];
+        //  [gradient setStartPoint:CGPointMake(0.0, 0.5)];
+        //  [gradient setEndPoint:CGPointMake(1.0, 0.5)];
+        [cell.layer addSublayer:gradient];
+        
+        // }
+        
+        // Set up the cell...
+        
+        cell.detailTextLabel.numberOfLines = 0;
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        
+        // Set up the cell...
+        //cell.textLabel.text     =  listOfItems[[indexPath row]];
+        cell.textLabel.font     = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:[[EAController sharedController] getCellTextLabelFontSize]];
+        cell.textLabel.opaque   = [[EAController sharedController] getCellTextLabelOpaque];
+        cell.textLabel.textColor        = [[EAController sharedController] getActiveTextLabelTextColor];
+        //cell.textLabel.textColor        = [[EAController sharedController] getCellDetailTextLabelTextColor ];
+        cell.textLabel.backgroundColor  = [[EAController sharedController] getCellTextLabelBackgroundColor];
+        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
+        //cell.detailTextLabel.textColor = [[EAController sharedController] getActiveTextLabelTextColor ];
+        cell.detailTextLabel.backgroundColor = [[EAController sharedController] getCellDetailTextLabelBackgroundColor];
+        cell.detailTextLabel.font = [UIFont fontWithName:[[EAController sharedController] getCellDetailTextLabelFontName] size:[[EAController sharedController] getCellDetailTextLabelFontSize] ];
+        
+        
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:[[EAController sharedController] getCellSelectedBackgroundView]  ]];
+        cell.textLabel.highlighted  = [[EAController sharedController] getCellSelectedTextLabelTextColor];
+        
+    }
+    
+    TCCellData *cellData = listOfItems[[indexPath row]];
+    if (cellData.isParent) {
+        //Set parent cell
+        cell.textLabel.text = cellData.troubleCode;
+        cell.imageView.image = cellData.icon;
+        cell.detailTextLabel.text = cellData.troubleCodeDescription;
+        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        
+    }else {
+        
+        //Set child cell
+        cell.textLabel.text = nil;
+        cell.imageView.image = nil;
+        cell.detailTextLabel.text = cellData.troubleCodeDescriptionDetail;
+        cell.detailTextLabel.textColor = [UIColor lightTextColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+    }
+    
+    return cell;
+    
+}
+
+
+
+//// Customize the appearance of table view cells.
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSArray  *descarray;
+//    NSString *desc;
+//    NSString *key;
+//    NSInteger row;
+//
+//    //static NSString *CellIdentifier = @"Cell";
+//
+//    NSString *CellIdentifier = [NSString stringWithFormat:@"Cells%ld", (long)[indexPath row] ];
+//
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (cell == nil)
+//    {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:CellIdentifier];
+//        [self.cellPtr addObject:cell];
+//        CAGradientLayer *gradient = [CAGradientLayer layer];
+//        gradient.frame = CGRectMake(0, 0, [[EAController sharedController] getMaxScreenSize], 93/2); //cell.bounds;
+//        gradient.colors = [NSArray arrayWithObjects:(id)[[[UIColor alloc] initWithRed:0.120 green:0.118 blue:0.118 alpha:1.0]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor], nil];
+//        //  [gradient setStartPoint:CGPointMake(0.0, 0.5)];
+//        //  [gradient setEndPoint:CGPointMake(1.0, 0.5)];
+//        [cell.layer addSublayer:gradient];
+//
+//   // }
+//
+//    // Set up the cell...
+//
+//    cell.detailTextLabel.numberOfLines = 0;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//
+//    // Set up the cell...
+//    cell.textLabel.text     =  listOfItems[[indexPath row]];
+//    cell.textLabel.font     = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:[[EAController sharedController] getCellTextLabelFontSize]];
+//    cell.textLabel.opaque   = [[EAController sharedController] getCellTextLabelOpaque];
+//    cell.textLabel.textColor        = [[EAController sharedController] getActiveTextLabelTextColor];
+//    //cell.textLabel.textColor        = [[EAController sharedController] getCellDetailTextLabelTextColor ];
+//    cell.textLabel.backgroundColor  = [[EAController sharedController] getCellTextLabelBackgroundColor];
+//    cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
+//    //cell.detailTextLabel.textColor = [[EAController sharedController] getActiveTextLabelTextColor ];
+//    cell.detailTextLabel.backgroundColor = [[EAController sharedController] getCellDetailTextLabelBackgroundColor];
+//    cell.detailTextLabel.font = [UIFont fontWithName:[[EAController sharedController] getCellDetailTextLabelFontName] size:[[EAController sharedController] getCellDetailTextLabelFontSize] ];
+//
+//
+//    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:[[EAController sharedController] getCellSelectedBackgroundView]  ]];
+//    cell.textLabel.highlighted  = [[EAController sharedController] getCellSelectedTextLabelTextColor];
+//
+//    row = [indexPath row];
+//
+//    key = listOfItems[row];
+//    descarray = [self.dtcdict objectForKey:key];
+//    desc = descarray[0];
+//
+//
+//    if ( desc == nil )
+//    {
+//        desc= localeNotFound;
+//    }
+//
+//    cell.detailTextLabel.text = desc;
+//    }
+//
+//    return cell;
+//
+//}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.uitableviewDTCcode reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    TCCellData *cellData = [listOfItems objectAtIndex:[indexPath row]];
+    
+    if (cellData.isParent){
+        cellData.indexPath = indexPath;
+        cellData.row = [indexPath row];
+        if ([cellData.childItems count] == 0) {
+            //            [self loadTroubleCodeDescriptionDetailAsyncTask:cellData];
+            [self getDtcDescription:cellData];
+        }else {
+            [self updateUI:cellData];
+        }
+        
+    }
+}
+
+
+
+//Expand or collapse given parent row depending on the row state
+-(void) updateUI:(TCCellData *) cellData
+{
+    
+    if (cellData.isExpanded) {
+        
+        //Set parent cell to NOT Expanded form
+        cellData.isExpanded = NO;
+        cellData.icon = [UIImage imageNamed: @"nav_right"];
+        [listOfItems replaceObjectAtIndex:cellData.row withObject:cellData];
+        
+        //collapse Child data
+        [self collapseSubItemsAtParentRow:cellData];
+        
+    }else {//is Not expanded, expand child table
+        
+        //Set parent cell to Expanded form
+        cellData.isExpanded = YES;
+        cellData.icon = [UIImage imageNamed: @"nav_down"];
+        [listOfItems replaceObjectAtIndex:cellData.row withObject:cellData];
+        
+        //expand Child data
+        [self expandItemAtParentRow:cellData];
+        
+        
+    }
+    
+    //Reload parent cell in with correct arrow image
+    [self.uitableviewDTCcode reloadRowsAtIndexPaths:@[cellData.indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+}
+
+
+
+//Expand child items of a given parent
+-(void)expandItemAtParentRow:(TCCellData*) cellData{
+    
+    //Do nothing if array is empty
+    if ([cellData.childItems count] == 0)
+        return;
+    
+    [self.uitableviewDTCcode beginUpdates];
+    
+    NSMutableArray *arrChild = [[NSMutableArray alloc] init];   //initialize child array for a given parent
+    
+    int childRow = cellData.row;
+    for (int ii = 0; ii < [cellData.childItems count]; ii++) {
+        
+        //Get cell data for child (subitem)
+        TCCellData *cellChild = [[TCCellData alloc] initChild:cellData.childItems[ii]];
+        
+        childRow++;
+        //Add child rows to be added to UI
+        [arrChild addObject:[NSIndexPath indexPathForRow:childRow inSection:0]];
+        
+        //Add child row to Array
+        [listOfItems insertObject:cellChild atIndex:childRow];
+        
+        
+    }
+    //Add children of given parent from UI
+    [self.uitableviewDTCcode insertRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self.uitableviewDTCcode endUpdates];
+    
+}
+
+
+//Collapse child items of a given parent
+- (void)collapseSubItemsAtParentRow:(TCCellData*) cellData{
+    
+    //Do nothing if array is empty
+    if ([cellData.childItems count] == 0)
+        return;
+    
+    [self.uitableviewDTCcode beginUpdates];
+    
+    NSMutableArray *arrChild = [[NSMutableArray alloc] init];   //initialize child array for a given parent
+    int childRow = cellData.row;
+    for (int ii = 0; ii < [cellData.childItems count]; ii++) { //Loop until there is no more data in array childItems which contains suggested solution
+        childRow++;
+        //Add child rows to be deleted from UI
+        [arrChild addObject:[NSIndexPath indexPathForRow:childRow inSection:0]];
+        
+        //Remove child row from Array
+        [listOfItems removeObjectAtIndex:childRow];
+        
+    }
+    //Delete children of given parent from UI
+    [self.uitableviewDTCcode deleteRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self.uitableviewDTCcode endUpdates];
+    
+}
+
+
+#pragma mark - Get DTC Description
+
+- (void) getDtcDescription:(TCCellData*)cellData;
+{
+//    NSString *urlServer;
+//    currCellData = cellData;
+//    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+//    [params setObject:@"DTC" forKey:@"method"];
+//    [params setObject:cellData.troubleCode forKey:@"code"];
+//    urlServer = [NSString stringWithFormat:@"%@",[[EAController sharedController] getServer]];
+//    
+//    HTTPRequestHelper *client = [[HTTPRequestHelper alloc] initWithTarget:self selector:@selector(dataDidReceivedDtcDescription:) errselector:@selector(dataDidReceivedError:)];
+//    [client get:urlServer params:params];
+    
+}
+
+
+- (void) dataDidReceivedDtcDescription:(id)data
+{
+//    NSString *troubleCodeLongDescription;
+//    
+//    //Parse Json Object
+//    NSDictionary *jsonObject = [data objectFromJSONString];
+//    NSDictionary *message = jsonObject[@"message"];
+//    if ([jsonObject[@"status"] isEqualToString:@"success"]) {
+//        troubleCodeLongDescription = message[@"description"];
+//    }else if ([jsonObject[@"status"] isEqualToString:@"error"]) {
+//        troubleCodeLongDescription = message[@"description"];
+//    }
+//    
+//    if ([troubleCodeLongDescription length]==0 || troubleCodeLongDescription==nil) {
+//        troubleCodeLongDescription = NSLocalizedStringFromTableInBundle(@"no_additional_info", nil, langBundle, nil);
+//    }
+//    
+//    //set data (trouble code long descriptiob
+//    [currCellData.childItems addObject:troubleCodeLongDescription];
+//    
+//    [self updateUI:currCellData];
+    
+}
 
 
 

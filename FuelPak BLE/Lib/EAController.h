@@ -584,5 +584,7 @@
 - (float) getNavBarAlpha;
 
 
+-(CGFloat) getMaxScreenSize;
+-(CGFloat) getMinScreenSize;
 
 @end

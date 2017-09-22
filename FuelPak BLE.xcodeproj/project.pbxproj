@@ -67,6 +67,8 @@
 		5EB54C911F7330E9008D9373 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C8F1F7330E9008D9373 /* Main.storyboard */; };
 		5EB54C931F7330E9008D9373 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C921F7330E9008D9373 /* Assets.xcassets */; };
 		5EB54C961F7330E9008D9373 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C941F7330E9008D9373 /* LaunchScreen.storyboard */; };
+		5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED6EF191F75672300380934 /* TCCellData.m */; };
+		5ED6EF1D1F75690200380934 /* DoneCancelNumberPadToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */; };
 		5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB461F74245700D5FDBF /* DTCViewController.m */; };
 		5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB4A1F74262A00D5FDBF /* GCDiscreetNotificationView.m */; };
 		5EF8CB6C1F742B6000D5FDBF /* nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB511F742B6000D5FDBF /* nav_back.png */; };
@@ -163,6 +165,10 @@
 		5EB54C921F7330E9008D9373 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5EB54C951F7330E9008D9373 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5EB54C971F7330E9008D9373 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5ED6EF181F75672300380934 /* TCCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCCellData.h; sourceTree = "<group>"; };
+		5ED6EF191F75672300380934 /* TCCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCCellData.m; sourceTree = "<group>"; };
+		5ED6EF1B1F75690200380934 /* DoneCancelNumberPadToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoneCancelNumberPadToolbar.h; sourceTree = "<group>"; };
+		5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoneCancelNumberPadToolbar.m; sourceTree = "<group>"; };
 		5EF8CB441F74245700D5FDBF /* FuelPak BLE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuelPak BLE-Bridging-Header.h"; sourceTree = "<group>"; };
 		5EF8CB451F74245700D5FDBF /* DTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCViewController.h; sourceTree = "<group>"; };
 		5EF8CB461F74245700D5FDBF /* DTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCViewController.m; sourceTree = "<group>"; };
@@ -259,6 +265,8 @@
 				5EF8CB451F74245700D5FDBF /* DTCViewController.h */,
 				5EF8CB461F74245700D5FDBF /* DTCViewController.m */,
 				5EF8CB441F74245700D5FDBF /* FuelPak BLE-Bridging-Header.h */,
+				5ED6EF181F75672300380934 /* TCCellData.h */,
+				5ED6EF191F75672300380934 /* TCCellData.m */,
 			);
 			path = "Read DTC";
 			sourceTree = "<group>";
@@ -279,6 +287,8 @@
 				5EF8CB871F74304C00D5FDBF /* EAController.m */,
 				5E57E6C41F74462400B83A7D /* Util.h */,
 				5E57E6C51F74462400B83A7D /* Util.m */,
+				5ED6EF1B1F75690200380934 /* DoneCancelNumberPadToolbar.h */,
+				5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -573,7 +583,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */,
 				5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */,
+				5ED6EF1D1F75690200380934 /* DoneCancelNumberPadToolbar.m in Sources */,
 				5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */,
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
