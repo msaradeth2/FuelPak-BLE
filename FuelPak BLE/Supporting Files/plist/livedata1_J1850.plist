@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>minidial4</key>
+	<integer>4</integer>
+	<key>minidial3</key>
+	<integer>3</integer>
+	<key>minidial2</key>
+	<integer>18</integer>
+	<key>minidial1</key>
+	<integer>17</integer>
+	<key>maindial</key>
+	<integer>17</integer>
+	<key>wheelIndex</key>
+	<integer>17</integer>
+	<key>mainDialVisible</key>
+	<true/>
+</dict>
+</plist>

@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>B1101</key>
+	<array>
+		<string>LHCM turn signal bulb out</string>
+	</array>
+	<key>B1103</key>
+	<array>
+		<string>LHCM internal fault</string>
+	</array>
+	<key>B1151</key>
+	<array>
+		<string>RHCM turn signal bulb out</string>
+	</array>
+	<key>B1153</key>
+	<array>
+		<string>RHCM internal fault</string>
+	</array>
+	<key>B1200</key>
+	<array>
+		<string>Instrument internal fault</string>
+	</array>
+	<key>B1210</key>
+	<array>
+		<string>Fuel sender shorted low/fuel gauge circuit open</string>
+	</array>
+	<key>B1211</key>
+	<array>
+		<string>Fuel sender shorted high/open</string>
+	</array>
+	<key>B2102</key>
+	<array>
+		<string>System power output shorted high</string>
+	</array>
+	<key>B2103</key>
+	<array>
+		<string>System power output shorted low</string>
+	</array>
+	<key>B2104</key>
+	<array>
+		<string>System power output overloaded</string>
+	</array>
+	<key>B2107</key>
+	<array>
+		<string>Front position/running power output shorted high</string>
+	</array>
+	<key>B2108</key>
+	<array>
+		<string>Front position/running power output shorted low</string>
+	</array>
+	<key>B2109</key>
+	<array>
+		<string>Front position/running power output overloaded</string>
+	</array>
+	<key>B2112</key>
+	<array>
+		<string>Accessory output shorted high</string>
+	</array>
+	<key>B2113</key>
+	<array>
+		<string>Accessory output shorted low</string>
+	</array>
+	<key>B2114</key>
+	<array>
+		<string>Accessory output overloaded</string>
+	</array>
+	<key>B2116</key>
+	<array>
+		<string>Fuel pump output open</string>
+	</array>
+	<key>B2117</key>
+	<array>
+		<string>Fuel pump output shorted high</string>
+	</array>
+	<key>B2118</key>
+	<array>
+		<string>Fuel pump output shorted low</string>
+	</array>
+	<key>B2119</key>
+	<array>
+		<string>Fuel pump output overloaded</string>
+	</array>
+	<key>B2121</key>
+	<array>
+		<string>Starter output open</string>
+	</array>
+	<key>B2122</key>
+	<array>
+		<string>Starter output shorted high</string>
+	</array>
+	<key>B2123</key>
+	<array>
+		<string>Starter output shorted low</string>
+	</array>
+	<key>B2124</key>
+	<array>
+		<string>Started output overloaded</string>
+	</array>
+	<key>B2126</key>
+	<array>
+		<string>Horn output open</string>
+	</array>
+	<key>B2127</key>
+	<array>
+		<string>Horn output shorted high</string>
+	</array>
+	<key>B2128</key>
+	<array>
+		<string>Horn output shorted low</string>
+	</array>
+	<key>B2129</key>
+	<array>
+		<string>Horn output overloaded</string>
+	</array>
+	<key>B2131</key>
+	<array>
+		<string>High beam output open</string>
+	</array>
+	<key>B2132</key>
+	<array>
+		<string>High beam output shorted high</string>
+	</array>
+	<key>B2133</key>
+	<array>
+		<string>High beam output shorted low</string>
+	</array>
+	<key>B2134</key>
+	<array>
+		<string>High beam output overloaded</string>
+	</array>
+	<key>B2136</key>
+	<array>
+		<string>Low beam output open</string>
+	</array>
+	<key>B2137</key>
+	<array>
+		<string>Low beam output shorted high</string>
+	</array>
+	<key>B2138</key>
+	<array>
+		<string>Low beam output shorted low</string>
+	</array>
+	<key>B2139</key>
+	<array>
+		<string>Low beam output overloaded</string>
+	</array>
+	<key>B2141</key>
+	<array>
+		<string>Left front turn signal output open</string>
+	</array>
+	<key>B2143</key>
+	<array>
+		<string>Left front turn signal output shorted low</string>
+	</array>
+	<key>B2144</key>
+	<array>
+		<string>Left front turn signal output overloaded</string>
+	</array>
+	<key>B2146</key>
+	<array>
+		<string>Right front turn signal output open</string>
+	</array>
+	<key>B2148</key>
+	<array>
+		<string>Right front turn signal output shorted low</string>
+	</array>
+	<key>B2149</key>
+	<array>
+		<string>Right front turn signal output overloaded</string>
+	</array>
+	<key>B2151</key>
+	<array>
+		<string>Left rear turn signal output open</string>
+	</array>
+	<key>B2153</key>
+	<array>
+		<string>Left rear turn signal output shorted low</string>
+	</array>
+	<key>B2154</key>
+	<array>
+		<string>Left rear turn signal output overloaded</string>
+	</array>
+	<key>B2156</key>
+	<array>
+		<string>Right rear turn signal output open</string>
+	</array>
+	<key>B2158</key>
+	<array>
+		<string>Right rear turn signal output shorted low</string>
+	</array>
+	<key>B2159</key>
+	<array>
+		<string>Right rear turn signal output overloaded</string>
+	</array>
+	<key>B2161</key>
+	<array>
+		<string>Brake lamp output open</string>
+	</array>
+	<key>B2163</key>
+	<array>
+		<string>Brake lamp output shorted low</string>
+	</array>
+	<key>B2164</key>
+	<array>
+		<string>Brake lamp output overloaded</string>
+	</array>
+	<key>B2166</key>
+	<array>
+		<string>Running lights output open</string>
+	</array>
+	<key>B2168</key>
+	<array>
+		<string>Running lights output shorted low</string>
+	</array>
+	<key>B2169</key>
+	<array>
+		<string>Running lights output overloaded</string>
+	</array>
+	<key>B2172</key>
+	<array>
+		<string>Security siren output shorted high</string>
+	</array>
+	<key>B2173</key>
+	<array>
+		<string>Security siren output shorted low</string>
+	</array>
+	<key>B2176</key>
+	<array>
+		<string>Security antenna output open</string>
+	</array>
+	<key>B2177</key>
+	<array>
+		<string>Security antenna output shorted high</string>
+	</array>
+	<key>B2178</key>
+	<array>
+		<string>Security antenna output shorted low</string>
+	</array>
+	<key>B2203</key>
+	<array>
+		<string>Ignition switch input shorted low</string>
+	</array>
+	<key>B2206</key>
+	<array>
+		<string>Engine stop switch input open/shorted high</string>
+	</array>
+	<key>B2208</key>
+	<array>
+		<string>Engine stop switch input shorted low</string>
+	</array>
+	<key>B2218</key>
+	<array>
+		<string>Neutral switch shorted low</string>
+	</array>
+	<key>B2223</key>
+	<array>
+		<string>Rear brake switch shorted low</string>
+	</array>
+	<key>B2250</key>
+	<array>
+		<string>Clutch switch stuck</string>
+	</array>
+	<key>B2251</key>
+	<array>
+		<string>Horn switch stuck</string>
+	</array>
+	<key>B2252</key>
+	<array>
+		<string>High beam switch stuck</string>
+	</array>
+	<key>B2253</key>
+	<array>
+		<string>Low beam switch stuck</string>
+	</array>
+	<key>B2254</key>
+	<array>
+		<string>Left turn switch stuck</string>
+	</array>
+	<key>B2255</key>
+	<array>
+		<string>Trip switch stuck</string>
+	</array>
+	<key>B2260</key>
+	<array>
+		<string>Start switch stuck</string>
+	</array>
+	<key>B2261</key>
+	<array>
+		<string>Right turn switch stuck</string>
+	</array>
+	<key>B2262</key>
+	<array>
+		<string>Front brake switch stuck</string>
+	</array>
+	<key>B2263</key>
+	<array>
+		<string>Hazard switch stuck</string>
+	</array>
+	<key>B2270</key>
+	<array>
+		<string>BCM Internal fault</string>
+	</array>
+	<key>B2271</key>
+	<array>
+		<string>BCM voltage low</string>
+	</array>
+	<key>B2272</key>
+	<array>
+		<string>BCM or speedometer voltage high</string>
+	</array>
+	<key>B2274</key>
+	<array>
+		<string>Constant battery line fault</string>
+	</array>
+	<key>C0562</key>
+	<array>
+		<string>ABS voltage low</string>
+	</array>
+	<key>C0563</key>
+	<array>
+		<string>ABS voltage high</string>
+	</array>
+	<key>C1018</key>
+	<array>
+		<string>Front actuator circuit low/open</string>
+	</array>
+	<key>C1021</key>
+	<array>
+		<string>Front wheel speed sensor always equals 0</string>
+	</array>
+	<key>C1023</key>
+	<array>
+		<string>Rear wheel speed sensor always equals 0</string>
+	</array>
+	<key>C1025</key>
+	<array>
+		<string>Front wheel speed signal intermittent</string>
+	</array>
+	<key>C1027</key>
+	<array>
+		<string>Rear wheel speed signal intermittent</string>
+	</array>
+	<key>C1032</key>
+	<array>
+		<string>Front wheel speed sensor circuit open or shorted</string>
+	</array>
+	<key>C1034</key>
+	<array>
+		<string>Rear wheel speed sensor circuit open or shorted</string>
+	</array>
+	<key>C1041</key>
+	<array>
+		<string>Rear actuator circuit low/open</string>
+	</array>
+	<key>C1042</key>
+	<array>
+		<string>Front actuator circuit open</string>
+	</array>
+	<key>C1044</key>
+	<array>
+		<string>Rear actuator circuit open</string>
+	</array>
+	<key>C1052</key>
+	<array>
+		<string>Rear actuator circuit high</string>
+	</array>
+	<key>C1055</key>
+	<array>
+		<string>ABS ECU internal fault</string>
+	</array>
+	<key>C1094</key>
+	<array>
+		<string>Brake switch always on</string>
+	</array>
+	<key>C1102</key>
+	<array>
+		<string>Rear actuator motor stalled</string>
+	</array>
+	<key>C1151</key>
+	<array>
+		<string>Front wheel release too long</string>
+	</array>
+	<key>C1153</key>
+	<array>
+		<string>Rear wheel release too long</string>
+	</array>
+	<key>C1158</key>
+	<array>
+		<string>Calibration not programmed</string>
+	</array>
+	<key>C1178</key>
+	<array>
+		<string>No VIN received from ECM</string>
+	</array>
+	<key>C1184</key>
+	<array>
+		<string>VIN does not match ABS ECU calibration</string>
+	</array>
+	<key>C1192</key>
+	<array>
+		<string>Front actuator circuit high</string>
+	</array>
+	<key>C1193</key>
+	<array>
+		<string>Front actuator motor stalled</string>
+	</array>
+	<key>C1206</key>
+	<array>
+		<string>Front wheel speed sensor frequency out of range</string>
+	</array>
+	<key>C1208</key>
+	<array>
+		<string>Rear wheel speed sensor frequency out of range</string>
+	</array>
+	<key>C1212</key>
+	<array>
+		<string>Front or rear brake not applied on decel</string>
+	</array>
+	<key>C1222</key>
+	<array>
+		<string>ABS voltage low - terminal 11</string>
+	</array>
+	<key>C1223</key>
+	<array>
+		<string>ABS voltage low - terminal 20</string>
+	</array>
+	<key>C1224</key>
+	<array>
+		<string>Front actuator power shorted high</string>
+	</array>
+	<key>C1225</key>
+	<array>
+		<string>Rear actuator power shorted high</string>
+	</array>
+	<key>C1561</key>
+	<array>
+		<string>Front apply solenoid circuit open or high resistance</string>
+	</array>
+	<key>C1562</key>
+	<array>
+		<string>Front apply solenoid circuit shorted low</string>
+	</array>
+	<key>C1563</key>
+	<array>
+		<string>Front solenoid circuit shorted high</string>
+	</array>
+	<key>C1564</key>
+	<array>
+		<string>Front release solenoid circuit open or high resistance</string>
+	</array>
+	<key>C1565</key>
+	<array>
+		<string>Front release solenoid circuit shorted low</string>
+	</array>
+	<key>C1567</key>
+	<array>
+		<string>Rear apply solenoid circuit open or high resistance</string>
+	</array>
+	<key>C1568</key>
+	<array>
+		<string>Rear apply solenoid circuit shorted low</string>
+	</array>
+	<key>C1571</key>
+	<array>
+		<string>Rear solenoid circuit shorted high</string>
+	</array>
+	<key>C1572</key>
+	<array>
+		<string>Rear release solenoid circuit open or high resistance</string>
+	</array>
+	<key>C1573</key>
+	<array>
+		<string>Rear release solenoid circuit shorted low</string>
+	</array>
+	<key>P0107</key>
+	<array>
+		<string>MAP sensor failed low/open</string>
+	</array>
+	<key>P0108</key>
+	<array>
+		<string>MAP sensor failed high/open port</string>
+	</array>
+	<key>P0112</key>
+	<array>
+		<string>Intake air temp sensor low/shorted</string>
+	</array>
+	<key>P0113</key>
+	<array>
+		<string>Intake air temp sensor high/open</string>
+	</array>
+	<key>P0117</key>
+	<array>
+		<string>Engine temp sensor shorted low</string>
+	</array>
+	<key>P0118</key>
+	<array>
+		<string>Engine temp sensor high/open</string>
+	</array>
+	<key>P0122</key>
+	<array>
+		<string>Throttle position sensor 1 low</string>
+	</array>
+	<key>P0123</key>
+	<array>
+		<string>Throttle position sensor 1 high/open</string>
+	</array>
+	<key>P0131</key>
+	<array>
+		<string>Oxygen sensor low/engine lean (front)</string>
+	</array>
+	<key>P0132</key>
+	<array>
+		<string>Engine running rich (front)</string>
+	</array>
+	<key>P0134</key>
+	<array>
+		<string>Oxygen sensor high/open (front)</string>
+	</array>
+	<key>P0151</key>
+	<array>
+		<string>Oxygen sensor low/engine lean (rear)</string>
+	</array>
+	<key>P0152</key>
+	<array>
+		<string>Engine running rich (rear)</string>
+	</array>
+	<key>P0154</key>
+	<array>
+		<string>Oxygen sensor high/open (rear)</string>
+	</array>
+	<key>P0261</key>
+	<array>
+		<string>Fuel injector low/open (front)</string>
+	</array>
+	<key>P0262</key>
+	<array>
+		<string>Fuel injector high/shorted (front)</string>
+	</array>
+	<key>P0264</key>
+	<array>
+		<string>Fuel injector high/shorted (rear)</string>
+	</array>
+	<key>P0265</key>
+	<array>
+		<string>Fuel injector high/shorted (rear)</string>
+	</array>
+	<key>P0371</key>
+	<array>
+		<string>Crank position sensor too many pulses</string>
+	</array>
+	<key>P0372</key>
+	<array>
+		<string>Crank position sensor too few pulses</string>
+	</array>
+	<key>P0374</key>
+	<array>
+		<string>Crank position sensor no pulses</string>
+	</array>
+	<key>P0444</key>
+	<array>
+		<string>Purge solenoid low/open</string>
+	</array>
+	<key>P0445</key>
+	<array>
+		<string>Purge solenoid shorted/high</string>
+	</array>
+	<key>P0502</key>
+	<array>
+		<string>Vehicle speed failed low</string>
+	</array>
+	<key>P0503</key>
+	<array>
+		<string>Vehicle speed failed high</string>
+	</array>
+	<key>P0506</key>
+	<array>
+		<string>Idle speed control - rpm too low</string>
+	</array>
+	<key>P0507</key>
+	<array>
+		<string>Idle speed control - rpm too high</string>
+	</array>
+	<key>P0562</key>
+	<array>
+		<string>ECM voltage low</string>
+	</array>
+	<key>P0603</key>
+	<array>
+		<string>ECM EEPROM memory error</string>
+	</array>
+	<key>P0605</key>
+	<array>
+		<string>ECM FLASH memory error</string>
+	</array>
+	<key>P0641</key>
+	<array>
+		<string>5V Vref out of range</string>
+	</array>
+	<key>P0661</key>
+	<array>
+		<string>Intake solenoid low/open</string>
+	</array>
+	<key>P0662</key>
+	<array>
+		<string>Intake solenoid shorted/high</string>
+	</array>
+	<key>P1009</key>
+	<array>
+		<string>Incorrect password</string>
+	</array>
+	<key>P1353</key>
+	<array>
+		<string>No combustion detected (front)</string>
+	</array>
+	<key>P1356</key>
+	<array>
+		<string>No combustion detected (rear)</string>
+	</array>
+	<key>P1357</key>
+	<array>
+		<string>Intermittent secondary detected (front)</string>
+	</array>
+	<key>P1358</key>
+	<array>
+		<string>Intermittent secondary detected (rear)</string>
+	</array>
+	<key>P1475</key>
+	<array>
+		<string>Exhaust actuator position error</string>
+	</array>
+	<key>P1477</key>
+	<array>
+		<string>Exhaust actuator low/open</string>
+	</array>
+	<key>P1478</key>
+	<array>
+		<string>Exhaust actuator shorted/high</string>
+	</array>
+	<key>P1501</key>
+	<array>
+		<string>JSS sensor low</string>
+	</array>
+	<key>P1502</key>
+	<array>
+		<string>JSS sensor high/open</string>
+	</array>
+	<key>P1632</key>
+	<array>
+		<string>Odometer learned up</string>
+	</array>
+	<key>P2300</key>
+	<array>
+		<string>Ignition coil driver low/open (front)</string>
+	</array>
+	<key>P2301</key>
+	<array>
+		<string>Ignition coil driver high/shorted (front)</string>
+	</array>
+	<key>P2303</key>
+	<array>
+		<string>Ignition coil driver low/open (rear)</string>
+	</array>
+	<key>P2304</key>
+	<array>
+		<string>Ignition coil driver high/shorted (rear)</string>
+	</array>
+	<key>U0001</key>
+	<array>
+		<string>CAN BUS fault</string>
+	</array>
+	<key>U0011</key>
+	<array>
+		<string>CAN BUS low shorted to CAN BUS high</string>
+	</array>
+	<key>U0100</key>
+	<array>
+		<string>Lost communication with ECM</string>
+	</array>
+	<key>U0121</key>
+	<array>
+		<string>Lost communication with ABS</string>
+	</array>
+	<key>U0140</key>
+	<array>
+		<string>Lost communication with BCM</string>
+	</array>
+	<key>U0141</key>
+	<array>
+		<string>Lost communication with LHCM</string>
+	</array>
+	<key>U0142</key>
+	<array>
+		<string>Lost communication with RHCM</string>
+	</array>
+	<key>U0156</key>
+	<array>
+		<string>Lost communication with speedometer</string>
+	</array>
+</dict>
+</plist>

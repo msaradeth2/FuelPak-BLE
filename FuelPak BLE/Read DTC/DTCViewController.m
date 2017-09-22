@@ -20,6 +20,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.uitableviewDTCcode.delegate = self;
+    self.uitableviewDTCcode.dataSource = self;
+    
     [self updateTheme];
 }
 

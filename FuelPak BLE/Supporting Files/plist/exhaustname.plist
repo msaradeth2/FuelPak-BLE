@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>exhaustname1</key>
+	<array>
+		<string>Big Radius</string>
+	</array>
+	<key>exhaustname2</key>
+	<array>
+		<string>Big Radius 2-1</string>
+	</array>
+	<key>exhaustname3</key>
+	<array>
+		<string>Big Shots Long</string>
+	</array>
+	<key>exhaustname4</key>
+	<array>
+		<string>Big Shots Staggered</string>
+	</array>
+	<key>exhaustname5</key>
+	<array>
+		<string>Dual and Splip-Ons</string>
+	</array>
+	<key>exhaustname6</key>
+	<array>
+		<string>Big Shots Long</string>
+	</array>
+	<key>exhaustname7</key>
+	<array>
+		<string>Pro Pipe Chrome</string>
+	</array>
+	<key>exhaustname8</key>
+	<array>
+		<string>ShortShots Staggered</string>
+	</array>
+	<key>exhaustname0</key>
+	<array>
+		<string>Twin Slash Slip-Ons</string>
+	</array>
+</dict>
+</plist>

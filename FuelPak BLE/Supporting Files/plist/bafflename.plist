@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bafflename1</key>
+	<array>
+		<string>No Baffle</string>
+	</array>
+
+	<key>bafflename2</key>
+	<array>
+		<string>Standard</string>
+	</array>
+
+	<key>bafflename3</key>
+	<array>
+		<string>Quiet</string>
+	</array>
+    
+	<key>bafflename0</key>
+	<array>
+		<string>Competition</string>
+	</array>
+
+    
+</dict>
+</plist>
