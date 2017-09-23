@@ -9,6 +9,7 @@
 #import "DTCViewController.h"
 #import "EAController.h"
 
+#define MinCellHeight 94.0
 
 @interface DTCViewController ()
 
@@ -20,10 +21,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [self initData];
+    
     self.uitableviewDTCcode.delegate = self;
     self.uitableviewDTCcode.dataSource = self;
     
-    [self updateTheme];
+//    self readDtcShortDescriptionFromFile];
+//    [self updateTheme];
 }
 
 
@@ -34,7 +38,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-
+    [self.uitableviewDTCcode reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,7 +47,13 @@
 }
 
 
-
+#pragma mark - Init
+- (void) initData
+{
+    listOfItems = [[NSMutableArray alloc] init];
+    
+    [self readDtcShortDescriptionFromFile];
+}
 
 
 
@@ -63,59 +73,69 @@
     return nCount;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return MinCellHeight;
+}
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //return ( [[EAController sharedController] getCellHeight] );
     
-    TCCellData *cellData = listOfItems[[indexPath row]];
-    if (cellData.isParent) {
-        return ( [[EAController sharedController] getCellHeight] );
-        
-    }else {
-        
-        NSString    *text;
-        NSInteger   ncount;
-        float       fval;
-        unsigned int divisor;
-        unsigned int ipadmultiplier;
-        
-        text = cellData.troubleCodeDescriptionDetail;
-        ncount = [text length];
-        
-        
-        ipadmultiplier =1.0;
-        NSString *deviceType = [UIDevice currentDevice].model;
-        if([deviceType isEqualToString:@"iPad"])
-        {
-            ipadmultiplier = 4;
-        }
-        
-        
-        fval = 0;
-        
-        if (currinterfaceOrientation==1 || currinterfaceOrientation==2)
-        {
-            divisor = 30*ipadmultiplier;
-        }
-        
-        
-        if (currinterfaceOrientation==3 || currinterfaceOrientation==4)
-        {
-            divisor = 60*ipadmultiplier;
-        }
-        
-        
-        fval = fval + [[EAController sharedController] getCellTextLabelFontSize]*2.0 +  ([[EAController sharedController] getCellTextLabelFontSize] * ((ncount / divisor)+2) );
-        
-        //NSLog(@"%ld %ld %f", index, ncount, fval  );
-        //Parent cell height is the Minimum height for child cells
-        if (fval < [[EAController sharedController] getCellHeight] ) {
-            return [[EAController sharedController] getCellHeight];
-        }else {
-            return fval;
-        }
-    }
+    return UITableViewAutomaticDimension;
+    
+    
+    
+//    //return ( [[EAController sharedController] getCellHeight] );
+//    
+//    TCCellData *cellData = listOfItems[[indexPath row]];
+//    if (cellData.isParent) {
+//        return ( [[EAController sharedController] getCellHeight] );
+//        
+//    }else {
+//        
+//        NSString    *text;
+//        NSInteger   ncount;
+//        float       fval;
+//        unsigned int divisor;
+//        unsigned int ipadmultiplier;
+//        
+//        text = cellData.troubleCodeDescriptionDetail;
+//        ncount = [text length];
+//        
+//        
+//        ipadmultiplier =1.0;
+//        NSString *deviceType = [UIDevice currentDevice].model;
+//        if([deviceType isEqualToString:@"iPad"])
+//        {
+//            ipadmultiplier = 4;
+//        }
+//        
+//        
+//        fval = 0;
+//        
+//        if (currinterfaceOrientation==1 || currinterfaceOrientation==2)
+//        {
+//            divisor = 30*ipadmultiplier;
+//        }
+//        
+//        
+//        if (currinterfaceOrientation==3 || currinterfaceOrientation==4)
+//        {
+//            divisor = 60*ipadmultiplier;
+//        }
+//        
+//        
+//        fval = fval + [[EAController sharedController] getCellTextLabelFontSize]*2.0 +  ([[EAController sharedController] getCellTextLabelFontSize] * ((ncount / divisor)+2) );
+//        
+//        //NSLog(@"%ld %ld %f", index, ncount, fval  );
+//        //Parent cell height is the Minimum height for child cells
+//        if (fval < [[EAController sharedController] getCellHeight] ) {
+//            return [[EAController sharedController] getCellHeight];
+//        }else {
+//            return fval;
+//        }
+//    }
     
     
 }
@@ -123,7 +143,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor =[[EAController sharedController] getCellBackgroundColor];
+//    cell.backgroundColor =[[EAController sharedController] getCellBackgroundColor];
 }
 
 
@@ -140,7 +160,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:CellIdentifier];
         [self.cellPtr addObject:cell];
         CAGradientLayer *gradient = [CAGradientLayer layer];
-        gradient.frame = CGRectMake(0, 0, [[EAController sharedController] getMaxScreenSize], 93/2); //cell.bounds;
+//        gradient.frame = CGRectMake(0, 0, [[EAController sharedController] getMaxScreenSize], 93/2); //cell.bounds;
         gradient.colors = [NSArray arrayWithObjects:(id)[[[UIColor alloc] initWithRed:0.120 green:0.118 blue:0.118 alpha:1.0]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor],(id)[[UIColor clearColor]CGColor], (id)[[UIColor clearColor]CGColor], nil];
         //  [gradient setStartPoint:CGPointMake(0.0, 0.5)];
         //  [gradient setEndPoint:CGPointMake(1.0, 0.5)];
@@ -154,21 +174,21 @@
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         
-        // Set up the cell...
-        //cell.textLabel.text     =  listOfItems[[indexPath row]];
-        cell.textLabel.font     = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:[[EAController sharedController] getCellTextLabelFontSize]];
-        cell.textLabel.opaque   = [[EAController sharedController] getCellTextLabelOpaque];
-        cell.textLabel.textColor        = [[EAController sharedController] getActiveTextLabelTextColor];
-        //cell.textLabel.textColor        = [[EAController sharedController] getCellDetailTextLabelTextColor ];
-        cell.textLabel.backgroundColor  = [[EAController sharedController] getCellTextLabelBackgroundColor];
-        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
-        //cell.detailTextLabel.textColor = [[EAController sharedController] getActiveTextLabelTextColor ];
-        cell.detailTextLabel.backgroundColor = [[EAController sharedController] getCellDetailTextLabelBackgroundColor];
-        cell.detailTextLabel.font = [UIFont fontWithName:[[EAController sharedController] getCellDetailTextLabelFontName] size:[[EAController sharedController] getCellDetailTextLabelFontSize] ];
-        
-        
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:[[EAController sharedController] getCellSelectedBackgroundView]  ]];
-        cell.textLabel.highlighted  = [[EAController sharedController] getCellSelectedTextLabelTextColor];
+//        // Set up the cell...
+//        //cell.textLabel.text     =  listOfItems[[indexPath row]];
+//        cell.textLabel.font     = [UIFont fontWithName:[[EAController sharedController] getCellTextLabelFontName] size:[[EAController sharedController] getCellTextLabelFontSize]];
+//        cell.textLabel.opaque   = [[EAController sharedController] getCellTextLabelOpaque];
+//        cell.textLabel.textColor        = [[EAController sharedController] getActiveTextLabelTextColor];
+//        //cell.textLabel.textColor        = [[EAController sharedController] getCellDetailTextLabelTextColor ];
+//        cell.textLabel.backgroundColor  = [[EAController sharedController] getCellTextLabelBackgroundColor];
+//        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
+//        //cell.detailTextLabel.textColor = [[EAController sharedController] getActiveTextLabelTextColor ];
+//        cell.detailTextLabel.backgroundColor = [[EAController sharedController] getCellDetailTextLabelBackgroundColor];
+//        cell.detailTextLabel.font = [UIFont fontWithName:[[EAController sharedController] getCellDetailTextLabelFontName] size:[[EAController sharedController] getCellDetailTextLabelFontSize] ];
+//        
+//        
+//        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:[[EAController sharedController] getCellSelectedBackgroundView]  ]];
+//        cell.textLabel.highlighted  = [[EAController sharedController] getCellSelectedTextLabelTextColor];
         
     }
     
@@ -178,7 +198,7 @@
         cell.textLabel.text = cellData.troubleCode;
         cell.imageView.image = cellData.icon;
         cell.detailTextLabel.text = cellData.troubleCodeDescription;
-        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
+//        cell.detailTextLabel.textColor = [[EAController sharedController] getCellDetailTextLabelTextColor];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         
     }else {
@@ -187,7 +207,7 @@
         cell.textLabel.text = nil;
         cell.imageView.image = nil;
         cell.detailTextLabel.text = cellData.troubleCodeDescriptionDetail;
-        cell.detailTextLabel.textColor = [UIColor lightTextColor];
+//        cell.detailTextLabel.textColor = [UIColor lightTextColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
@@ -382,10 +402,74 @@
 }
 
 
+#pragma mark - Read plist file - To get Trouble Code Short Description
+
+- (void) readDtcShortDescriptionFromFile
+{
+    TCCellData *tmpCellData;
+    NSString *troubleCode;
+    NSString *codeShortDescription;
+
+//    
+//    NSDictionary *dtcDictionary;
+//    dtcDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtcShortDescription" ofType:@"plist"]];
+//    for(NSString *key in [dtcDictionary allKeys]) {
+//        NSLog(@"%@   %@ ", key, [dtcDictionary objectForKey:key]);
+//    }
+    
+    
+    if ( self.dtcdict == nil )
+    {
+
+        self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
+        
+        for(NSString *key in [self.dtcdict allKeys]) {
+            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
+            
+            troubleCode = key;
+            codeShortDescription = [self.dtcdict objectForKey:troubleCode];
+            
+            tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+            [listOfItems addObject:tmpCellData];
+        }
+        
+        
+
+
+    }
+}
+
+
 #pragma mark - Get DTC Description
+
+-(NSString*) getTroubleCodeDescription:(NSString*) troubleCode {
+    NSArray  *descarray;
+    NSString *desc;
+    
+    descarray = [self.dtcdict objectForKey:troubleCode];
+    desc = descarray[0];
+    
+    if ( desc == nil )
+    {
+        desc= localeNotFound;
+    }
+    
+    return desc;
+}
+
+
+
 
 - (void) getDtcDescription:(TCCellData*)cellData;
 {
+        //set data (trouble code long descriptiob
+    currCellData = cellData;
+    NSString *troubleCodeLongDescription = @"Not Available.";
+    currCellData.troubleCodeDescriptionDetail = troubleCodeLongDescription;
+    [currCellData.childItems addObject:troubleCodeLongDescription];
+    
+    [self updateUI:currCellData];
+    
 //    NSString *urlServer;
 //    currCellData = cellData;
 //    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
@@ -436,11 +520,11 @@
     NSString *resourceDirectory = [[NSBundle mainBundle] resourcePath];
     NSString *imageName  = [resourceDirectory stringByAppendingPathComponent:@"background33.png"];
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:  [UIImage imageWithContentsOfFile: imageName]   ]];
-    [self.uinavbarMain setTintColor: [[EAController sharedController] getNavBarTintColor]];
-    
-    [self.uinavbarMain setAlpha:  [[EAController sharedController] getNavBarAlpha]];
-    [self.uinavbarMain setHidden: [[EAController sharedController] getNavBarHidden]];
-    
+//    [self.uinavbarMain setTintColor: [[EAController sharedController] getNavBarTintColor]];
+//    
+//    [self.uinavbarMain setAlpha:  [[EAController sharedController] getNavBarAlpha]];
+//    [self.uinavbarMain setHidden: [[EAController sharedController] getNavBarHidden]];
+//    
     [self.uinavbtnBack setTintColor: [UIColor blackColor] ];
 
     
@@ -483,15 +567,15 @@
 //    }
 //    
     
-    [self.uinavbarMain setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [[EAController sharedController] getNavBarTitleTextColor],          UITextAttributeTextColor,
-      [[EAController sharedController] getNavBarTitleTextColorShadow],    UITextAttributeTextShadowColor,
-      nil]];
+//    [self.uinavbarMain setTitleTextAttributes:
+//     [NSDictionary dictionaryWithObjectsAndKeys:
+//      [[EAController sharedController] getNavBarTitleTextColor],          UITextAttributeTextColor,
+//      [[EAController sharedController] getNavBarTitleTextColorShadow],    UITextAttributeTextShadowColor,
+//      nil]];
+//    
+//    
     
-    
-    
-    [self.uitableviewDTCcode setSeparatorColor:[[EAController sharedController] getCellSeparatorColor] ];
+//    [self.uitableviewDTCcode setSeparatorColor:[[EAController sharedController] getCellSeparatorColor] ];
     
     
 

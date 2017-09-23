@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E400A151F75CB60002EA0A7 /* EAController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E400A141F75CB60002EA0A7 /* EAController.m */; };
 		5E57E6C61F74462400B83A7D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E57E6C51F74462400B83A7D /* Util.m */; };
 		5E57E70F1F747D6500B83A7D /* background_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DA1F747D6500B83A7D /* background_square.png */; };
 		5E57E7101F747D6500B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DB1F747D6500B83A7D /* background33.png */; };
@@ -114,11 +115,12 @@
 		5EF8CB831F742B6000D5FDBF /* nav_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */; };
 		5EF8CB841F742B6000D5FDBF /* nav_undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB691F742B6000D5FDBF /* nav_undo.png */; };
 		5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */; };
-		5EF8CB881F74304C00D5FDBF /* EAController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB871F74304C00D5FDBF /* EAController.m */; };
 		5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E400A131F75CB60002EA0A7 /* EAController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
+		5E400A141F75CB60002EA0A7 /* EAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
 		5E57E6C41F74462400B83A7D /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		5E57E6C51F74462400B83A7D /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		5E57E6DA1F747D6500B83A7D /* background_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_square.png; sourceTree = "<group>"; };
@@ -234,8 +236,6 @@
 		5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_trash@2x.png"; sourceTree = "<group>"; };
 		5EF8CB691F742B6000D5FDBF /* nav_undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_undo.png; sourceTree = "<group>"; };
 		5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_undo@2x.png"; sourceTree = "<group>"; };
-		5EF8CB861F74304C00D5FDBF /* EAController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
-		5EF8CB871F74304C00D5FDBF /* EAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
 		5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
 		5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -341,12 +341,12 @@
 			children = (
 				5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */,
 				5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */,
-				5EF8CB861F74304C00D5FDBF /* EAController.h */,
-				5EF8CB871F74304C00D5FDBF /* EAController.m */,
 				5E57E6C41F74462400B83A7D /* Util.h */,
 				5E57E6C51F74462400B83A7D /* Util.m */,
 				5ED6EF1B1F75690200380934 /* DoneCancelNumberPadToolbar.h */,
 				5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */,
+				5E400A131F75CB60002EA0A7 /* EAController.h */,
+				5E400A141F75CB60002EA0A7 /* EAController.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -667,7 +667,7 @@
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
 				5E57E6C61F74462400B83A7D /* Util.m in Sources */,
-				5EF8CB881F74304C00D5FDBF /* EAController.m in Sources */,
+				5E400A151F75CB60002EA0A7 /* EAController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
