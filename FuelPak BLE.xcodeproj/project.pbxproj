@@ -267,8 +267,8 @@
 		5EB54C8A1F7330E9008D9373 /* FuelPak BLE */ = {
 			isa = PBXGroup;
 			children = (
-				5EF6AEB81F7D5EC6000AA782 /* Lib */,
-				5EF6AEAF1F7D5E7A000AA782 /* Utility */,
+				5EF6AEB81F7D5EC6000AA782 /* Framework */,
+				5EF6AEAF1F7D5E7A000AA782 /* Lib */,
 				5EF8CB4C1F742B6000D5FDBF /* Supporting Files */,
 				5EF8CB481F74249400D5FDBF /* GGDiscreetNotificationView */,
 				5EF8CB421F74242800D5FDBF /* View Sensor Data */,
@@ -308,7 +308,7 @@
 			path = plist;
 			sourceTree = "<group>";
 		};
-		5EF6AEAF1F7D5E7A000AA782 /* Utility */ = {
+		5EF6AEAF1F7D5E7A000AA782 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
 				5EF6AEB01F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.h */,
@@ -320,15 +320,15 @@
 				5EF6AEB61F7D5E7A000AA782 /* Util.h */,
 				5EF6AEB71F7D5E7A000AA782 /* Util.m */,
 			);
-			path = Utility;
+			path = Lib;
 			sourceTree = "<group>";
 		};
-		5EF6AEB81F7D5EC6000AA782 /* Lib */ = {
+		5EF6AEB81F7D5EC6000AA782 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
 				5EF6AEB91F7D5EC6000AA782 /* BlueCapKit.framework */,
 			);
-			path = Lib;
+			path = Framework;
 			sourceTree = "<group>";
 		};
 		5EF8CB401F74241300D5FDBF /* Bluetooth */ = {
