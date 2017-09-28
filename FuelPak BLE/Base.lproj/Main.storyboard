@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rH2-Kw-3Bd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rH2-Kw-3Bd">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,14 +34,14 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3R-nZ-psO">
-                                <rect key="frame" x="0.0" y="81" width="375" height="529"/>
+                                <rect key="frame" x="0.0" y="81" width="375" height="537"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="J3R-nZ-psO" firstAttribute="top" secondItem="gVr-Ob-7A1" secondAttribute="bottom" constant="17" id="0fp-Hn-Qp7"/>
-                            <constraint firstItem="LXb-a6-7bj" firstAttribute="top" secondItem="J3R-nZ-psO" secondAttribute="bottom" constant="8" id="4f4-xR-Mmi"/>
+                            <constraint firstItem="LXb-a6-7bj" firstAttribute="top" secondItem="J3R-nZ-psO" secondAttribute="bottom" id="4f4-xR-Mmi"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="TkT-52-Jis"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="top" secondItem="zUj-oX-god" secondAttribute="bottom" id="VNJ-pk-clk"/>
                             <constraint firstItem="J3R-nZ-psO" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="by6-mc-5WE"/>
@@ -60,9 +60,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yax-OD-rc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-244" y="251.42428785607197"/>
+            <point key="canvasLocation" x="-207" y="567"/>
         </scene>
-        <!--Peripherals-->
+        <!--FuelPak BLE-->
         <scene sceneID="aHi-wz-UeV">
             <objects>
                 <viewController id="rE4-Wi-Wj9" sceneMemberID="viewController">
@@ -73,13 +73,39 @@
                     <view key="view" contentMode="scaleToFill" id="DrW-Oo-sUf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="an8-EZ-7Z8">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="5MZ-Lc-Bs2"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="FuelPak BLE" id="ppy-O8-rca">
+                                        <barButtonItem key="rightBarButtonItem" title="Connected/Demo Mode" id="qcw-aP-fHW"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9T2-uY-lRs">
+                                <rect key="frame" x="0.0" y="81" width="375" height="537"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="an8-EZ-7Z8" firstAttribute="top" secondItem="Gdt-Bf-ZVc" secondAttribute="bottom" id="PLc-bf-IWN"/>
+                            <constraint firstAttribute="trailing" secondItem="9T2-uY-lRs" secondAttribute="trailing" id="Ruu-kE-Mwg"/>
+                            <constraint firstItem="9T2-uY-lRs" firstAttribute="top" secondItem="an8-EZ-7Z8" secondAttribute="bottom" constant="17" id="STT-78-ppv"/>
+                            <constraint firstAttribute="trailing" secondItem="an8-EZ-7Z8" secondAttribute="trailing" id="VFe-1y-0y4"/>
+                            <constraint firstItem="9T2-uY-lRs" firstAttribute="leading" secondItem="DrW-Oo-sUf" secondAttribute="leading" id="cM1-Mp-Urf"/>
+                            <constraint firstItem="an8-EZ-7Z8" firstAttribute="leading" secondItem="DrW-Oo-sUf" secondAttribute="leading" id="cNP-7L-U0j"/>
+                            <constraint firstItem="Pz7-TS-arl" firstAttribute="top" secondItem="9T2-uY-lRs" secondAttribute="bottom" id="q8U-eN-zuB"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Peripherals" id="Jiy-P7-jU6"/>
+                    <tabBarItem key="tabBarItem" title="FuelPak BLE" id="Jiy-P7-jU6"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hSM-pU-eKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-244" y="-783"/>
+            <point key="canvasLocation" x="-231.19999999999999" y="-908.09595202398805"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="jdY-0i-CIj">
@@ -117,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="508" y="-297"/>
+            <point key="canvasLocation" x="537" y="-200"/>
         </scene>
     </scenes>
     <resources>
