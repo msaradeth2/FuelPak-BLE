@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E400A151F75CB60002EA0A7 /* EAController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E400A141F75CB60002EA0A7 /* EAController.m */; };
-		5E57E6C61F74462400B83A7D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E57E6C51F74462400B83A7D /* Util.m */; };
 		5E57E70F1F747D6500B83A7D /* background_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DA1F747D6500B83A7D /* background_square.png */; };
 		5E57E7101F747D6500B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DB1F747D6500B83A7D /* background33.png */; };
 		5E57E7111F747D6500B83A7D /* background36_568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DC1F747D6500B83A7D /* background36_568h.png */; };
@@ -69,7 +67,6 @@
 		5EB54C931F7330E9008D9373 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C921F7330E9008D9373 /* Assets.xcassets */; };
 		5EB54C961F7330E9008D9373 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C941F7330E9008D9373 /* LaunchScreen.storyboard */; };
 		5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED6EF191F75672300380934 /* TCCellData.m */; };
-		5ED6EF1D1F75690200380934 /* DoneCancelNumberPadToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */; };
 		5ED6EF3F1F75872000380934 /* bafflename.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF251F75872000380934 /* bafflename.plist */; };
 		5ED6EF401F75872000380934 /* dialcodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF261F75872000380934 /* dialcodes.plist */; };
 		5ED6EF411F75872000380934 /* dtc2011softail.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF271F75872000380934 /* dtc2011softail.plist */; };
@@ -115,14 +112,9 @@
 		5EF8CB831F742B6000D5FDBF /* nav_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */; };
 		5EF8CB841F742B6000D5FDBF /* nav_undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB691F742B6000D5FDBF /* nav_undo.png */; };
 		5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */; };
-		5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5E400A131F75CB60002EA0A7 /* EAController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
-		5E400A141F75CB60002EA0A7 /* EAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
-		5E57E6C41F74462400B83A7D /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		5E57E6C51F74462400B83A7D /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		5E57E6DA1F747D6500B83A7D /* background_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_square.png; sourceTree = "<group>"; };
 		5E57E6DB1F747D6500B83A7D /* background33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background33.png; sourceTree = "<group>"; };
 		5E57E6DC1F747D6500B83A7D /* background36_568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background36_568h.png; sourceTree = "<group>"; };
@@ -186,8 +178,6 @@
 		5EB54C971F7330E9008D9373 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5ED6EF181F75672300380934 /* TCCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCCellData.h; sourceTree = "<group>"; };
 		5ED6EF191F75672300380934 /* TCCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCCellData.m; sourceTree = "<group>"; };
-		5ED6EF1B1F75690200380934 /* DoneCancelNumberPadToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoneCancelNumberPadToolbar.h; sourceTree = "<group>"; };
-		5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoneCancelNumberPadToolbar.m; sourceTree = "<group>"; };
 		5ED6EF251F75872000380934 /* bafflename.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bafflename.plist; sourceTree = "<group>"; };
 		5ED6EF261F75872000380934 /* dialcodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dialcodes.plist; sourceTree = "<group>"; };
 		5ED6EF271F75872000380934 /* dtc2011softail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dtc2011softail.plist; sourceTree = "<group>"; };
@@ -205,6 +195,15 @@
 		5ED6EF3C1F75872000380934 /* livedata1_J1850.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata1_J1850.plist; sourceTree = "<group>"; };
 		5ED6EF3D1F75872000380934 /* livedata2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata2.plist; sourceTree = "<group>"; };
 		5ED6EF3E1F75872000380934 /* livedata3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata3.plist; sourceTree = "<group>"; };
+		5EF6AEB01F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoneCancelNumberPadToolbar.h; sourceTree = "<group>"; };
+		5EF6AEB11F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoneCancelNumberPadToolbar.m; sourceTree = "<group>"; };
+		5EF6AEB21F7D5E7A000AA782 /* EAController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
+		5EF6AEB31F7D5E7A000AA782 /* EAController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
+		5EF6AEB41F7D5E7A000AA782 /* UIButton+Glossy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
+		5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
+		5EF6AEB61F7D5E7A000AA782 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		5EF6AEB71F7D5E7A000AA782 /* Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
+		5EF6AEB91F7D5EC6000AA782 /* BlueCapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlueCapKit.framework; sourceTree = "<group>"; };
 		5EF8CB441F74245700D5FDBF /* FuelPak BLE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuelPak BLE-Bridging-Header.h"; sourceTree = "<group>"; };
 		5EF8CB451F74245700D5FDBF /* DTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCViewController.h; sourceTree = "<group>"; };
 		5EF8CB461F74245700D5FDBF /* DTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCViewController.m; sourceTree = "<group>"; };
@@ -236,8 +235,6 @@
 		5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_trash@2x.png"; sourceTree = "<group>"; };
 		5EF8CB691F742B6000D5FDBF /* nav_undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_undo.png; sourceTree = "<group>"; };
 		5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_undo@2x.png"; sourceTree = "<group>"; };
-		5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
-		5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,9 +267,10 @@
 		5EB54C8A1F7330E9008D9373 /* FuelPak BLE */ = {
 			isa = PBXGroup;
 			children = (
+				5EF6AEB81F7D5EC6000AA782 /* Lib */,
+				5EF6AEAF1F7D5E7A000AA782 /* Utility */,
 				5EF8CB4C1F742B6000D5FDBF /* Supporting Files */,
 				5EF8CB481F74249400D5FDBF /* GGDiscreetNotificationView */,
-				5EF8CB431F74243100D5FDBF /* Lib */,
 				5EF8CB421F74242800D5FDBF /* View Sensor Data */,
 				5EF8CB411F74242000D5FDBF /* Read DTC */,
 				5EF8CB401F74241300D5FDBF /* Bluetooth */,
@@ -310,6 +308,29 @@
 			path = plist;
 			sourceTree = "<group>";
 		};
+		5EF6AEAF1F7D5E7A000AA782 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				5EF6AEB01F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.h */,
+				5EF6AEB11F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.m */,
+				5EF6AEB21F7D5E7A000AA782 /* EAController.h */,
+				5EF6AEB31F7D5E7A000AA782 /* EAController.m */,
+				5EF6AEB41F7D5E7A000AA782 /* UIButton+Glossy.h */,
+				5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */,
+				5EF6AEB61F7D5E7A000AA782 /* Util.h */,
+				5EF6AEB71F7D5E7A000AA782 /* Util.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		5EF6AEB81F7D5EC6000AA782 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				5EF6AEB91F7D5EC6000AA782 /* BlueCapKit.framework */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
 		5EF8CB401F74241300D5FDBF /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,21 +355,6 @@
 			children = (
 			);
 			path = "View Sensor Data";
-			sourceTree = "<group>";
-		};
-		5EF8CB431F74243100D5FDBF /* Lib */ = {
-			isa = PBXGroup;
-			children = (
-				5EF8CB891F743B8700D5FDBF /* UIButton+Glossy.h */,
-				5EF8CB8A1F743B8700D5FDBF /* UIButton+Glossy.m */,
-				5E57E6C41F74462400B83A7D /* Util.h */,
-				5E57E6C51F74462400B83A7D /* Util.m */,
-				5ED6EF1B1F75690200380934 /* DoneCancelNumberPadToolbar.h */,
-				5ED6EF1C1F75690200380934 /* DoneCancelNumberPadToolbar.m */,
-				5E400A131F75CB60002EA0A7 /* EAController.h */,
-				5E400A141F75CB60002EA0A7 /* EAController.m */,
-			);
-			path = Lib;
 			sourceTree = "<group>";
 		};
 		5EF8CB481F74249400D5FDBF /* GGDiscreetNotificationView */ = {
@@ -660,14 +666,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */,
-				5EF8CB8B1F743B8700D5FDBF /* UIButton+Glossy.m in Sources */,
-				5ED6EF1D1F75690200380934 /* DoneCancelNumberPadToolbar.m in Sources */,
 				5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */,
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
-				5E57E6C61F74462400B83A7D /* Util.m in Sources */,
-				5E400A151F75CB60002EA0A7 /* EAController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
