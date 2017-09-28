@@ -87,6 +87,8 @@
 		5ED6EF561F75872000380934 /* livedata1_J1850.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3C1F75872000380934 /* livedata1_J1850.plist */; };
 		5ED6EF571F75872000380934 /* livedata2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3D1F75872000380934 /* livedata2.plist */; };
 		5ED6EF581F75872000380934 /* livedata3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3E1F75872000380934 /* livedata3.plist */; };
+		5EDBF0B61F7D7DA000646E7E /* BlueCapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBF0B51F7D7D9900646E7E /* BlueCapKit.framework */; };
+		5EDBF0B71F7D7DA000646E7E /* BlueCapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBF0B51F7D7D9900646E7E /* BlueCapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB461F74245700D5FDBF /* DTCViewController.m */; };
 		5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB4A1F74262A00D5FDBF /* GCDiscreetNotificationView.m */; };
 		5EF8CB6C1F742B6000D5FDBF /* nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB511F742B6000D5FDBF /* nav_back.png */; };
@@ -116,6 +118,20 @@
 		5EF8CB841F742B6000D5FDBF /* nav_undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB691F742B6000D5FDBF /* nav_undo.png */; };
 		5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5EDBF0B81F7D7DA000646E7E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5EDBF0B71F7D7DA000646E7E /* BlueCapKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5E57E6DA1F747D6500B83A7D /* background_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_square.png; sourceTree = "<group>"; };
@@ -201,6 +217,7 @@
 		5ED6EF3C1F75872000380934 /* livedata1_J1850.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata1_J1850.plist; sourceTree = "<group>"; };
 		5ED6EF3D1F75872000380934 /* livedata2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata2.plist; sourceTree = "<group>"; };
 		5ED6EF3E1F75872000380934 /* livedata3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata3.plist; sourceTree = "<group>"; };
+		5EDBF0B51F7D7D9900646E7E /* BlueCapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlueCapKit.framework; sourceTree = "<group>"; };
 		5EF6AEB01F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoneCancelNumberPadToolbar.h; sourceTree = "<group>"; };
 		5EF6AEB11F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoneCancelNumberPadToolbar.m; sourceTree = "<group>"; };
 		5EF6AEB21F7D5E7A000AA782 /* EAController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
@@ -248,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E8F6D4C1F7D7B3500FDE99F /* CoreLocation.framework in Frameworks */,
+				5EDBF0B61F7D7DA000646E7E /* BlueCapKit.framework in Frameworks */,
 				5E8F6D4A1F7D7B2A00FDE99F /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,6 +283,7 @@
 		5E8F6D481F7D7B2A00FDE99F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5EDBF0B51F7D7D9900646E7E /* BlueCapKit.framework */,
 				5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */,
 				5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */,
 			);
@@ -521,6 +540,7 @@
 				5EB54C841F7330E9008D9373 /* Sources */,
 				5EB54C851F7330E9008D9373 /* Frameworks */,
 				5EB54C861F7330E9008D9373 /* Resources */,
+				5EDBF0B81F7D7DA000646E7E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -825,9 +845,10 @@
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "FuelPak BLE/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "local.saradeth.mike.FuelPak-BLE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -850,9 +871,10 @@
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
 					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "FuelPak BLE/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "local.saradeth.mike.FuelPak-BLE";
 				PRODUCT_NAME = "$(TARGET_NAME)";

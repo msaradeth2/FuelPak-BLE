@@ -8,8 +8,8 @@
 
 import Foundation
 import UIKit
-//import BlueCapKit
 import CoreBluetooth
+import BlueCapKit
 
 
 final class BtUtil: NSObject {
