@@ -61,6 +61,9 @@
 		5E57E7421F747D6500B83A7D /* throttle_bkg_itouch40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E70D1F747D6500B83A7D /* throttle_bkg_itouch40@2x.png */; };
 		5E57E7431F747D6500B83A7D /* wheel_fullbkg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E70E1F747D6500B83A7D /* wheel_fullbkg.png */; };
 		5E57E7451F747DD600B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E7441F747DD600B83A7D /* background33.png */; };
+		5E8F6D441F7D785700FDE99F /* BtUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8F6D431F7D785700FDE99F /* BtUtil.swift */; };
+		5E8F6D4A1F7D7B2A00FDE99F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */; };
+		5E8F6D4C1F7D7B3500FDE99F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */; };
 		5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */; };
 		5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8D1F7330E9008D9373 /* ViewController.swift */; };
 		5EB54C911F7330E9008D9373 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C8F1F7330E9008D9373 /* Main.storyboard */; };
@@ -169,6 +172,9 @@
 		5E57E70D1F747D6500B83A7D /* throttle_bkg_itouch40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "throttle_bkg_itouch40@2x.png"; sourceTree = "<group>"; };
 		5E57E70E1F747D6500B83A7D /* wheel_fullbkg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wheel_fullbkg.png; sourceTree = "<group>"; };
 		5E57E7441F747DD600B83A7D /* background33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background33.png; sourceTree = "<group>"; };
+		5E8F6D431F7D785700FDE99F /* BtUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BtUtil.swift; sourceTree = "<group>"; };
+		5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5EB54C881F7330E9008D9373 /* FuelPak BLE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FuelPak BLE.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EB54C8D1F7330E9008D9373 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -203,7 +209,6 @@
 		5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
 		5EF6AEB61F7D5E7A000AA782 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		5EF6AEB71F7D5E7A000AA782 /* Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
-		5EF6AEB91F7D5EC6000AA782 /* BlueCapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlueCapKit.framework; sourceTree = "<group>"; };
 		5EF8CB441F74245700D5FDBF /* FuelPak BLE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuelPak BLE-Bridging-Header.h"; sourceTree = "<group>"; };
 		5EF8CB451F74245700D5FDBF /* DTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCViewController.h; sourceTree = "<group>"; };
 		5EF8CB461F74245700D5FDBF /* DTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCViewController.m; sourceTree = "<group>"; };
@@ -242,6 +247,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E8F6D4C1F7D7B3500FDE99F /* CoreLocation.framework in Frameworks */,
+				5E8F6D4A1F7D7B2A00FDE99F /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,11 +262,21 @@
 			path = Peripheral;
 			sourceTree = "<group>";
 		};
+		5E8F6D481F7D7B2A00FDE99F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */,
+				5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5EB54C7F1F7330E9008D9373 = {
 			isa = PBXGroup;
 			children = (
 				5EB54C8A1F7330E9008D9373 /* FuelPak BLE */,
 				5EB54C891F7330E9008D9373 /* Products */,
+				5E8F6D481F7D7B2A00FDE99F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -275,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				5E8F6D421F7D6B1D00FDE99F /* Peripheral */,
-				5EF6AEB81F7D5EC6000AA782 /* Framework */,
 				5EF6AEAF1F7D5E7A000AA782 /* Lib */,
 				5EF8CB4C1F742B6000D5FDBF /* Supporting Files */,
 				5EF8CB481F74249400D5FDBF /* GGDiscreetNotificationView */,
@@ -331,17 +347,10 @@
 			path = Lib;
 			sourceTree = "<group>";
 		};
-		5EF6AEB81F7D5EC6000AA782 /* Framework */ = {
-			isa = PBXGroup;
-			children = (
-				5EF6AEB91F7D5EC6000AA782 /* BlueCapKit.framework */,
-			);
-			path = Framework;
-			sourceTree = "<group>";
-		};
 		5EF8CB401F74241300D5FDBF /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
+				5E8F6D431F7D785700FDE99F /* BtUtil.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -537,6 +546,11 @@
 						DevelopmentTeam = LP46D328FV;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -678,6 +692,7 @@
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
+				5E8F6D441F7D785700FDE99F /* BtUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -805,6 +820,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = LP46D328FV;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+				);
 				INFOPLIST_FILE = "FuelPak BLE/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -824,6 +845,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = LP46D328FV;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+					"$(PROJECT_DIR)/FuelPak\\ BLE/Framework",
+				);
 				INFOPLIST_FILE = "FuelPak BLE/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
