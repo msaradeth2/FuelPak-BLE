@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -81,7 +82,11 @@
                                 </constraints>
                                 <items>
                                     <navigationItem title="FuelPak BLE" id="ppy-O8-rca">
-                                        <barButtonItem key="rightBarButtonItem" title="Connected/Demo Mode" id="qcw-aP-fHW"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Demo Mode" id="4ab-Ke-0Lc"/>
+                                        <rightBarButtonItems>
+                                            <barButtonItem image="nav_refresh.png" id="qcw-aP-fHW"/>
+                                            <barButtonItem title="Item" image="nav_save.png" id="ZZZ-xi-gtD"/>
+                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -105,7 +110,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hSM-pU-eKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-231.19999999999999" y="-908.09595202398805"/>
+            <point key="canvasLocation" x="-242" y="-891"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="jdY-0i-CIj">
@@ -117,7 +122,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="rE4-Wi-Wj9" kind="relationship" relationship="viewControllers" id="LS6-RJ-6dJ"/>
+                        <segue destination="rE4-Wi-Wj9" kind="relationship" relationship="viewControllers" id="Y0F-4l-EG1"/>
                         <segue destination="TIm-Ee-YLN" kind="relationship" relationship="viewControllers" id="yPf-vC-SO0"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="syV-c3-Of8"/>
                     </connections>
@@ -148,6 +153,7 @@
     </scenes>
     <resources>
         <image name="nav_refresh.png" width="24" height="24"/>
+        <image name="nav_save.png" width="24" height="24"/>
         <image name="nav_trash.png" width="24" height="24"/>
     </resources>
 </document>
