@@ -424,7 +424,7 @@
         self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
         
         for(NSString *key in [self.dtcdict allKeys]) {
-            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
+//            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
             
             troubleCode = key;
             codeShortDescription = [self.dtcdict objectForKey:troubleCode];

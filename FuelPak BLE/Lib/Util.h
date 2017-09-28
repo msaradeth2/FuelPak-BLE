@@ -23,5 +23,6 @@
 
 
 - (void) testMethod;
+- (float) getCellHeight;
 
 @end

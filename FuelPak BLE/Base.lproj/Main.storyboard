@@ -66,7 +66,7 @@
         <!--FuelPak BLE-->
         <scene sceneID="aHi-wz-UeV">
             <objects>
-                <viewController id="rE4-Wi-Wj9" sceneMemberID="viewController">
+                <viewController id="rE4-Wi-Wj9" customClass="PeripheralViewController" customModule="FuelPak_BLE" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gdt-Bf-ZVc"/>
                         <viewControllerLayoutGuide type="bottom" id="Pz7-TS-arl"/>
@@ -90,7 +90,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9T2-uY-lRs">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9T2-uY-lRs">
                                 <rect key="frame" x="0.0" y="81" width="375" height="537"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
@@ -107,6 +107,12 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="FuelPak BLE" id="Jiy-P7-jU6"/>
+                    <connections>
+                        <outlet property="demoModeButton" destination="4ab-Ke-0Lc" id="G9F-Y7-xOn"/>
+                        <outlet property="refreshButton" destination="qcw-aP-fHW" id="31J-Rl-YRO"/>
+                        <outlet property="signalStrengthButton" destination="ZZZ-xi-gtD" id="5qK-ca-QkS"/>
+                        <outlet property="tableView" destination="9T2-uY-lRs" id="8wY-hq-6Ox"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hSM-pU-eKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

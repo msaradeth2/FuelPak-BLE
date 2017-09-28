@@ -159,4 +159,11 @@ static Util *util = nil;
     
     return height;
 }
+
+
+- ( float ) getCellHeight
+{
+    return 93.0;
+}
+
 @end
