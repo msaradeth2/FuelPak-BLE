@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import CoreBluetooth
 
 
 class PeripheralViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -18,9 +18,9 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var signalStrengthButton: UIBarButtonItem!
     @IBOutlet weak var demoModeButton: UIBarButtonItem!
     
-
+    private var btDevice = BTDevice.sharedInstance
     
-    private var listOfItems: [String] = []
+
     
     
     
@@ -36,7 +36,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         
-        BtUtil.sharedInstance.initBluetoothUtility()
+//        BtUtil.sharedInstance.initBluetoothUtility()
+       
         
         updateTable()
     }
@@ -53,7 +54,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     func initData() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
+//        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
         
         updateTable()
         
@@ -62,32 +63,48 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func updateTable() {
 
-        listOfItems.removeAll()
+
         
-        listOfItems.append(BleDevice.sharedInstance.name)
-        listOfItems.append(BleDevice.sharedInstance.deviceStatus)
+        print(btDevice.peripheralDict.count)
+        if (btDevice.peripheralDict.count>0) {
+            for ii in 0...btDevice.peripheralDict.count-1 {
+                let text = Array(btDevice.peripheralDict.keys)[ii]
+                let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[ii]]!.peripheralRSSI!
+                
+                
+                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
+                
+                print(tmpString)
+            }
+        }
+
         
-        listOfItems.append(BleDevice.sharedInstance.manufacturerName)
-        listOfItems.append(BleDevice.sharedInstance.modelNumber)
-        listOfItems.append(BleDevice.sharedInstance.serialNumber)
-        listOfItems.append(BleDevice.sharedInstance.hardwareVersion)
-        listOfItems.append(BleDevice.sharedInstance.firmwareVersion)
-        listOfItems.append(BleDevice.sharedInstance.appVersion)
-        listOfItems.append(BleDevice.sharedInstance.systemId)
-        
-        listOfItems.append(BleDevice.sharedInstance.serviceName)
-        listOfItems.append(BleDevice.sharedInstance.charactericName)
-        
-        print(BleDevice.sharedInstance.charactericName)
-        print(listOfItems.count)
+//        listOfItems.removeAll()
+//
+//        listOfItems.append(BleDevice.sharedInstance.name)
+//        listOfItems.append(BleDevice.sharedInstance.deviceStatus)
+//
+//        listOfItems.append(BleDevice.sharedInstance.manufacturerName)
+//        listOfItems.append(BleDevice.sharedInstance.modelNumber)
+//        listOfItems.append(BleDevice.sharedInstance.serialNumber)
+//        listOfItems.append(BleDevice.sharedInstance.hardwareVersion)
+//        listOfItems.append(BleDevice.sharedInstance.firmwareVersion)
+//        listOfItems.append(BleDevice.sharedInstance.appVersion)
+//        listOfItems.append(BleDevice.sharedInstance.systemId)
+//
+//        listOfItems.append(BleDevice.sharedInstance.serviceName)
+//        listOfItems.append(BleDevice.sharedInstance.charactericName)
+//
+//        print(BleDevice.sharedInstance.charactericName)
+//        print(listOfItems.count)
         
         
         
         tableView.reloadData()
-        
-        //        for i in 0...20 {
-        //            listOfItems.append("\(i)")
-        //        }
+//
+//                for i in 0...20 {
+//                    listOfItems.append("\(i)")
+//                }
         
     }
     
@@ -98,7 +115,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfItems.count
+        
+        return btDevice.peripheralDict.count
         
     }
     
@@ -116,7 +134,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //    }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionTitle = "DEVICE INFORMATION"
+        let sectionTitle = "Perpherals Nearby"
 
         return sectionTitle
     }
@@ -126,14 +144,54 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellIdentifier", for: indexPath as IndexPath) as UITableViewCell
 
-        let text = listOfItems[indexPath.row] //2.
+//        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "CellIdentifier")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CellIdentifier", for: indexPath)
         
-        cell.textLabel?.text = text //3.
+
+        cell.backgroundColor = UIColor.white.withAlphaComponent(0.6)
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
+        cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
+    
+    
+        // Configure the cell...
+        var iconImage: UIImage? = UIImage(named: "nav_flash.png")
+        cell.textLabel?.text = Array(btDevice.peripheralDict.keys)[indexPath.row]
+//
+        let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[indexPath.row]]!.peripheralRSSI!
+//        cell.detailTextLabel?.text = "RSSI: \(peripheralRSSIValue)dB"
+
         
-        return cell //4.
+        if (peripheralRSSIValue.intValue < -27 && peripheralRSSIValue.intValue > -110) {
+            
+            if (peripheralRSSIValue.intValue <= -27 && peripheralRSSIValue.intValue > -60 ) {
+                iconImage = UIImage(named: "rssiStrength100")
+            }
+            
+            if (peripheralRSSIValue.intValue <= -60 && peripheralRSSIValue.intValue > -70 ) {
+                iconImage = UIImage(named: "rssiStrength75")
+            }
+            
+            if (peripheralRSSIValue.intValue <= -70 && peripheralRSSIValue.intValue > -80 ) {
+                iconImage = UIImage(named: "rssiStrength50")
+            }
+            
+            if (peripheralRSSIValue.intValue <= -80 && peripheralRSSIValue.intValue > -90 ) {
+                iconImage = UIImage(named: "rssiStrength25")
+            }
+            
+            if (peripheralRSSIValue.intValue <= -90 && peripheralRSSIValue.intValue > -110 ) {
+                iconImage = UIImage(named: "rssiStrength0")
+            }
+            
+            
+            cell.detailTextLabel?.text = "RSSI: \(peripheralRSSIValue)dB"
+            cell.imageView?.image = iconImage
+        }
+        
+    
+    return cell
+
     }
     
 
