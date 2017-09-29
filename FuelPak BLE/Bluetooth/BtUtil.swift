@@ -12,6 +12,7 @@ import CoreBluetooth
 import BlueCapKit
 
 
+
 //        2017-09-27 14:27:38.957635-0700 MLDPDemo[699:147395] Service discovered: 49535343-FE7D-4AE5-8FA9-9FAFD205E455
 //        2017-09-27 14:27:39.019055-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-1E4D-4BD9-BA61-23C647249616
 //        2017-09-27 14:27:39.019819-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-8841-43F4-A8D4-ECBE34729BB3
@@ -78,9 +79,12 @@ final class BtUtil: NSObject {
                 DispatchQueue.main.async {
 //                    self.connectionStatusLabel.text = "start scanning"
 //                    print(self.connectionStatusLabel.text!)
+                    print("start scanning")
+                    
                 }
                 //scan for peripherlas that advertise the ec00 service
                 //                return manager.startScanning(forServiceUUIDs: [serviceUUID])
+                
                 return manager.startScanning()
             case .poweredOff:
                 throw AppError.poweredOff
@@ -124,8 +128,12 @@ final class BtUtil: NSObject {
 //                self.connectionStatusLabel.text = "Found peripheral \(peripheral.identifier.uuidString). Trying to connect"
 //                print(self.connectionStatusLabel.text!)
                 
+  
                 let tmpString = "Found peripheral \(peripheral.identifier.uuidString). Trying to connect"
                 print(tmpString)
+                
+                BleDevice.sharedInstance.name = peripheral.identifier.uuidString
+                
             }
             //connect to the peripheral in order to trigger the connected mode
             return peripheral.connect(connectionTimeout: 10, capacity: 5)
@@ -148,9 +156,14 @@ final class BtUtil: NSObject {
                 DispatchQueue.main.async {
 //                    self.connectionStatusLabel.text = "Discovered service \(service.uuid.uuidString). Trying to discover characteristics"
 //                    print(self.connectionStatusLabel.text!)
-                    
+
                     let tmpString = "Discovered service \(service.uuid.uuidString). Trying to discover characteristics"
                     print(tmpString)
+                    
+                    
+                    BleDevice.sharedInstance.charactericName = service.uuid.uuidString
+                    
+                    
                 }
                 //we have discovered the service, the next step is to discover the "ec0e" characteristic
                 return service.discoverCharacteristics([dataCharacteristicUUID])
@@ -172,8 +185,12 @@ final class BtUtil: NSObject {
 //                self.connectionStatusLabel.text = "Discovered characteristic \(dataCharacteristic.uuid.uuidString). COOL :)"
 //                print(self.connectionStatusLabel.text!)
                 
+
                 let tmpString = "Discovered characteristic \(dataCharacteristic.uuid.uuidString). COOL :)"
                 print(tmpString)
+                
+                BleDevice.sharedInstance.charactericName = dataCharacteristic.uuid.uuidString
+                print(BleDevice.sharedInstance.charactericName)
                 
             }
             //when we successfully discover the characteristic, we can show the characteritic view
@@ -201,9 +218,13 @@ final class BtUtil: NSObject {
             let s = String(data:data!, encoding: .utf8)
             DispatchQueue.main.async {
 //                self.notifiedValueLabel.text = "notified value is \(String(describing: s))"
-                
+
                 let tmpString = "notified value is \(String(describing: s))"
                 print(tmpString)
+                
+                
+                BleDevice.sharedInstance.notifiedValue = String(describing: s)
+                
                 
             }
         }
@@ -235,9 +256,12 @@ final class BtUtil: NSObject {
             DispatchQueue.main.async {
 //                self.valueLabel.text = "Read value is \(String(describing: s))"
 //                print(self.valueLabel.text!)
-                
+ 
                 let tmpString = "Read value is \(String(describing: s))"
                 print(tmpString)
+                
+                BleDevice.sharedInstance.readValue = String(describing: s)
+                
                 
             }
         }
@@ -254,7 +278,8 @@ final class BtUtil: NSObject {
 //            return;
 //        }
         
-        print(cmd)
+        print("write command: \(cmd)")
+
         
         //write a value to the characteristic
         let writeFuture = self.dataCharacteristic?.write(data:cmd.data(using: .utf8)!)

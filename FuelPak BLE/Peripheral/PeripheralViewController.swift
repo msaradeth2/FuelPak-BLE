@@ -25,6 +25,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     override func viewDidLoad() {
+        
         initData()
         
     }
@@ -35,6 +36,9 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         
+        BtUtil.sharedInstance.initBluetoothUtility()
+        
+        updateTable()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,10 +55,39 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.delegate = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
         
+        updateTable()
         
-        for i in 0...20 {
-            listOfItems.append("\(i)")
-        }
+    }
+    
+    
+    func updateTable() {
+
+        listOfItems.removeAll()
+        
+        listOfItems.append(BleDevice.sharedInstance.name)
+        listOfItems.append(BleDevice.sharedInstance.deviceStatus)
+        
+        listOfItems.append(BleDevice.sharedInstance.manufacturerName)
+        listOfItems.append(BleDevice.sharedInstance.modelNumber)
+        listOfItems.append(BleDevice.sharedInstance.serialNumber)
+        listOfItems.append(BleDevice.sharedInstance.hardwareVersion)
+        listOfItems.append(BleDevice.sharedInstance.firmwareVersion)
+        listOfItems.append(BleDevice.sharedInstance.appVersion)
+        listOfItems.append(BleDevice.sharedInstance.systemId)
+        
+        listOfItems.append(BleDevice.sharedInstance.serviceName)
+        listOfItems.append(BleDevice.sharedInstance.charactericName)
+        
+        print(BleDevice.sharedInstance.charactericName)
+        print(listOfItems.count)
+        
+        
+        
+        tableView.reloadData()
+        
+        //        for i in 0...20 {
+        //            listOfItems.append("\(i)")
+        //        }
         
     }
     
