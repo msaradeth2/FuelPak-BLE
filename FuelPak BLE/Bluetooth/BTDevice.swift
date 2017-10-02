@@ -103,7 +103,16 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
 
-    // MARK: - Public methods
+   // MARK: - Public methods
+
+    
+    public func startScan() {
+//         [self.peripheralDict removeAllObjects];//
+        
+        self.peripheralDict.removeAll()
+        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+    }
+    
 //
 //    func write(cmd: String) {
 //        var bytesData = [UInt8] (cmd)

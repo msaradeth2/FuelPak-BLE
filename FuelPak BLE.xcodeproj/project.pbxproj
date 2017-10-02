@@ -10,6 +10,7 @@
 		5E0CA3EB1F7DB9320050A0F5 /* Bike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */; };
 		5E0CA3ED1F7DBB890050A0F5 /* BleDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EC1F7DBB890050A0F5 /* BleDevice.swift */; };
 		5E1184B01F7EEFA100D2341B /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1184AF1F7EEFA100D2341B /* BTDevice.swift */; };
+		5E1E370A1F829B120082BA79 /* SystemInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */; };
 		5E57E70F1F747D6500B83A7D /* background_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DA1F747D6500B83A7D /* background_square.png */; };
 		5E57E7101F747D6500B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DB1F747D6500B83A7D /* background33.png */; };
 		5E57E7111F747D6500B83A7D /* background36_568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DC1F747D6500B83A7D /* background36_568h.png */; };
@@ -141,6 +142,7 @@
 		5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bike.swift; sourceTree = "<group>"; };
 		5E0CA3EC1F7DBB890050A0F5 /* BleDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleDevice.swift; sourceTree = "<group>"; };
 		5E1184AF1F7EEFA100D2341B /* BTDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
+		5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoViewController.swift; sourceTree = "<group>"; };
 		5E57E6DA1F747D6500B83A7D /* background_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_square.png; sourceTree = "<group>"; };
 		5E57E6DB1F747D6500B83A7D /* background33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background33.png; sourceTree = "<group>"; };
 		5E57E6DC1F747D6500B83A7D /* background36_568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background36_568h.png; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				5EDBF0B91F7D93F800646E7E /* PeripheralViewController.swift */,
+				5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */,
 			);
 			path = Peripheral;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				5EDBF0BA1F7D93F800646E7E /* PeripheralViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,
+				5E1E370A1F829B120082BA79 /* SystemInfoViewController.swift in Sources */,
 				5E8F6D441F7D785700FDE99F /* BtUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -40,6 +40,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
        
         
         updateTable()
+        
+        evtRefreshButton(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -61,22 +63,39 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
+    
+    @IBAction func evtDemoModeButton(_ sender: Any) {
+        
+        print("evtDemoModeButton")
+    }
+    
+    
+    
+    @IBAction func evtRefreshButton(_ sender: Any) {
+        
+        print("evtRefreshButton")
+        
+        self.tableView.reloadData()
+    }
+    
+    
+    
     func updateTable() {
 
-
+        self.tableView.reloadData()
         
-        print(btDevice.peripheralDict.count)
-        if (btDevice.peripheralDict.count>0) {
-            for ii in 0...btDevice.peripheralDict.count-1 {
-                let text = Array(btDevice.peripheralDict.keys)[ii]
-                let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[ii]]!.peripheralRSSI!
-                
-                
-                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
-                
-                print(tmpString)
-            }
-        }
+//        print(btDevice.peripheralDict.count)
+//        if (btDevice.peripheralDict.count>0) {
+//            for ii in 0...btDevice.peripheralDict.count-1 {
+//                let text = Array(btDevice.peripheralDict.keys)[ii]
+//                let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[ii]]!.peripheralRSSI!
+//
+//
+//                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
+//
+//                print(tmpString)
+//            }
+//        }
 
         
 //        listOfItems.removeAll()
@@ -100,7 +119,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
         
         
-        tableView.reloadData()
+        
 //
 //                for i in 0...20 {
 //                    listOfItems.append("\(i)")
@@ -200,6 +219,9 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
 //        indexPath.row
         tableView.deselectRow(at: indexPath, animated: false)
+        
+        performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
+        
         
         
 //        let alertController = UIAlertController(title: "Hint", message: "You have selected row \(indexPath.row).", preferredStyle: .alert)
