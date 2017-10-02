@@ -25,7 +25,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private var btDevice = BTDevice.sharedInstance
     private var listOfItems: [String] = []
-    private var listOfItemsSection_1: [String] = []
+    private var listOfItemsSection_0: [String] = []
     
     
     
@@ -60,6 +60,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
+//        self.tableView.register(UINib(nibName: "CustomHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
         
         updateTable()
         
@@ -77,6 +78,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
+        
+        self.tableView.reloadData()
     }
     
     
@@ -142,10 +145,10 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         switch section {
-        case 1:
-            return listOfItemsSection_1.count
+        case 0:
+            return listOfItemsSection_0.count
             
-        case 2:
+        case 1:
             return listOfItems.count
             
         default:
@@ -164,21 +167,40 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         return 93.0
     }
     
-    //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //
-    //    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//
+//        let vw = UIView()
+//        vw.backgroundColor = UIColor.red
+//
+//        let headerView = tableView.dequeueReusableHeaderFooterViewWithIdentifier("CustomHeaderView") as! CustomHeaderView
+//
+//        headerView.customLabel.text = BleDevice.sharedInstance.isConnected
+//        headerView.sectionNumber = section
+//        headerView.delegate = self
+//
+//        return headerView
+//    }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
+
         var sectionTitle: String
 
         switch section {
+        case 0:
+            if (Bike.sharedInstance.isDemoMode == true) {
+                sectionTitle = "Status:  Demo Mode"
+            }else {
+                if (BleDevice.sharedInstance.isConnected) {
+                    sectionTitle = "Status:  Connected"
+                }else {
+                    sectionTitle = "Status:  Disconnected"
+                }
+            }
+
+
         case 1:
-            sectionTitle = "Status:  Connected"
-            
-        case 2:
             sectionTitle = "Perpherals Nearby"
-            
+
         default:
             sectionTitle = " "
         }
@@ -188,6 +210,21 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+        switch section {
+        case 0:
+            return 93.0
+
+        case 1:
+            return 50.0
+
+        default:
+            return 0
+        }
+    }
+    
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -225,8 +262,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         //        indexPath.row
         tableView.deselectRow(at: indexPath, animated: false)
         
-        performSegue(withIdentifier: "PeripheralOutSystemInfoIn", sender: self)
-        
+
         
         
         //        let alertController = UIAlertController(title: "Hint", message: "You have selected row \(indexPath.row).", preferredStyle: .alert)

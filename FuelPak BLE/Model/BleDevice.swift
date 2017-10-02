@@ -46,6 +46,8 @@ final class BleDevice: NSObject {
     var notifiedValue = ""
     var readValue = ""
     
+    var isConnected = false
+    
     
     
     

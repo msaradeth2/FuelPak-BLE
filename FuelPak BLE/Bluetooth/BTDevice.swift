@@ -76,14 +76,22 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func initData() {
         
+        
 //        navigationController?.delegate = self
         peripheralDict.removeAll()
+        
 //        tableView.reloadData()
 //        peripheralsIndicator.startAnimating()
         
-        cbCentralManager = CBCentralManager(delegate: self, queue: nil)
+        let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
+        cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
+
+        
+        
         
         appDelegate = (UIApplication.shared.delegate as! AppDelegate)
+        
+        
 //        appContext = appDelegate.managedObjectContext!
 //
 //        let appRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PrivateServiceSerialData")
@@ -111,6 +119,9 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         self.peripheralDict.removeAll()
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        
+        
+        
     }
     
 //
@@ -160,14 +171,20 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        BleDevice.sharedInstance.isConnected = true
+        
         peripheral.delegate = self
         peripheral.discoverServices([mchpServiceUUID, isscServiceUUID, customServiceUUID])
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        BleDevice.sharedInstance.isConnected = false
+        
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        BleDevice.sharedInstance.isConnected = false
+        
 //        alertController = UIAlertController(title: "MLDP Demo", message: "Failed to connect to the peripheral! Check if the peripheral is functioning properly and try to reconnect.", preferredStyle: UIAlertControllerStyle.alert)
 //        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
 //        alertController!.addAction(alertAction)

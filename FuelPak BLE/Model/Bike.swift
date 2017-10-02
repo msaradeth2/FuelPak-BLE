@@ -42,11 +42,11 @@ final class Bike: NSObject {
     var firmwareVersion = ""
     var softwareVersion = ""
     var systemId = ""
+    
+    var isDemoMode = false
+    
    
 
-
-
-    
     
 }
 

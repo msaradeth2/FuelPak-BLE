@@ -67,6 +67,10 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtDemoModeButton(_ sender: Any) {
         
         print("evtDemoModeButton")
+        
+        Bike.sharedInstance.isDemoMode = true
+        
+        performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
     }
     
     
@@ -220,6 +224,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        indexPath.row
         tableView.deselectRow(at: indexPath, animated: false)
         
+        Bike.sharedInstance.isDemoMode = false
         performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
         
         
