@@ -12,11 +12,11 @@ import UIKit
 //import BlueCapKit
 
 
-final class BleDevice: NSObject {
+final class FuelPakInfo: NSObject {
     
     // MARK: - Shared Instance
-    static let sharedInstance: BleDevice = {
-        let instance = BleDevice()
+    static let sharedInstance: FuelPakInfo = {
+        let instance = FuelPakInfo()
         // setup code
         return instance
     }()
@@ -46,7 +46,7 @@ final class BleDevice: NSObject {
     var notifiedValue = ""
     var readValue = ""
     
-    var isConnected = false
+    
     
     
     

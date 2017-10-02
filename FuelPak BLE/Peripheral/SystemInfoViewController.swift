@@ -14,6 +14,13 @@ import CoreBluetooth
 
 class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    struct PeripheralsStructure {
+        var peripheralInstance: CBPeripheral?
+        var peripheralRSSI: NSNumber?
+        var timeStamp: Date?
+    }
+    
+    
     @IBOutlet weak var navBar: UINavigationBar!
     @IBOutlet weak var navBarTitle: UINavigationItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
@@ -23,7 +30,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var signalStrengthButton: UIBarButtonItem!
     
     
-    private var btDevice = BTDevice.sharedInstance
+    private var btUtil = BluetoothUtil.sharedInstance
     private var listOfItems: [String] = []
     private var listOfItemsSection_0: [String] = []
     
@@ -93,11 +100,11 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
         self.tableView.reloadData()
         
-        print(btDevice.peripheralDict.count)
-//        if (btDevice.peripheralDict.count>0) {
-//            for ii in 0...btDevice.peripheralDict.count-1 {
-//                let text = Array(btDevice.peripheralDict.keys)[ii]
-//                let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[ii]]!.peripheralRSSI!
+        print(btUtil.peripheralDict.count)
+//        if (btUtil.peripheralDict.count>0) {
+//            for ii in 0...btUtil.peripheralDict.count-1 {
+//                let text = Array(btUtil.peripheralDict.keys)[ii]
+//                let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[ii]]!.peripheralRSSI!
 //
 //
 //                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
@@ -190,7 +197,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             if (Bike.sharedInstance.isDemoMode == true) {
                 sectionTitle = "Status:  Demo Mode"
             }else {
-                if (BleDevice.sharedInstance.isConnected) {
+                if (Bike.sharedInstance.isConnected) {
                     sectionTitle = "Status:  Connected"
                 }else {
                     sectionTitle = "Status:  Disconnected"
@@ -243,9 +250,9 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
 //        // Configure the cell...
 //        var iconImage: UIImage? = UIImage(named: "nav_flash.png")
-//        cell.textLabel?.text = Array(btDevice.peripheralDict.keys)[indexPath.row]
+//        cell.textLabel?.text = Array(btUtil.peripheralDict.keys)[indexPath.row]
 //        //
-//        let peripheralRSSIValue = btDevice.peripheralDict[Array(btDevice.peripheralDict.keys)[indexPath.row]]!.peripheralRSSI!
+//        let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralRSSI!
 //        //        cell.detailTextLabel?.text = "RSSI: \(peripheralRSSIValue)dB"
 //
         

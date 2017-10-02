@@ -44,6 +44,7 @@ final class Bike: NSObject {
     var systemId = ""
     
     var isDemoMode = false
+    var isConnected = false
     
    
 

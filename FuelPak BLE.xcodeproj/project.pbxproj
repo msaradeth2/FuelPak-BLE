@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5E0CA3EB1F7DB9320050A0F5 /* Bike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */; };
-		5E0CA3ED1F7DBB890050A0F5 /* BleDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EC1F7DBB890050A0F5 /* BleDevice.swift */; };
-		5E1184B01F7EEFA100D2341B /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1184AF1F7EEFA100D2341B /* BTDevice.swift */; };
+		5E0CA3ED1F7DBB890050A0F5 /* FuelPakInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */; };
+		5E1184B01F7EEFA100D2341B /* BluetoothUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1184AF1F7EEFA100D2341B /* BluetoothUtil.swift */; };
 		5E1E370A1F829B120082BA79 /* SystemInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */; };
 		5E57E70F1F747D6500B83A7D /* background_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DA1F747D6500B83A7D /* background_square.png */; };
 		5E57E7101F747D6500B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E6DB1F747D6500B83A7D /* background33.png */; };
@@ -67,6 +67,7 @@
 		5E57E7451F747DD600B83A7D /* background33.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E57E7441F747DD600B83A7D /* background33.png */; };
 		5E8F6D4A1F7D7B2A00FDE99F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */; };
 		5E8F6D4C1F7D7B3500FDE99F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */; };
+		5E9D6DA11F82F21D0020768C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9D6DA01F82F21D0020768C /* Constants.swift */; };
 		5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */; };
 		5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB54C8D1F7330E9008D9373 /* ViewController.swift */; };
 		5EB54C911F7330E9008D9373 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5EB54C8F1F7330E9008D9373 /* Main.storyboard */; };
@@ -139,8 +140,8 @@
 
 /* Begin PBXFileReference section */
 		5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bike.swift; sourceTree = "<group>"; };
-		5E0CA3EC1F7DBB890050A0F5 /* BleDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleDevice.swift; sourceTree = "<group>"; };
-		5E1184AF1F7EEFA100D2341B /* BTDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
+		5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuelPakInfo.swift; sourceTree = "<group>"; };
+		5E1184AF1F7EEFA100D2341B /* BluetoothUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothUtil.swift; sourceTree = "<group>"; };
 		5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoViewController.swift; sourceTree = "<group>"; };
 		5E57E6DA1F747D6500B83A7D /* background_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_square.png; sourceTree = "<group>"; };
 		5E57E6DB1F747D6500B83A7D /* background33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background33.png; sourceTree = "<group>"; };
@@ -198,6 +199,7 @@
 		5E57E7441F747DD600B83A7D /* background33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background33.png; sourceTree = "<group>"; };
 		5E8F6D491F7D7B2A00FDE99F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		5E8F6D4B1F7D7B3500FDE99F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		5E9D6DA01F82F21D0020768C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5EB54C881F7330E9008D9373 /* FuelPak BLE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FuelPak BLE.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB54C8B1F7330E9008D9373 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EB54C8D1F7330E9008D9373 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -285,7 +287,8 @@
 			isa = PBXGroup;
 			children = (
 				5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */,
-				5E0CA3EC1F7DBB890050A0F5 /* BleDevice.swift */,
+				5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */,
+				5E9D6DA01F82F21D0020768C /* Constants.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -389,7 +392,7 @@
 		5EF8CB401F74241300D5FDBF /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
-				5E1184AF1F7EEFA100D2341B /* BTDevice.swift */,
+				5E1184AF1F7EEFA100D2341B /* BluetoothUtil.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -728,11 +731,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E0CA3EB1F7DB9320050A0F5 /* Bike.swift in Sources */,
-				5E1184B01F7EEFA100D2341B /* BTDevice.swift in Sources */,
+				5E1184B01F7EEFA100D2341B /* BluetoothUtil.swift in Sources */,
 				5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */,
 				5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */,
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
-				5E0CA3ED1F7DBB890050A0F5 /* BleDevice.swift in Sources */,
+				5E9D6DA11F82F21D0020768C /* Constants.swift in Sources */,
+				5E0CA3ED1F7DBB890050A0F5 /* FuelPakInfo.swift in Sources */,
 				5EDBF0BA1F7D93F800646E7E /* PeripheralViewController.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
 				5EB54C8C1F7330E9008D9373 /* AppDelegate.swift in Sources */,

@@ -11,11 +11,11 @@ import UIKit
 import CoreBluetooth
 
 
-final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: - Shared Instance
-    static let sharedInstance: BTDevice = {
-        let instance = BTDevice()
+    static let sharedInstance: BluetoothUtil = {
+        let instance = BluetoothUtil()
         // setup code
         return instance
     }()
@@ -38,32 +38,39 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     //        2017-09-27 14:27:39.019055-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-1E4D-4BD9-BA61-23C647249616
     //        2017-09-27 14:27:39.019819-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-8841-43F4-A8D4-ECBE34729BB3
     
-    fileprivate let mchpServiceUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000300")
-    fileprivate let mchpTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
-    fileprivate let mchpRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
-    fileprivate let mchpRemoteTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
-    fileprivate let mchpRemoteRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
-    
-    fileprivate var customServiceUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-    fileprivate var customTxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-    fileprivate var customRxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
+//    fileprivate let mchpServiceUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000300")
+//    fileprivate let mchpTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
+//    fileprivate let mchpRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
+//    fileprivate let mchpRemoteTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
+//    fileprivate let mchpRemoteRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
+//
+//    fileprivate var customServiceUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
+//    fileprivate var customTxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
+//    fileprivate var customRxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
+//    fileprivate let isscServiceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
+//    fileprivate let isscTxUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
+//    fileprivate let isscRxUUID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
+    //    fileprivate var characteristicTxInstance: CBCharacteristic?
+    //    fileprivate var characteristicRxInstance: CBCharacteristic?
+    //    fileprivate var characteristicRemoteTxInstance: CBCharacteristic?
+    //    fileprivate var characteristicRemoteRxInstance: CBCharacteristic?
+
     
     
     //Start here
-    fileprivate let isscServiceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
-    fileprivate let isscTxUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
-    fileprivate let isscRxUUID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
-    fileprivate var characteristicTxInstance: CBCharacteristic?
-    fileprivate var characteristicRxInstance: CBCharacteristic?
-    fileprivate var characteristicRemoteTxInstance: CBCharacteristic?
-    fileprivate var characteristicRemoteRxInstance: CBCharacteristic?
+    fileprivate let serviceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
+    fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
+    fileprivate let characteristicUUID2 = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
+    fileprivate var characteristicInstance: CBCharacteristic?
+    fileprivate var characteristicInstance2: CBCharacteristic?
+    
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
     fileprivate var rssiTime: Date = Date()
     fileprivate var cbCentralManager: CBCentralManager!
     fileprivate var peripheralInstance: CBPeripheral?
 //    fileprivate var peripheralDict = [String: PeripheralsStructure]()
-    var peripheralDict = [String: PeripheralsStructure]()
+    
     fileprivate var previousPeripheralRSSIValue: Int = 0
     fileprivate var indexPathForSelectedRow: IndexPath?
     fileprivate var remoteCommandEnabled: Bool = false
@@ -72,6 +79,15 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 //    fileprivate var appContext: NSManagedObjectContext = NSManagedObjectContext()
     fileprivate var appResults: NSArray = NSArray()
     
+    
+    var peripheralDict = [String: PeripheralsStructure]()
+    var discoveredSevice: CBService?
+    var selectPeripheral: CBPeripheral?
+    var selectCharacteristic: CBCharacteristic?
+    
+//    @property (strong,nonatomic)CBPeripheral* selectPeripheral;
+//    @property (strong,nonatomic)CBService* discoveredSevice;
+//    @property (strong,nonatomic)CBCharacteristic *selectCharacteristic;
     
     
     func initData() {
@@ -82,14 +98,16 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
 //        tableView.reloadData()
 //        peripheralsIndicator.startAnimating()
+        appDelegate = (UIApplication.shared.delegate as! AppDelegate)
+        
+        
+        
         
         let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
         cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
-
+//        cbCentralManager = CBCentralManager(delegate: self, queue: nil)
         
         
-        
-        appDelegate = (UIApplication.shared.delegate as! AppDelegate)
         
         
 //        appContext = appDelegate.managedObjectContext!
@@ -115,13 +133,10 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     
     public func startScan() {
-//         [self.peripheralDict removeAllObjects];//
-        
+
         self.peripheralDict.removeAll()
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
-        
-        
-        
+                        
     }
     
 //
@@ -164,6 +179,14 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 }
             }
             peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
+            
+            
+            // Post notification
+            NotificationCenter.default.post(name: Constants.didDiscoverPeripheralNotification, object: nil)
+            
+            NSLog("didDiscover peripheral: \(peripheralName)")
+            
+//            peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
 //            peripheralsIndicator.stopAnimating()
 //            tableView.reloadData()
         }
@@ -171,19 +194,30 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        BleDevice.sharedInstance.isConnected = true
+        Bike.sharedInstance.isConnected = true
         
         peripheral.delegate = self
-        peripheral.discoverServices([mchpServiceUUID, isscServiceUUID, customServiceUUID])
+        peripheral.discoverServices([serviceUUID])
+        
+        // Post notification
+        NotificationCenter.default.post(name: Constants.didConnectPeripheralNotification, object: nil)
+        
+        
+//        peripheral.discoverServices([mchpServiceUUID, isscServiceUUID, customServiceUUID])
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        BleDevice.sharedInstance.isConnected = false
-        
+        Bike.sharedInstance.isConnected = false
+     
+        // Post notification
+        NotificationCenter.default.post(name: Constants.didDisconnectPeripheralNotification, object: nil)
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        BleDevice.sharedInstance.isConnected = false
+        Bike.sharedInstance.isConnected = false
+        
+        // Post notification
+        NotificationCenter.default.post(name: Constants.didFailToConnectNotification, object: nil)
         
 //        alertController = UIAlertController(title: "MLDP Demo", message: "Failed to connect to the peripheral! Check if the peripheral is functioning properly and try to reconnect.", preferredStyle: UIAlertControllerStyle.alert)
 //        let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
@@ -211,17 +245,25 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         for service in peripheral.services! {
             NSLog("Service discovered: \(service.uuid)")
-            if (service.uuid == mchpServiceUUID) {
-                peripheral.discoverCharacteristics([mchpTxUUID, mchpRxUUID, mchpRemoteTxUUID, mchpRemoteRxUUID], for: service )
-            }
-            else if (service.uuid == isscServiceUUID) {
-                peripheral.discoverCharacteristics([isscTxUUID, isscRxUUID], for: service )
-            }
-            else if (service.uuid == customServiceUUID) {
-                peripheral.discoverCharacteristics([customTxUUID, customRxUUID], for: service )
+            if (service.uuid == serviceUUID) {
+                peripheral.discoverCharacteristics([characteristicUUID, characteristicUUID2], for: service )
             }
             
+            
+//            if (service.uuid == mchpServiceUUID) {
+//                peripheral.discoverCharacteristics([mchpTxUUID, mchpRxUUID, mchpRemoteTxUUID, mchpRemoteRxUUID], for: service )
+//            }
+//            else if (service.uuid == isscServiceUUID) {
+//                peripheral.discoverCharacteristics([isscTxUUID, isscRxUUID], for: service )
+//            }
+//            else if (service.uuid == customServiceUUID) {
+//                peripheral.discoverCharacteristics([customTxUUID, customRxUUID], for: service )
+//            }
+            
         }
+        
+        // Post notification
+        NotificationCenter.default.post(name: Constants.didDiscoverServicesNotification, object: nil)
         
     }
     
@@ -245,50 +287,66 @@ final class BTDevice: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         self.peripheralInstance = peripheral
         for characteristic in service.characteristics! {
             NSLog("Characteristics discovered: \(characteristic.uuid)")
-            if (service.uuid == mchpServiceUUID) {
-                
-                if (characteristic.uuid == mchpTxUUID) {
-                    characteristicTxInstance = characteristic
+            if (service.uuid == serviceUUID) {
+
+                if (characteristic.uuid == characteristicUUID) {
+                    characteristicInstance = characteristic
+                }
+                if (characteristic.uuid == characteristicUUID2) {
+                    characteristicInstance2 = characteristic
                 }
                 
-                if (characteristic.uuid == mchpRxUUID) {
-                    peripheral.setNotifyValue(true, for: characteristic )
-                    characteristicRxInstance = characteristic
-                }
-                
-                if (characteristic.uuid == mchpRemoteTxUUID) {
-                    remoteCommandEnabled = true
-                    upgradeEnabled = true
-                    characteristicRemoteTxInstance = characteristic
-                }
-                
-                if (characteristic.uuid == mchpRemoteRxUUID) {
-                    remoteCommandEnabled = true
-                    upgradeEnabled = true
-                    characteristicRemoteRxInstance = characteristic
-                }
-            }
-            else if (service.uuid == isscServiceUUID) {
-                if (characteristic.uuid == isscTxUUID) {
-                    characteristicTxInstance = characteristic
-                }
-                
-                if (characteristic.uuid == isscRxUUID) {
-                    peripheral.setNotifyValue(true, for: characteristic )
-                    characteristicRxInstance = characteristic
-                }
-            }
-            else if (service.uuid == customServiceUUID) {
-                if (characteristic.uuid == customTxUUID) {
-                    characteristicTxInstance = characteristic
-                }
-                
-                if (characteristic.uuid == customRxUUID) {
-                    peripheral.setNotifyValue(true, for: characteristic )
-                    characteristicRxInstance = characteristic
-                }
             }
         }
+        
+        
+        // Post notification
+        NotificationCenter.default.post(name: Constants.didDiscoverCharacteristicsNotification, object: nil)
+            
+//            if (service.uuid == mchpServiceUUID) {
+//
+//                if (characteristic.uuid == mchpTxUUID) {
+//                    characteristicTxInstance = characteristic
+//                }
+//
+//                if (characteristic.uuid == mchpRxUUID) {
+//                    peripheral.setNotifyValue(true, for: characteristic )
+//                    characteristicRxInstance = characteristic
+//                }
+//
+//                if (characteristic.uuid == mchpRemoteTxUUID) {
+//                    remoteCommandEnabled = true
+//                    upgradeEnabled = true
+//                    characteristicRemoteTxInstance = characteristic
+//                }
+//
+//                if (characteristic.uuid == mchpRemoteRxUUID) {
+//                    remoteCommandEnabled = true
+//                    upgradeEnabled = true
+//                    characteristicRemoteRxInstance = characteristic
+//                }
+//            }
+//            else if (service.uuid == isscServiceUUID) {
+//                if (characteristic.uuid == isscTxUUID) {
+//                    characteristicTxInstance = characteristic
+//                }
+//
+//                if (characteristic.uuid == isscRxUUID) {
+//                    peripheral.setNotifyValue(true, for: characteristic )
+//                    characteristicRxInstance = characteristic
+//                }
+//            }
+//            else if (service.uuid == customServiceUUID) {
+//                if (characteristic.uuid == customTxUUID) {
+//                    characteristicTxInstance = characteristic
+//                }
+//
+//                if (characteristic.uuid == customRxUUID) {
+//                    peripheral.setNotifyValue(true, for: characteristic )
+//                    characteristicRxInstance = characteristic
+//                }
+//            }
+//        }
         
 //        performSegue(withIdentifier: "ActivityViewController", sender: self)
         
