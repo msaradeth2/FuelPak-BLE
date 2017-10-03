@@ -14,9 +14,7 @@ import UIKit
 
 class Constants {
     
-    // Define identifier
-//    let notificationName = Notification.Name("NotificationIdentifier")
-   
+    // Define Notification Names
     static let didDiscoverPeripheralNotification =  Notification.Name("didDiscoverPeripheralNotification")
     static let didConnectPeripheralNotification =  Notification.Name("didConnectPeripheralNotification")
     static let didDisconnectPeripheralNotification =  Notification.Name("didDisconnectPeripheralNotification")
@@ -28,4 +26,19 @@ class Constants {
 
 }
 
+
+
+// Define Notification Names
+extension Notification.Name {
+    
+    static let didDiscoverPeripheralNotification =  Notification.Name("didDiscoverPeripheralNotification")
+    static let didConnectPeripheralNotification =  Notification.Name("didConnectPeripheralNotification")
+    static let didDisconnectPeripheralNotification =  Notification.Name("didDisconnectPeripheralNotification")
+    static let didFailToConnectNotification =  Notification.Name("didFailToConnectNotification")
+    static let didDiscoverCharacteristicsNotification =  Notification.Name("didDiscoverCharacteristicsNotification")
+    static let didDiscoverServicesNotification =  Notification.Name("didDiscoverServicesNotification")
+    static let didUpdateNotificationStateNotification =  Notification.Name("didUpdateNotificationStateNotification")
+    static let didUpdateValueForcharacteristicNotification =  Notification.Name("didUpdateValueForcharacteristicNotification")
+    
+}
 

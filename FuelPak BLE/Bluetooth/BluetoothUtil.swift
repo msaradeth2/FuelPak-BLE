@@ -37,38 +37,13 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         var timeStamp: Date?
     }
 
-    //        2017-09-27 14:27:38.957635-0700 MLDPDemo[699:147395] Service discovered: 49535343-FE7D-4AE5-8FA9-9FAFD205E455
-    //        2017-09-27 14:27:39.019055-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-1E4D-4BD9-BA61-23C647249616
-    //        2017-09-27 14:27:39.019819-0700 MLDPDemo[699:147395] Characteristics discovered: 49535343-8841-43F4-A8D4-ECBE34729BB3
-    
-//    fileprivate let mchpServiceUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000300")
-//    fileprivate let mchpTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
-//    fileprivate let mchpRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
-//    fileprivate let mchpRemoteTxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
-//    fileprivate let mchpRemoteRxUUID = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
-//
-//    fileprivate var customServiceUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-//    fileprivate var customTxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-//    fileprivate var customRxUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-//    fileprivate let isscServiceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
-//    fileprivate let isscTxUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
-//    fileprivate let isscRxUUID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
-    //    fileprivate var characteristicTxInstance: CBCharacteristic?
-    //    fileprivate var characteristicRxInstance: CBCharacteristic?
-    //    fileprivate var characteristicRemoteTxInstance: CBCharacteristic?
-    //    fileprivate var characteristicRemoteRxInstance: CBCharacteristic?
-
-    
-    
     //Start here
     fileprivate let serviceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
-//    fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
     fileprivate let characteristicUUID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
-//    fileprivate let characteristicUUID2 = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
+//    fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
     
     
     fileprivate var characteristicInstance: CBCharacteristic?
-//    fileprivate var characteristicInstance2: CBCharacteristic?
     
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
@@ -81,7 +56,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var remoteCommandEnabled: Bool = false
     fileprivate var upgradeEnabled: Bool = false
     fileprivate var appDelegate: AppDelegate = AppDelegate()
-//    fileprivate var appContext: NSManagedObjectContext = NSManagedObjectContext()
+
     fileprivate var appResults: NSArray = NSArray()
     
     fileprivate var peripheralInstance: CBPeripheral?
@@ -92,16 +67,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var discoveredSevice: CBService?
     var resultString: String = ""
     var cmd: String = ""
-    
-    
-    
-//    var selectedPeripheral: CBPeripheral?
-//    var selectCharacteristic: CBCharacteristic?
-    
-//    @property (strong,nonatomic)CBPeripheral* selectPeripheral;
-//    @property (strong,nonatomic)CBService* discoveredSevice;
-//    @property (strong,nonatomic)CBCharacteristic *selectCharacteristic;
-    
+
     
     func initData() {
         

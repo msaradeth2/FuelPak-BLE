@@ -67,7 +67,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
-//        self.tableView.register(UINib(nibName: "CustomHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
         
         updateTable()
         
@@ -107,46 +106,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
         self.tableView.reloadData()
         
-        print(btUtil.peripheralDict.count)
-//        if (btUtil.peripheralDict.count>0) {
-//            for ii in 0...btUtil.peripheralDict.count-1 {
-//                let text = Array(btUtil.peripheralDict.keys)[ii]
-//                let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[ii]]!.peripheralRSSI!
-//
-//
-//                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
-//
-//                print(tmpString)
-//            }
-//        }
-        
-        
-        //        listOfItems.removeAll()
-        //
-        //        listOfItems.append(BleDevice.sharedInstance.name)
-        //        listOfItems.append(BleDevice.sharedInstance.deviceStatus)
-        //
-        //        listOfItems.append(BleDevice.sharedInstance.manufacturerName)
-        //        listOfItems.append(BleDevice.sharedInstance.modelNumber)
-        //        listOfItems.append(BleDevice.sharedInstance.serialNumber)
-        //        listOfItems.append(BleDevice.sharedInstance.hardwareVersion)
-        //        listOfItems.append(BleDevice.sharedInstance.firmwareVersion)
-        //        listOfItems.append(BleDevice.sharedInstance.appVersion)
-        //        listOfItems.append(BleDevice.sharedInstance.systemId)
-        //
-        //        listOfItems.append(BleDevice.sharedInstance.serviceName)
-        //        listOfItems.append(BleDevice.sharedInstance.charactericName)
-        //
-        //        print(BleDevice.sharedInstance.charactericName)
-        //        print(listOfItems.count)
-        
-        
-        
-        
-        
-//                        for i in 0...20 {
-//                            listOfItems.append("\(i)")
-//                        }
         
     }
     
@@ -254,16 +213,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
         cell.textLabel?.text = self.listOfItems[indexPath.row]
         cell.detailTextLabel?.text = self.listOfItems[indexPath.row]
-        
-//        // Configure the cell...
-//        var iconImage: UIImage? = UIImage(named: "nav_flash.png")
-//        cell.textLabel?.text = Array(btUtil.peripheralDict.keys)[indexPath.row]
-//        //
-//        let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralRSSI!
-//        //        cell.detailTextLabel?.text = "RSSI: \(peripheralRSSIValue)dB"
-//
-        
-        
+
         
         return cell
         
@@ -272,20 +222,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        //        indexPath.row
-        tableView.deselectRow(at: indexPath, animated: false)
-        
 
-        
-        
-        //        let alertController = UIAlertController(title: "Hint", message: "You have selected row \(indexPath.row).", preferredStyle: .alert)
-        //
-        //        let alertAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        //
-        //        alertController.addAction(alertAction)
-        //
-        //        present(alertController, animated: true, completion: nil)
+        tableView.deselectRow(at: indexPath, animated: false)
         
     }
     
@@ -293,7 +231,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func registerNotification() {
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(didConnectPeripheral(notification:)), name: .didConnectPeripheralNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateValueForcharacteristic(notfication:)), name: .didUpdateValueForcharacteristicNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverCharacteristic(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
         
@@ -305,13 +242,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
 
         BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
-        
-//        for ii in 0...20 {
-//            print("BluetoothUtil.sharedInstance.write(\(ii) cmd: \"UVIN00\")")
-//
-//            BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
-//        }
-        
         
     }
     
@@ -333,14 +263,5 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
 }
 
-//
-extension Notification.Name {
-    static let didDiscoverCharacteristicsNotification = Constants.didDiscoverCharacteristicsNotification
-    static let didUpdateValueForcharacteristicNotification = Constants.didUpdateValueForcharacteristicNotification
-    
-//    
-//    static let didConnectPeripheralNotification = Constants.didConnectPeripheralNotification
-//    static let didFailToConnectNotification = Constants.didFailToConnectNotification
-//    static let didDiscoverPeripheralNotification = Constants.didDiscoverPeripheralNotification
-}
+
 

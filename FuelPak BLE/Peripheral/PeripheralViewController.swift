@@ -11,7 +11,7 @@ import UIKit
 import CoreBluetooth
 
 
-//CBCentralManagerDelegate, CBPeripheralDelegate
+
 class PeripheralViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CBPeripheralDelegate {
     struct PeripheralsStructure {
         var peripheralInstance: CBPeripheral?
@@ -23,19 +23,11 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var signalStrengthButton: UIBarButtonItem!
     @IBOutlet weak var demoModeButton: UIBarButtonItem!
-    
-//    private var btUtil = BluetoothUtil.sharedInstance
+
     private var peripheral: CBPeripheral?
     private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
-//    var BluetoothUtil.sharedInstance.peripheralDict = BluetoothUtil.sharedInstance.peripheralDict  //[String: PeripheralsStructure]()
-    
-//    private var BluetoothUtil.sharedInstance.peripheralDict = [String: PeripheralsStructure]()
     private var localTimer: Timer = Timer()
-    
-    
-    //NSMutableArray  *BluetoothUtil.sharedInstance.peripheralDict;
-    //NSMutableArray  *listOfKeyItems;
-    
+
     override func viewDidLoad() {
         registerNotification()
         
@@ -44,7 +36,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        btUtil.startScan()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,7 +49,6 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(interruptLocalTimer), userInfo: nil, repeats: true)
         updateTable()
         
-//        evtRefreshButton(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -103,81 +94,13 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         self.tableView.reloadData()
     }
     
-    
 
-//    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-//
-//        self.peripheral = peripheral
-//        let peripheralConnectable: AnyObject = advertisementData["kCBAdvDataIsConnectable"]! as AnyObject
-//
-//        if ((self.peripheral == nil || self.peripheral?.state == CBPeripheralState.disconnected) && (peripheralConnectable as! NSNumber == 1)) {
-//            var peripheralName: String = String()
-//            if (advertisementData.index(forKey: "kCBAdvDataLocalName") != nil) {
-//                peripheralName = advertisementData["kCBAdvDataLocalName"] as! String
-//            }
-//            if (peripheralName == "" || peripheralName.isEmpty) {
-//
-//                if (peripheral.name == nil || peripheral.name!.isEmpty) {
-//                    peripheralName = "Unknown"
-//                } else {
-//                    peripheralName = peripheral.name!
-//                }
-//            }
-//            NSLog("didDiscover peripheral: \(peripheralName)")
-//
-//            BluetoothUtil.sharedInstance.peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
-////            peripheralsIndicator.stopAnimating()
-//            tableView.reloadData()
-//        }
-//
-//    }
-    
     
     
     func updateTable() {
 
         self.tableView.reloadData()
         
-//        print(btUtil.peripheralDict.count)
-//        if (btUtil.peripheralDict.count>0) {
-//            for ii in 0...btUtil.peripheralDict.count-1 {
-//                let text = Array(btUtil.peripheralDict.keys)[ii]
-//                let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[ii]]!.peripheralRSSI!
-//
-//
-//                let tmpString = "text= \(text).   peripheralRSSIValue= \(peripheralRSSIValue)"
-//
-//                print(tmpString)
-//            }
-//        }
-
-        
-//        BluetoothUtil.sharedInstance.peripheralDict.removeAll()
-//
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.name)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.deviceStatus)
-//
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.manufacturerName)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.modelNumber)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.serialNumber)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.hardwareVersion)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.firmwareVersion)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.appVersion)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.systemId)
-//
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.serviceName)
-//        BluetoothUtil.sharedInstance.peripheralDict.append(BleDevice.sharedInstance.charactericName)
-//
-//        print(BleDevice.sharedInstance.charactericName)
-//        print(BluetoothUtil.sharedInstance.peripheralDict.count)
-        
-        
-        
-        
-//
-//                for i in 0...20 {
-//                    BluetoothUtil.sharedInstance.peripheralDict.append("\(i)")
-//                }
         
     }
     
@@ -277,37 +200,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         peripheral = BluetoothUtil.sharedInstance.peripheralDict[Array(BluetoothUtil.sharedInstance.peripheralDict.keys)[indexPath.row]]!.peripheralInstance!
         BluetoothUtil.sharedInstance.connect(peripheral: peripheral)
         
-        
-        
-//        btUtil.cbCentralManager.connect(<#T##peripheral: CBPeripheral##CBPeripheral#>, options: <#T##[String : Any]?#>)
-//        CBPeripheral peripheral = btUtil.
-//        indexPathForSelectedRow = indexPath
-        
-        
-//        btUtil.cbCentralManager.connect(peripheral!, options: nil)
-        
-        
-//        PeripheralsStructure peripheralsStructure = self.btUtil.peripheralDict[indexPath.row];
-
-        
-//        [self.defaultBTServer readValue:ch];
-//        [ProgressHUD show:@"reading characteristic"];
-        
-        
-
-        
-        
-        
-//        let alertController = UIAlertController(title: "Hint", message: "You have selected row \(indexPath.row).", preferredStyle: .alert)
-//
-//        let alertAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-//
-//        alertController.addAction(alertAction)
-//
-//        present(alertController, animated: true, completion: nil)
-        
     }
-    
+        
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -342,10 +236,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc func didDiscoverPeripheral(notfication: NSNotification) {
-//        BluetoothUtil.sharedInstance.peripheralDict = btUtil.peripheralDict
-//        self.BluetoothUtil.sharedInstance.peripheralDict = BluetoothUtil.sharedInstance.peripheralDict
+
         self.tableView.reloadData()
-        
         print("self.tableView.reloadData")
     }
     
@@ -360,12 +252,6 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
 }
 
-
-extension Notification.Name {
-    static let didConnectPeripheralNotification = Constants.didConnectPeripheralNotification
-    static let didFailToConnectNotification = Constants.didFailToConnectNotification
-    static let didDiscoverPeripheralNotification = Constants.didDiscoverPeripheralNotification
-}
 
 
 
