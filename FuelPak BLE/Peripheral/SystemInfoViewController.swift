@@ -90,6 +90,9 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
+        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
+        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        
         self.tableView.reloadData()
     }
     
@@ -341,29 +344,29 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
 //        }
 //    }
     
-    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
-//        statusLabel.text = "Status: Disconnected"
+//    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+////        statusLabel.text = "Status: Disconnected"
+////
+////        if let navigationController = self.navigationController {
+////            navigationController.popViewController(animated: true)
+////        }
+//    }
 //
-//        if let navigationController = self.navigationController {
-//            navigationController.popViewController(animated: true)
-//        }
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        NSLog("didWriteValueFor characteristic")
-        
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        
-        var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
-        (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
-        let receivedString = String(bytes: bytesData, encoding: String.Encoding.ascii)
-        
-//        receiveView.text = receiveView.text + receivedString!
-        NSLog("didUpdateValueFor receivedString: \(String(describing: receivedString))")
-        
-    }
+//    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+//        NSLog("didWriteValueFor characteristic")
+//
+//    }
+//
+//    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+//
+//        var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
+//        (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
+//        let receivedString = String(bytes: bytesData, encoding: String.Encoding.ascii)
+//
+////        receiveView.text = receiveView.text + receivedString!
+//        NSLog("didUpdateValueFor receivedString: \(String(describing: receivedString))")
+//
+//    }
     
     
 }
