@@ -38,6 +38,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         
+//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         initData()
         
     }

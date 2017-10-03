@@ -68,7 +68,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var localTimer: Timer = Timer()
     fileprivate var rssiTime: Date = Date()
 //    fileprivate var cbCentralManager: CBCentralManager!
-    fileprivate var peripheralInstance: CBPeripheral?
 //    fileprivate var peripheralDict = [String: PeripheralsStructure]()
     
     fileprivate var previousPeripheralRSSIValue: Int = 0
@@ -79,12 +78,14 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //    fileprivate var appContext: NSManagedObjectContext = NSManagedObjectContext()
     fileprivate var appResults: NSArray = NSArray()
     
+    fileprivate var peripheralInstance: CBPeripheral?
+
     
     var cbCentralManager: CBCentralManager!
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
-    var selectedPeripheral: CBPeripheral?
-    var selectCharacteristic: CBCharacteristic?
+//    var selectedPeripheral: CBPeripheral?
+//    var selectCharacteristic: CBCharacteristic?
     
 //    @property (strong,nonatomic)CBPeripheral* selectPeripheral;
 //    @property (strong,nonatomic)CBService* discoveredSevice;
@@ -104,7 +105,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         
         
-        let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
+//        let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
 //        cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
         cbCentralManager = CBCentralManager(delegate: self, queue: nil)
         
@@ -152,14 +153,14 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     public func connect(peripheral: CBPeripheral?) {
-        selectedPeripheral =  peripheral
+        self.peripheralInstance = peripheral
         cbCentralManager.connect(peripheral!, options: nil)
     }
     
     public func cancelConnect() {
         
 
-        cbCentralManager .cancelPeripheralConnection(selectedPeripheral!)
+        cbCentralManager .cancelPeripheralConnection(peripheralInstance!)
         
 //        if (self.selectedPeripheral!=nil) {
 //        if(self.selectedPeripheral.state == CBPeripheralStateConnecting){
@@ -183,11 +184,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     
-//
+
 //    func write(cmd: String) {
 //        var bytesData = [UInt8] (cmd)
 //        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-//        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+//        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
 //    }
     
     
