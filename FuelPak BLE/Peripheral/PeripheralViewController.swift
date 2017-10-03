@@ -234,6 +234,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.deselectRow(at: indexPath, animated: false)
         
         peripheral = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralInstance!
+        btUtil.selectedPeripheral = peripheral
         
 //        btUtil.cbCentralManager.connect(<#T##peripheral: CBPeripheral##CBPeripheral#>, options: <#T##[String : Any]?#>)
 //        CBPeripheral peripheral = btUtil.

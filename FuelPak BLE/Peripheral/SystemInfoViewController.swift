@@ -80,6 +80,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBAction func evtBackButton(_ sender: Any) {
         print("evtBackButton")
+        BluetoothUtil.sharedInstance.cancelConnect()
         self.dismiss(animated: false, completion: exitViewController)
     }
     

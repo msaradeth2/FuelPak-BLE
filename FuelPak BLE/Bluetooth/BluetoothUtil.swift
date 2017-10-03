@@ -83,7 +83,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var cbCentralManager: CBCentralManager!
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
-    var selectPeripheral: CBPeripheral?
+    var selectedPeripheral: CBPeripheral?
     var selectCharacteristic: CBCharacteristic?
     
 //    @property (strong,nonatomic)CBPeripheral* selectPeripheral;
@@ -144,12 +144,56 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
+    public func cancelConnect() {
+        
+
+        cbCentralManager .cancelPeripheralConnection(selectedPeripheral!)
+        
+//        if (self.selectedPeripheral!=nil) {
+//        if(self.selectedPeripheral.state == CBPeripheralStateConnecting){
+//            NSLog("timeout cancel connect to peripheral:%@",self.selectPeripheral.name);
+//
+//            [cbCentralManager cancelPeripheralConnection:self.selectedPeripheral];
+//        }
+//
+    }
+    
+//    -(void)cancelConnect
+//    {
+//    if (myCenter && self.selectPeripheral) {
+//    if(self.selectPeripheral.state == CBPeripheralStateConnecting){
+//    NSLog(@"timeout cancel connect to peripheral:%@",self.selectPeripheral.name);
+//
+//    [myCenter cancelPeripheralConnection:self.selectPeripheral];
+//    connectState = KNOT;
+//    }
+
+    
+    
+    
 //
 //    func write(cmd: String) {
 //        var bytesData = [UInt8] (cmd)
 //        let writeData = Data(bytes: &bytesData, count: bytesData.count)
 //        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
 //    }
+    
+    
+    
+    
+    func scanForPeripherals() {
+        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        
+        let triggerTime = (Int64(NSEC_PER_SEC) * 10)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
+            if self.cbCentralManager!.isScanning{
+                self.cbCentralManager?.stopScan()
+                //                self.updateViewForStopScanning()
+            }
+        })
+    }
+    
+    
     
     
     // MARK: - CCBCentralManagerDelegate and CBPeripheralDelegate Delegates
@@ -166,19 +210,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
     }
     
-    
-    
-    func scanForPeripherals() {
-        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
-        
-        let triggerTime = (Int64(NSEC_PER_SEC) * 10)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
-            if self.cbCentralManager!.isScanning{
-                self.cbCentralManager?.stopScan()
-//                self.updateViewForStopScanning()
-            }
-        })
-    }
+
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
