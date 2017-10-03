@@ -12,6 +12,8 @@ import Foundation
 import CoreBluetooth
 
 
+//final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+
 final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: - Shared Instance
@@ -61,7 +63,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     //Start here
     fileprivate let serviceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
     fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
-    fileprivate let characteristicUUID2 = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
+//    fileprivate let characteristicUUID2 = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
     fileprivate var characteristicInstance: CBCharacteristic?
 //    fileprivate var characteristicInstance2: CBCharacteristic?
     
@@ -85,6 +87,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var cbCentralManager: CBCentralManager!
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
+    var resultString: String = ""
+    
+    
+    
 //    var selectedPeripheral: CBPeripheral?
 //    var selectCharacteristic: CBCharacteristic?
     
@@ -216,6 +222,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
         
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+        
+        if characteristicInstance?.isNotifying==true {
+            NSLog("characteristicInstance?.isNotifying==true")
+        }
         
         
 //        var bytesData = [UInt8] (cmd)
@@ -394,6 +404,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             if (service.uuid == serviceUUID) {
 
                 if (characteristic.uuid == characteristicUUID) {
+                    peripheral.setNotifyValue(true, for: characteristic )
                     characteristicInstance = characteristic
                     NSLog("connect Characteristics discovered: \(characteristic.uuid)")
                 }
@@ -403,6 +414,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 
             }
         }
+        
+        
         
         
         // Post notification
@@ -455,6 +468,27 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
 //        performSegue(withIdentifier: "ActivityViewController", sender: self)
         
+    }
+    
+    
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        NSLog("didWriteValueFor characteristic")
+        NSLog("didWriteValueFor characteristice uuid: \(String(describing: characteristicInstance?.uuid))")
+//        NSLog("didWriteValueFor characteristice uuid: \(String(describing: peripheral))")
+    }
+    
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        
+        var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
+        (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
+        let receivedString = String(bytes: bytesData, encoding: String.Encoding.ascii)
+        
+        self.resultString = receivedString!
+        NSLog("resultString: \(String(describing: resultString))")
+        
+        
+//        receiveView.text = receiveView.text + receivedString!
     }
 
     
