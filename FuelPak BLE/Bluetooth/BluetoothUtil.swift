@@ -144,6 +144,12 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
+    
+    public func connect(peripheral: CBPeripheral?) {
+        selectedPeripheral =  peripheral
+        cbCentralManager.connect(peripheral!, options: nil)
+    }
+    
     public func cancelConnect() {
         
 
@@ -184,7 +190,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func scanForPeripherals() {
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         
-        let triggerTime = (Int64(NSEC_PER_SEC) * 10)
+        let triggerTime = (Int64(NSEC_PER_SEC) * 9000)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
             if self.cbCentralManager!.isScanning{
                 self.cbCentralManager?.stopScan()

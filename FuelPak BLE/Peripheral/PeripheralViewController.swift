@@ -11,7 +11,8 @@ import UIKit
 import CoreBluetooth
 
 
-class PeripheralViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+//CBCentralManagerDelegate, CBPeripheralDelegate
+class PeripheralViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CBPeripheralDelegate {
     struct PeripheralsStructure {
         var peripheralInstance: CBPeripheral?
         var peripheralRSSI: NSNumber?
@@ -26,7 +27,11 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     private var btUtil = BluetoothUtil.sharedInstance
     private var peripheral: CBPeripheral?
     private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
-    let listOfItems = BluetoothUtil.sharedInstance.peripheralDict  //[String: PeripheralsStructure]()
+//    var listOfItems = BluetoothUtil.sharedInstance.peripheralDict  //[String: PeripheralsStructure]()
+    
+    private var listOfItems = [String: PeripheralsStructure]()
+    private var localTimer: Timer = Timer()
+    
     
     //NSMutableArray  *listOfItems;
     //NSMutableArray  *listOfKeyItems;
@@ -45,7 +50,10 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidAppear(_ animated: Bool) {
         
 //        BtUtil.sharedInstance.initBluetoothUtility()
+        listOfItems.removeAll()
+        tableView.reloadData()
        
+        localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(PeripheralViewController.interruptLocalTimer), userInfo: nil, repeats: true)
         
         updateTable()
         
@@ -72,6 +80,17 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
+    func interruptLocalTimer() {
+        
+        for keyDict in Array(listOfItems.keys) {
+            if ((listOfItems[keyDict]!.timeStamp!).timeIntervalSinceNow < -15.0) {
+                listOfItems.removeValue(forKey: keyDict)
+            }
+        }
+    }
+    
+    
+    
     @IBAction func evtDemoModeButton(_ sender: Any) {
         
         print("evtDemoModeButton")
@@ -93,6 +112,35 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
 
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        
+        self.peripheral = peripheral
+        let peripheralConnectable: AnyObject = advertisementData["kCBAdvDataIsConnectable"]! as AnyObject
+        
+        if ((self.peripheral == nil || self.peripheral?.state == CBPeripheralState.disconnected) && (peripheralConnectable as! NSNumber == 1)) {
+            var peripheralName: String = String()
+            if (advertisementData.index(forKey: "kCBAdvDataLocalName") != nil) {
+                peripheralName = advertisementData["kCBAdvDataLocalName"] as! String
+            }
+            if (peripheralName == "" || peripheralName.isEmpty) {
+                
+                if (peripheral.name == nil || peripheral.name!.isEmpty) {
+                    peripheralName = "Unknown"
+                } else {
+                    peripheralName = peripheral.name!
+                }
+            }
+            NSLog("didDiscover peripheral: \(peripheralName)")
+            
+            listOfItems.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
+//            peripheralsIndicator.stopAnimating()
+            tableView.reloadData()
+        }
+        
+    }
+    
+    
+    
     func updateTable() {
 
         self.tableView.reloadData()
@@ -148,7 +196,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return btUtil.peripheralDict.count
+        return listOfItems.count
         
     }
     
@@ -188,9 +236,9 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
         // Configure the cell...
         var iconImage: UIImage? = UIImage(named: "nav_flash.png")
-        cell.textLabel?.text = Array(btUtil.peripheralDict.keys)[indexPath.row]
+        cell.textLabel?.text = Array(listOfItems.keys)[indexPath.row]
 //
-        let peripheralRSSIValue = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralRSSI!
+        let peripheralRSSIValue = listOfItems[Array(listOfItems.keys)[indexPath.row]]!.peripheralRSSI!
 //        cell.detailTextLabel?.text = "RSSI: \(peripheralRSSIValue)dB"
 
         
@@ -233,13 +281,17 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        indexPath.row
         tableView.deselectRow(at: indexPath, animated: false)
         
-        peripheral = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralInstance!
-        btUtil.selectedPeripheral = peripheral
+        peripheral = listOfItems[Array(listOfItems.keys)[indexPath.row]]!.peripheralInstance!
+        BluetoothUtil.sharedInstance.connect(peripheral: peripheral)
+        
+        
         
 //        btUtil.cbCentralManager.connect(<#T##peripheral: CBPeripheral##CBPeripheral#>, options: <#T##[String : Any]?#>)
 //        CBPeripheral peripheral = btUtil.
 //        indexPathForSelectedRow = indexPath
-        btUtil.cbCentralManager.connect(peripheral!, options: nil)
+        
+        
+//        btUtil.cbCentralManager.connect(peripheral!, options: nil)
         
         
 //        PeripheralsStructure peripheralsStructure = self.btUtil.peripheralDict[indexPath.row];
@@ -301,7 +353,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @objc func didDiscoverPeripheral(notfication: NSNotification) {
 //        listOfItems = btUtil.peripheralDict
 //        self.listOfItems = BluetoothUtil.sharedInstance.peripheralDict
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
         
         print("self.tableView.reloadData")
     }
