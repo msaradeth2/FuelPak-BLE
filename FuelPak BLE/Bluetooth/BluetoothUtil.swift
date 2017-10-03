@@ -67,7 +67,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
     fileprivate var rssiTime: Date = Date()
-    fileprivate var cbCentralManager: CBCentralManager!
+//    fileprivate var cbCentralManager: CBCentralManager!
     fileprivate var peripheralInstance: CBPeripheral?
 //    fileprivate var peripheralDict = [String: PeripheralsStructure]()
     
@@ -80,6 +80,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var appResults: NSArray = NSArray()
     
     
+    var cbCentralManager: CBCentralManager!
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
     var selectPeripheral: CBPeripheral?
@@ -135,8 +136,12 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     public func startScan() {
 
         self.peripheralDict.removeAll()
-        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
-                        
+        scanForPeripherals()
+        
+        
+//        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+//        scanForPeripherals()
+        
     }
     
 //
@@ -152,12 +157,27 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         switch (central.state) {
             
         case .poweredOn:
-            cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+            scanForPeripherals()
+//            cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
             break
             
         default:
             break
         }
+    }
+    
+    
+    
+    func scanForPeripherals() {
+        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        
+        let triggerTime = (Int64(NSEC_PER_SEC) * 10)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
+            if self.cbCentralManager!.isScanning{
+                self.cbCentralManager?.stopScan()
+//                self.updateViewForStopScanning()
+            }
+        })
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -202,6 +222,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         // Post notification
         NotificationCenter.default.post(name: Constants.didConnectPeripheralNotification, object: nil)
         
+        NSLog("didConnect peripheral: \(peripheral.name)")
         
 //        peripheral.discoverServices([mchpServiceUUID, isscServiceUUID, customServiceUUID])
     }
@@ -209,6 +230,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         Bike.sharedInstance.isConnected = false
      
+        NSLog("didDisconnectPeripheral peripheral: \(peripheral.name)")
+        
         // Post notification
         NotificationCenter.default.post(name: Constants.didDisconnectPeripheralNotification, object: nil)
     }

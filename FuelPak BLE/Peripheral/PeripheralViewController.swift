@@ -24,17 +24,22 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var demoModeButton: UIBarButtonItem!
     
     private var btUtil = BluetoothUtil.sharedInstance
+    private var peripheral: CBPeripheral?
+    private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
+    let listOfItems = BluetoothUtil.sharedInstance.peripheralDict  //[String: PeripheralsStructure]()
     
-
+    //NSMutableArray  *listOfItems;
+    //NSMutableArray  *listOfKeyItems;
     
     override func viewDidLoad() {
+        registerNotification()
         
         initData()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        btUtil.startScan()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,7 +49,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
         updateTable()
         
-        evtRefreshButton(self)
+//        evtRefreshButton(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -87,84 +92,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    
-    // WE REGISTER FOR SYSTEM NOTIFICATION (APP WILL RESIGN ACTIVE)
-    
-//    // Register without parameter
-//    NotificationCenter.default.addObserver(self, selector: #selector(MyReceivingClass.handleNotification), name: .UIApplicationWillResignActive, object: nil)
-//
-//    // Register WITH parameter
-//    NotificationCenter.default.addObserver(self, selector: #selector(MyReceivingClass.handle(withNotification:)), name: .UIApplicationWillResignActive, object: nil)
 
-    
-    func registerToReceiveNotification() {
-        let notificationName = Notification.Name("NotificationIdentifier")
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(setToPeru(notification:)), name: .peru, object: nil)
-        
-//        NotificationCenter.default.addObserver(self, selector: Selector, name: notificationName, object: nil)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverPeripheral(sender:)), name: notificationName, object: nil)
-        
-        // Register to receive notification
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.didDiscoverPeripheral(withNotification:)), name: notificationName, object: nil)
-        
-        
-//        NotificationCenter.default.addObserver(self, selector: (didDiscoverPeripheral:), name: notificationName, object: nil)
-//        NotificationCenter.default.addObserver(<#T##observer: Any##Any#>, selector: <#T##Selector#>, name: <#T##NSNotification.Name?#>, object: <#T##Any?#>)
-    }
-//    func setToPeru(notification: NSNotification) {
-    
-//    func didDiscoverPeripheral(notification: NSNotification) {
-//
-//    }
-    
-//    #pragma mark - Start/Remove Observers
-//
-//    - (void) startObservers
-//    {
-//    //Start notification observers
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//    selector:@selector(enableSwipe:)
-//    name:[Constant shared].enableSwipeNotification
-//    object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//    selector:@selector(disableSwipe:)
-//    name:[Constant shared].disableSwipeNotification
-//    object:nil];
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//    selector:@selector(showAutotuneToturial:)
-//    name:[Constant shared].showAutotuneToturialNotification
-//    object:nil];
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//    selector:@selector(autotuneOutTransferIn:)
-//    name:[Constant shared].autotuneOutTransferInNotification
-//    object:nil];
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//    selector:@selector(evt_pageControlButtonPressed:)
-//    name:[Constant shared].pageControlEventNotification
-//    object:nil];
-//
-//    }
-//
-//
-//
-//    - (void) removeObservers
-//    {
-//    //Remove observers
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:[Constant shared].disableSwipeNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:[Constant shared].enableSwipeNotification object:nil];
-//
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:[Constant shared].autotuneOutTransferInNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:[Constant shared].showAutotuneToturialNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:[Constant shared].pageControlEventNotification object:nil];
-//    }
-//
-//
-//
     func updateTable() {
 
         self.tableView.reloadData()
@@ -305,6 +233,13 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        indexPath.row
         tableView.deselectRow(at: indexPath, animated: false)
         
+        peripheral = btUtil.peripheralDict[Array(btUtil.peripheralDict.keys)[indexPath.row]]!.peripheralInstance!
+        
+//        btUtil.cbCentralManager.connect(<#T##peripheral: CBPeripheral##CBPeripheral#>, options: <#T##[String : Any]?#>)
+//        CBPeripheral peripheral = btUtil.
+//        indexPathForSelectedRow = indexPath
+        btUtil.cbCentralManager.connect(peripheral!, options: nil)
+        
         
 //        PeripheralsStructure peripheralsStructure = self.btUtil.peripheralDict[indexPath.row];
 
@@ -313,8 +248,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        [ProgressHUD show:@"reading characteristic"];
         
         
-        Bike.sharedInstance.isDemoMode = false
-        performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
+
         
         
         
@@ -327,4 +261,60 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        present(alertController, animated: true, completion: nil)
         
     }
+    
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+    }
+    
+
+
+    
+
+    
+    
+    func registerNotification() {
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didConnectPeripheral(notification:)), name: .didConnectPeripheralNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didFailToConnect(notfication:)), name: .didFailToConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverPeripheral(notfication:)), name: .didDiscoverPeripheralNotification, object: nil)
+        
+    }
+
+    
+    @objc func didConnectPeripheral(notification: NSNotification) {
+        Bike.sharedInstance.isDemoMode = false
+        if self.centralManager!.isScanning{
+            self.centralManager?.stopScan()
+        }
+        
+        performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
+    }
+    
+    @objc func didFailToConnect(notfication: NSNotification) {
+
+    }
+    
+    @objc func didDiscoverPeripheral(notfication: NSNotification) {
+//        listOfItems = btUtil.peripheralDict
+//        self.listOfItems = BluetoothUtil.sharedInstance.peripheralDict
+        self.tableView.reloadData()
+        
+        print("self.tableView.reloadData")
+    }
+    
+    
 }
+
+
+extension Notification.Name {
+    static let didConnectPeripheralNotification = Constants.didConnectPeripheralNotification
+    static let didFailToConnectNotification = Constants.didFailToConnectNotification
+    static let didDiscoverPeripheralNotification = Constants.didDiscoverPeripheralNotification
+}
+
+
+
+
