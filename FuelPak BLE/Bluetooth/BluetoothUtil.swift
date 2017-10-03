@@ -6,8 +6,9 @@
 //  Copyright © 2017 Mike Saradeth. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import CoreData
+import Foundation
 import CoreBluetooth
 
 
@@ -62,7 +63,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
     fileprivate let characteristicUUID2 = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
     fileprivate var characteristicInstance: CBCharacteristic?
-    fileprivate var characteristicInstance2: CBCharacteristic?
+//    fileprivate var characteristicInstance2: CBCharacteristic?
     
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
@@ -153,7 +154,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     public func connect(peripheral: CBPeripheral?) {
-        self.peripheralInstance = peripheral
+//        self.peripheralInstance = peripheral
+//        NSLog("connect: \(String(describing: peripheralInstance?.name))")
         cbCentralManager.connect(peripheral!, options: nil)
     }
     
@@ -171,25 +173,58 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //
     }
     
-//    -(void)cancelConnect
-//    {
-//    if (myCenter && self.selectPeripheral) {
-//    if(self.selectPeripheral.state == CBPeripheralStateConnecting){
-//    NSLog(@"timeout cancel connect to peripheral:%@",self.selectPeripheral.name);
+
+//    public func write(cmd: String) {
+//        NSLog("write: \(cmd)")
 //
-//    [myCenter cancelPeripheralConnection:self.selectPeripheral];
-//    connectState = KNOT;
+//
+////        [UInt8](cmd)
+//
+//
+////        let array: [UInt8] = Array(cmd.utf8)
+//
+//        let bytesData: [UInt8] = Array(cmd.utf8)
+////        var bytesData = [UInt8](cmd)
+////        let writeData = Data(bytes: &bytesData, count: bytesData.count)
+//
+//
+////                let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
+//        let writeData = Data(bytes: &bytesData, count: bytesData.count)
+//        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+//        //
+//
 //    }
-
     
+//    @IBAction func sendButton(_ sender: AnyObject) {
+//        var bytesData = [UInt8] (sendField.text!.utf8)
+//        //Mike
+//        //        let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
+//        let writeData = Data(bytes: &bytesData, count: bytesData.count)
+//        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+//        //
+//        sendField.text = ""
+//        sendField.resignFirstResponder()
+//    }
     
-    
-
-//    func write(cmd: String) {
+    func write(cmd: String) {
+        let cmd = "UVIN00"
+        var bytesData = [UInt8] (cmd.utf8)
+        //        let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
+        let writeData = Data(bytes: &bytesData, count: bytesData.count)
+        
+        NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
+        NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
+        
+//        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+        
+        
 //        var bytesData = [UInt8] (cmd)
+////        var bytesData: [UInt8] = [UInt8](cmd.utf8)
+//        var bytesData = [UInt8](cmd.utf8)
+//        Data
 //        let writeData = Data(bytes: &bytesData, count: bytesData.count)
 //        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-//    }
+    }
     
     
     
@@ -260,9 +295,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         Bike.sharedInstance.isConnected = true
-        
         peripheral.delegate = self
         peripheral.discoverServices([serviceUUID])
+        
+        peripheralInstance = peripheral
         
         // Post notification
         NotificationCenter.default.post(name: Constants.didConnectPeripheralNotification, object: nil)
@@ -314,7 +350,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         for service in peripheral.services! {
             NSLog("Service discovered: \(service.uuid)")
             if (service.uuid == serviceUUID) {
-                peripheral.discoverCharacteristics([characteristicUUID, characteristicUUID2], for: service )
+                peripheral.discoverCharacteristics([characteristicUUID], for: service )
             }
             
             
@@ -359,10 +395,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
                 if (characteristic.uuid == characteristicUUID) {
                     characteristicInstance = characteristic
+                    NSLog("connect Characteristics discovered: \(characteristic.uuid)")
                 }
-                if (characteristic.uuid == characteristicUUID2) {
-                    characteristicInstance2 = characteristic
-                }
+//                if (characteristic.uuid == characteristicUUID2) {
+//                    characteristicInstance2 = characteristic
+//                }
                 
             }
         }

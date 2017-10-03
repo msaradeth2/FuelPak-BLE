@@ -34,13 +34,13 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3R-nZ-psO">
-                                <rect key="frame" x="0.0" y="81" width="375" height="537"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="J3R-nZ-psO" firstAttribute="top" secondItem="gVr-Ob-7A1" secondAttribute="bottom" constant="17" id="0fp-Hn-Qp7"/>
+                            <constraint firstItem="J3R-nZ-psO" firstAttribute="top" secondItem="gVr-Ob-7A1" secondAttribute="bottom" id="0fp-Hn-Qp7"/>
                             <constraint firstItem="LXb-a6-7bj" firstAttribute="top" secondItem="J3R-nZ-psO" secondAttribute="bottom" id="4f4-xR-Mmi"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="leading" secondItem="aLX-ww-4sl" secondAttribute="leading" id="TkT-52-Jis"/>
                             <constraint firstItem="gVr-Ob-7A1" firstAttribute="top" secondItem="zUj-oX-god" secondAttribute="bottom" id="VNJ-pk-clk"/>

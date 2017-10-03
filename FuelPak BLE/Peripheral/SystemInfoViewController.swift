@@ -38,7 +38,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         
-//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         initData()
         
     }
@@ -222,19 +222,19 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-        switch section {
-        case 0:
-            return 93.0
-
-        case 1:
-            return 50.0
-
-        default:
-            return 0
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//
+//        switch section {
+//        case 0:
+//            return 93.0
+//
+//        case 1:
+//            return 50.0
+//
+//        default:
+//            return 0
+//        }
+//    }
     
 
     
