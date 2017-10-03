@@ -217,7 +217,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //    }
     
     func write(cmd: String) {
-        let cmd = "UVIN00"
+//        let cmd = "UVIN00"
         self.cmd = cmd
         var bytesData = [UInt8] (cmd.utf8)
         //        let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
