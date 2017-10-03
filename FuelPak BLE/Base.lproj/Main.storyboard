@@ -81,21 +81,16 @@
                                 </constraints>
                                 <items>
                                     <navigationItem title="Peripherals" id="ppy-O8-rca">
-                                        <barButtonItem key="leftBarButtonItem" title="Demo Mode" id="4ab-Ke-0Lc">
+                                        <barButtonItem key="rightBarButtonItem" title="Demo Mode" id="4ab-Ke-0Lc">
                                             <connections>
                                                 <action selector="evtDemoModeButton:" destination="rE4-Wi-Wj9" id="d7k-mC-4Lb"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" image="nav_refresh.png" id="qcw-aP-fHW">
-                                            <connections>
-                                                <action selector="evtRefreshButton:" destination="rE4-Wi-Wj9" id="8Uv-pa-WNj"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9T2-uY-lRs">
-                                <rect key="frame" x="0.0" y="81" width="375" height="586"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="CellIdentifier" textLabel="rTk-Iy-jvd" detailTextLabel="1JG-Cx-nsv" imageView="DRp-N5-RRG" style="IBUITableViewCellStyleSubtitle" id="DCw-YI-dM7">
@@ -134,7 +129,7 @@
                         <constraints>
                             <constraint firstItem="an8-EZ-7Z8" firstAttribute="top" secondItem="Gdt-Bf-ZVc" secondAttribute="bottom" id="PLc-bf-IWN"/>
                             <constraint firstAttribute="trailing" secondItem="9T2-uY-lRs" secondAttribute="trailing" id="Ruu-kE-Mwg"/>
-                            <constraint firstItem="9T2-uY-lRs" firstAttribute="top" secondItem="an8-EZ-7Z8" secondAttribute="bottom" constant="17" id="STT-78-ppv"/>
+                            <constraint firstItem="9T2-uY-lRs" firstAttribute="top" secondItem="an8-EZ-7Z8" secondAttribute="bottom" id="STT-78-ppv"/>
                             <constraint firstAttribute="trailing" secondItem="an8-EZ-7Z8" secondAttribute="trailing" id="VFe-1y-0y4"/>
                             <constraint firstItem="9T2-uY-lRs" firstAttribute="leading" secondItem="DrW-Oo-sUf" secondAttribute="leading" id="cM1-Mp-Urf"/>
                             <constraint firstItem="an8-EZ-7Z8" firstAttribute="leading" secondItem="DrW-Oo-sUf" secondAttribute="leading" id="cNP-7L-U0j"/>
@@ -143,7 +138,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="FuelPak BLE" id="Jiy-P7-jU6"/>
                     <connections>
-                        <outlet property="refreshButton" destination="qcw-aP-fHW" id="31J-Rl-YRO"/>
                         <outlet property="tableView" destination="9T2-uY-lRs" id="8wY-hq-6Ox"/>
                         <segue destination="rH2-Kw-3Bd" kind="presentation" identifier="PeripheralsOutTabViewControllerIn" animates="NO" id="Y9C-rO-EHf"/>
                     </connections>
