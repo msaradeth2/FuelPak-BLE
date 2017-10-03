@@ -37,8 +37,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     override func viewDidLoad() {
+        registerNotification()
         
-        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         initData()
         
     }
@@ -48,8 +48,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        //        BtUtil.sharedInstance.initBluetoothUtility()
+
         
         
         updateTable()
@@ -287,5 +286,30 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    
+    
+    func registerNotification() {
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(didConnectPeripheral(notification:)), name: .didConnectPeripheralNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didFailToConnect(notfication:)), name: .didFailToConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverCharacteristic(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
+        
+    }
+    
+    @objc func didDiscoverCharacteristic(notfication: NSNotification) {
+
+        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
+    }
+    
+}
+
+//
+extension Notification.Name {
+    static let didDiscoverCharacteristicsNotification = Constants.didDiscoverCharacteristicsNotification
+//    
+//    static let didConnectPeripheralNotification = Constants.didConnectPeripheralNotification
+//    static let didFailToConnectNotification = Constants.didFailToConnectNotification
+//    static let didDiscoverPeripheralNotification = Constants.didDiscoverPeripheralNotification
 }
 

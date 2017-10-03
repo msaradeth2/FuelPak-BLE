@@ -215,7 +215,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
         NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
         
-//        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
         
         
 //        var bytesData = [UInt8] (cmd)
