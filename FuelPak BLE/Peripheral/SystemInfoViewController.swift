@@ -144,9 +144,9 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
         
         
-                        for i in 0...20 {
-                            listOfItems.append("\(i)")
-                        }
+//                        for i in 0...20 {
+//                            listOfItems.append("\(i)")
+//                        }
         
     }
     
@@ -294,7 +294,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func registerNotification() {
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(didConnectPeripheral(notification:)), name: .didConnectPeripheralNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(didFailToConnect(notfication:)), name: .didFailToConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateValueForcharacteristic(notfication:)), name: .didUpdateValueForcharacteristicNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverCharacteristic(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
         
     }
@@ -304,11 +304,23 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
 
-        for ii in 0...20 {
-            print("BluetoothUtil.sharedInstance.write(\(ii) cmd: \"UVIN00\")")
-            
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
-        }
+        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        
+//        for ii in 0...20 {
+//            print("BluetoothUtil.sharedInstance.write(\(ii) cmd: \"UVIN00\")")
+//
+//            BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+//        }
+        
+        
+    }
+    
+    
+    @objc func didUpdateValueForcharacteristic(notfication: NSNotification) {
+        
+//        listOfItems.removeAll()
+        listOfItems.append(BluetoothUtil.sharedInstance.resultString)
+        tableView.reloadData()
         
         
     }
@@ -316,57 +328,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    
-    
-//    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-//        switch (central.state) {
-//        case .poweredOff:
-//            if let navigationController = self.navigationController {
-//                navigationController.popViewController(animated: true)
-//            }
-//            break
-//
-//        case .poweredOn:
-//            break
-//
-//        case .resetting:
-//            break
-//
-//        case .unauthorized:
-//            break
-//
-//        case .unknown:
-//            break
-//
-//        case .unsupported:
-//            break
-//
-//        }
-//    }
-    
-//    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
-////        statusLabel.text = "Status: Disconnected"
-////
-////        if let navigationController = self.navigationController {
-////            navigationController.popViewController(animated: true)
-////        }
-//    }
-//
-//    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-//        NSLog("didWriteValueFor characteristic")
-//
-//    }
-//
-//    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-//
-//        var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
-//        (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
-//        let receivedString = String(bytes: bytesData, encoding: String.Encoding.ascii)
-//
-////        receiveView.text = receiveView.text + receivedString!
-//        NSLog("didUpdateValueFor receivedString: \(String(describing: receivedString))")
-//
-//    }
+
     
     
 }
@@ -374,6 +336,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
 //
 extension Notification.Name {
     static let didDiscoverCharacteristicsNotification = Constants.didDiscoverCharacteristicsNotification
+    static let didUpdateValueForcharacteristicNotification = Constants.didUpdateValueForcharacteristicNotification
+    
 //    
 //    static let didConnectPeripheralNotification = Constants.didConnectPeripheralNotification
 //    static let didFailToConnectNotification = Constants.didFailToConnectNotification

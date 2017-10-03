@@ -24,6 +24,7 @@ class Constants {
     static let didDiscoverCharacteristicsNotification =  Notification.Name("didDiscoverCharacteristicsNotification")
     static let didDiscoverServicesNotification =  Notification.Name("didDiscoverServicesNotification")
     static let didUpdateNotificationStateNotification =  Notification.Name("didUpdateNotificationStateNotification")
+    static let didUpdateValueForcharacteristicNotification =  Notification.Name("didUpdateValueForcharacteristicNotification")
 
 }
 
