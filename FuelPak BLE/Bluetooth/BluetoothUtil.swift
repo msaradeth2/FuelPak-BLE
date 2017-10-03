@@ -105,8 +105,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         
         let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
-        cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
-//        cbCentralManager = CBCentralManager(delegate: self, queue: nil)
+//        cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
+        cbCentralManager = CBCentralManager(delegate: self, queue: nil)
         
         
         
@@ -142,6 +142,12 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //        cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
 //        scanForPeripherals()
         
+    }
+    
+    public func stopScan() {
+        if self.cbCentralManager!.isScanning{
+            self.cbCentralManager?.stopScan()
+        }
     }
     
     
@@ -190,7 +196,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func scanForPeripherals() {
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         
-        let triggerTime = (Int64(NSEC_PER_SEC) * 9000)
+        let triggerTime = (Int64(NSEC_PER_SEC) * 90000)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
             if self.cbCentralManager!.isScanning{
                 self.cbCentralManager?.stopScan()
