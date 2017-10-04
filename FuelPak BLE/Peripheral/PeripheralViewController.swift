@@ -46,7 +46,6 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         BluetoothUtil.sharedInstance.startScan()
        
 //        localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(interruptLocalTimer), userInfo: nil, repeats: true)
-        localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(interruptLocalTimer), userInfo: nil, repeats: true)
         updateTable()
         
     }
@@ -241,14 +240,14 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         print("self.tableView.reloadData")
     }
     
-    @objc func interruptLocalTimer() {
-        
-        for keyDict in Array(BluetoothUtil.sharedInstance.peripheralDict.keys) {
-            if ((BluetoothUtil.sharedInstance.peripheralDict[keyDict]!.timeStamp!).timeIntervalSinceNow < -15.0) {
-                BluetoothUtil.sharedInstance.peripheralDict.removeValue(forKey: keyDict)
-            }
-        }
-    }
+//    @objc func interruptLocalTimer() {
+//        
+//        for keyDict in Array(BluetoothUtil.sharedInstance.peripheralDict.keys) {
+//            if ((BluetoothUtil.sharedInstance.peripheralDict[keyDict]!.timeStamp!).timeIntervalSinceNow < -15.0) {
+//                BluetoothUtil.sharedInstance.peripheralDict.removeValue(forKey: keyDict)
+//            }
+//        }
+//    }
     
 }
 

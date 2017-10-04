@@ -99,7 +99,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     public func connect(peripheral: CBPeripheral?) {
-//        self.peripheralInstance = peripheral
 //        NSLog("connect: \(String(describing: peripheralInstance?.name))")
         cbCentralManager.connect(peripheral!, options: nil)
     }
@@ -120,7 +119,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
         NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
         
-        self.peripheralInstance!.setNotifyValue(true, for: self.characteristicInstance!)
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
         
     }
@@ -307,13 +305,14 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         if receivedString==self.cmd {
             //do nothing for now
+//            NSLog("resultString: \(String(describing: receivedString))")
         }else {
             self.resultString = receivedString!
             // Post notification
             NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
         }
         
-        NSLog("resultString: \(String(describing: resultString))")
+        NSLog("resultString: \(String(describing: receivedString))")
         
     }
 
