@@ -89,10 +89,11 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
-        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
-        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        sendCommands()
+//        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
+//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
     }
     
     
@@ -229,6 +230,12 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
+    func sendCommands() {
+        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        BluetoothUtil.sharedInstance.write(cmd: "UDEV00")
+        BluetoothUtil.sharedInstance.write(cmd: "UECM00")
+    }
+    
     func registerNotification() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateValueForcharacteristic(notfication:)), name: .didUpdateValueForcharacteristicNotification, object: nil)
@@ -241,7 +248,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
 
-        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+        sendCommands()
+//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
     }
     
