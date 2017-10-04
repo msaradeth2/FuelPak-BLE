@@ -48,8 +48,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
     fileprivate var rssiTime: Date = Date()
-//    fileprivate var cbCentralManager: CBCentralManager!
-//    fileprivate var peripheralDict = [String: PeripheralsStructure]()
     
     fileprivate var previousPeripheralRSSIValue: Int = 0
     fileprivate var indexPathForSelectedRow: IndexPath?
@@ -72,39 +70,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func initData() {
         
         
-//        navigationController?.delegate = self
         peripheralDict.removeAll()
-        
-//        tableView.reloadData()
-//        peripheralsIndicator.startAnimating()
         appDelegate = (UIApplication.shared.delegate as! AppDelegate)
-        
-        
-        
-        
-//        let concurrentQueue = DispatchQueue(label:"com.myBLEQueue", attributes: .concurrent) //Swift 3 version
-//        cbCentralManager = CBCentralManager(delegate: self, queue: concurrentQueue)
         cbCentralManager = CBCentralManager(delegate: self, queue: nil)
-        
-        
-        
-        
-//        appContext = appDelegate.managedObjectContext!
-//
-//        let appRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PrivateServiceSerialData")
-//
-//        appRequest.returnsObjectsAsFaults = false
-//        appResults = try! appContext.fetch(appRequest) as NSArray
-//
-//        if (appResults.count > 0) {
-//            customServiceUUID = CBUUID(string: ((appResults.firstObject as! NSManagedObject).value(forKey: "serviceUUID") as? String)!)
-//            customTxUUID = CBUUID(string: ((appResults.firstObject as! NSManagedObject).value(forKey: "transmitUUID") as? String)!)
-//            customRxUUID = CBUUID(string: ((appResults.firstObject as! NSManagedObject).value(forKey: "receiveUUID") as? String)!)
-//
-//        }
-//
-//        localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(PeripheralsTableViewController.interruptLocalTimer), userInfo: nil, repeats: true)
-//
+        localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(interruptLocalTimer), userInfo: nil, repeats: true)
     }
     
 
@@ -138,86 +107,22 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     public func cancelConnect() {
         
 
-        cbCentralManager .cancelPeripheralConnection(peripheralInstance!)
+        cbCentralManager.cancelPeripheralConnection(peripheralInstance!)
         
-//        if (self.selectedPeripheral!=nil) {
-//        if(self.selectedPeripheral.state == CBPeripheralStateConnecting){
-//            NSLog("timeout cancel connect to peripheral:%@",self.selectPeripheral.name);
-//
-//            [cbCentralManager cancelPeripheralConnection:self.selectedPeripheral];
-//        }
-//
     }
     
-
-//    public func write(cmd: String) {
-//        NSLog("write: \(cmd)")
-//
-//
-////        [UInt8](cmd)
-//
-//
-////        let array: [UInt8] = Array(cmd.utf8)
-//
-//        let bytesData: [UInt8] = Array(cmd.utf8)
-////        var bytesData = [UInt8](cmd)
-////        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-//
-//
-////                let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
-//        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-//        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-//        //
-//
-//    }
-    
-//    @IBAction func sendButton(_ sender: AnyObject) {
-//        var bytesData = [UInt8] (sendField.text!.utf8)
-//        //Mike
-//        //        let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
-//        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-//        peripheralInstance!.writeValue(writeData, for: characteristicTxInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-//        //
-//        sendField.text = ""
-//        sendField.resignFirstResponder()
-//    }
     
     func write(cmd: String) {
-//        let cmd = "UVIN00"
         self.cmd = cmd
         var bytesData = [UInt8] (cmd.utf8)
-        //        let writeData = Data(bytes: UnsafePointer<UInt8>(&bytesData), count: bytesData.count)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
         
         NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
         NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
         
         self.peripheralInstance!.setNotifyValue(true, for: self.characteristicInstance!)
-        
-        if self.characteristicInstance?.isNotifying==true {
-            NSLog("characteristicInstance?.isNotifying==true")
-        }else {
-            NSLog("characteristicInstance?.isNotifying==false")
-        }
-        
-//        if self.characteristicInstance2?.isNotifying==true {
-//            NSLog("characteristicInstance2?.isNotifying==true")
-//        }else {
-//            NSLog("characteristicInstance2?.isNotifying==false")
-//        }
-
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
         
-
-        
-        
-        
-//        var bytesData = [UInt8] (cmd)
-////        var bytesData: [UInt8] = [UInt8](cmd.utf8)
-//        var bytesData = [UInt8](cmd.utf8)
-//        Data
-//        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-//        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
     }
     
     
@@ -244,7 +149,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             
         case .poweredOn:
             scanForPeripherals()
-//            cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
             break
             
         default:
@@ -279,10 +183,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             NotificationCenter.default.post(name: Constants.didDiscoverPeripheralNotification, object: nil)
             
             NSLog("didDiscover peripheral: \(peripheralName)")
-            
-//            peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
-//            peripheralsIndicator.stopAnimating()
-//            tableView.reloadData()
         }
         
     }
@@ -292,14 +192,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         peripheral.delegate = self
         peripheral.discoverServices([serviceUUID])
         
-//        peripheralInstance = peripheral
-        
         // Post notification
         NotificationCenter.default.post(name: Constants.didConnectPeripheralNotification, object: nil)
         
         NSLog("didConnect peripheral: \(String(describing: peripheral.name))")
         
-//        peripheral.discoverServices([mchpServiceUUID, isscServiceUUID, customServiceUUID])
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -347,17 +244,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 peripheral.discoverCharacteristics([characteristicUUID], for: service )
             }
             
-            
-//            if (service.uuid == mchpServiceUUID) {
-//                peripheral.discoverCharacteristics([mchpTxUUID, mchpRxUUID, mchpRemoteTxUUID, mchpRemoteRxUUID], for: service )
-//            }
-//            else if (service.uuid == isscServiceUUID) {
-//                peripheral.discoverCharacteristics([isscTxUUID, isscRxUUID], for: service )
-//            }
-//            else if (service.uuid == customServiceUUID) {
-//                peripheral.discoverCharacteristics([customTxUUID, customRxUUID], for: service )
-//            }
-            
         }
         
         // Post notification
@@ -396,16 +282,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                     NSLog("peripheral.setNotifyValue(true, for: characteristic)")
                     NSLog("connect Characteristics discovered: \(characteristic.uuid)")
                 }
-//                if (characteristic.uuid == characteristicUUID2) {
-//                    peripheral.setNotifyValue(true, for: characteristic )
-//                    characteristicInstance2 = characteristic
-//                }
                 
             }
         }
-        
-        
-        
         
         // Post notification
         NotificationCenter.default.post(name: Constants.didDiscoverCharacteristicsNotification, object: nil)
@@ -417,7 +296,6 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         NSLog("didWriteValueFor characteristic")
         NSLog("didWriteValueFor characteristice uuid: \(String(describing: characteristicInstance?.uuid))")
-//        NSLog("didWriteValueFor characteristice uuid: \(String(describing: peripheral))")
     }
     
     
@@ -434,16 +312,18 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             // Post notification
             NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
         }
-            
         
         NSLog("resultString: \(String(describing: resultString))")
         
-        
-
-        
-        
-//        receiveView.text = receiveView.text + receivedString!
     }
 
-    
+    @objc func interruptLocalTimer() {
+        
+        for keyDict in Array(BluetoothUtil.sharedInstance.peripheralDict.keys) {
+            if ((BluetoothUtil.sharedInstance.peripheralDict[keyDict]!.timeStamp!).timeIntervalSinceNow < -15.0) {
+                BluetoothUtil.sharedInstance.peripheralDict.removeValue(forKey: keyDict)
+            }
+        }
+        
+    }
 }
