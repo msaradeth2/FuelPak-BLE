@@ -63,7 +63,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var cbCentralManager: CBCentralManager!
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
-    var resultString: String = ""
+//    var resultString: String = ""
     var cmd: String = ""
 
     
@@ -128,8 +128,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     func scanForPeripherals() {
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+//        cbCentralManager.scanForPeripherals(withServices: [serviceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         
-        let triggerTime = (Int64(NSEC_PER_SEC) * 90000)
+        let triggerTime = (Int64(NSEC_PER_SEC) * 9000000)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
             if self.cbCentralManager!.isScanning{
                 self.cbCentralManager?.stopScan()
@@ -174,11 +175,15 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                     peripheralName = peripheral.name!
                 }
             }
-            peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
+            
+            if (peripheralName=="RN_BLE") {
+                peripheralDict.updateValue(PeripheralsStructure(peripheralInstance: peripheral, peripheralRSSI: RSSI, timeStamp: Date()), forKey: peripheralName)
+                // Post notification
+                NotificationCenter.default.post(name: Constants.didDiscoverPeripheralNotification, object: nil)
+            }
             
             
-            // Post notification
-            NotificationCenter.default.post(name: Constants.didDiscoverPeripheralNotification, object: nil)
+
             
             NSLog("didDiscover peripheral: \(peripheralName)")
         }
@@ -300,20 +305,31 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
-        (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
-        let receivedString = String(bytes: bytesData, encoding: String.Encoding.ascii)
+            (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
-        if receivedString==self.cmd {
-            //do nothing for now
-//            NSLog("resultString: \(String(describing: receivedString))")
+        let asciiData = String(bytes: bytesData, encoding: String.Encoding.ascii)
+        let resultHex = String(bytes: bytesData, encoding: String.Encoding.utf8)
+        
+//        let hexData = convertBytesDataToHex(bytesData: bytesData)
+        
+        if asciiData==self.cmd {
+            //Got the Acknowlegement from FuelPak - do nothing for now
+//            NSLog("resultAscii: \(String(describing: resultAscii))")
         }else {
-            self.resultString = receivedString!
-            // Post notification
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.resultString)
-//            NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
+
+            // Parse data
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!)
+            
         }
+//        print(resultHex!)
+        print(bytesData)
+        print(asciiData!)
+        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
+        NSLog("resultHex?.count: \(String(describing: resultHex?.count))    resultHex:\(String(describing: resultHex))")
         
-        NSLog("resultString: \(String(describing: receivedString))")
+        
+        
+//        NSLog("bytesData?.count: \(String(describing: bytesData?.count))    bytesData:\(String(describing: bytesData))")
         
     }
 
@@ -326,4 +342,68 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
     }
+    
+    
+//    in swift 3 you can use the global functions stride(from:through:by:) and stride(from:to:by:) like for i in stride(from:1, to:max, by:2){...} –
+    
+    
+    func convertBytesDataToHex(bytesData: [UInt8]) -> String {
+        var hexData = ""
+        let hexLen = bytesData.count/4
+        
+        for ii in 0...hexLen {
+            let index = ii*4
+            
+//            NSLog("ii: \(String(describing: index))   \(String(describing: hexValue))   \(String(describing: hexData))    ")
+//            let val1 = bytesData[index]*8
+//            let val2 = bytesData[index+1]*4
+//            let val3 = bytesData[index]*2
+//            let val4 = bytesData[index]*1
+//            let hexVal = val1 + val2 + val3 + val4
+            let hexValue = bytesData[index]*8 + bytesData[index+1]*4 + bytesData[index]*2 + bytesData[index]*1
+            hexData = hexData + String(hexValue)
+            
+            NSLog("index: \(String(describing: index))   \(String(describing: hexValue))   \(String(describing: hexData))    ")
+        
+        }
+        
+        return hexData
+        
+    }
 }
+
+//extension Data {
+//    func hexEncodedString() -> String {
+//        return map { String(format: "%%04x", $0) }.joined()
+//    }
+//}
+
+//extension NSData {
+//    var hexDescription: String {
+//        return reduce("") {$0 + String(format: "%02x", $1)}
+//    }
+//}
+
+
+//extension NSData {
+//
+//    /// Return hexadecimal string representation of NSData bytes
+//    @objc(kdj_hexadecimalString)
+//    public var hexadecimalString: NSString {
+//        var bytes = [UInt8](repeating: 0, count: length)
+//        getBytes(&bytes, length: length)
+//
+//        let hexString = NSMutableString()
+//        for byte in bytes {
+//            hexString.appendFormat("%02x", UInt(byte))
+//        }
+//
+//        return NSString(string: hexString)
+//    }
+//}
+//extension NSData {
+//    func hexEncodedString() -> String {
+//        return map { String(format: "%02hhx", $0) }.joined()
+//    }
+//}
+
