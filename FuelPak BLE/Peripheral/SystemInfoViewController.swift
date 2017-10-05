@@ -31,12 +31,15 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     private var btUtil = BluetoothUtil.sharedInstance
-    private var listOfItems: [String] = []
+    private var listOfItems = [String: String]()
+    private var listOfTitle: [String] = []
     private var listOfItemsSection_0: [String] = []
     private var cmdResponseCounter = 0
     
     
     
+    
+    // MARK - Default Methods
     override func viewDidLoad() {
         registerNotification()
         
@@ -67,7 +70,27 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func initData() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
+//        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellIdentifier")
+    
+        
+        
+        //Title
+        listOfTitle.append("VIN")
+        listOfTitle.append("ECU Version")
+        listOfTitle.append("ECU Calibration ID")
+        listOfTitle.append("Fuelpak State")
+        listOfTitle.append("Fuelpak Firmware Version")
+        listOfTitle.append("Fuelpak Hardware Version")
+        listOfTitle.append("Wideband State")
+        listOfTitle.append("Wideband Firmware Version")
+        listOfTitle.append("Wideband Hardware Version")
+        listOfTitle.append("iOS Version")
+        listOfTitle.append("App Build Version")
+        listOfTitle.append("Bluetooth Version")
+        listOfTitle.append("Bluetooth MAC Address")
+        listOfTitle.append("Model")
+        listOfTitle.append("Year")
+
         
         updateTable()
         
@@ -114,21 +137,23 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        switch section {
-        case 0:
-            return listOfItemsSection_0.count
-            
-        case 1:
-            return listOfItems.count
-            
-        default:
-            return 0
-        }
+        return listOfTitle.count
+        
+//        switch section {
+//        case 0:
+//            return listOfItemsSection_0.count
+//
+//        case 1:
+//            return listOfItems.count
+//
+//        default:
+//            return 0
+//        }
 
         
     }
@@ -159,26 +184,36 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 
         var sectionTitle: String
-
-        switch section {
-        case 0:
-            if (Bike.sharedInstance.isDemoMode == true) {
-                sectionTitle = "Status:  Demo Mode"
+        if (Bike.sharedInstance.isDemoMode == true) {
+            sectionTitle = "Status:  Demo Mode"
+        }else {
+            if (Bike.sharedInstance.isConnected) {
+                sectionTitle = "Status:  Connected"
             }else {
-                if (Bike.sharedInstance.isConnected) {
-                    sectionTitle = "Status:  Connected"
-                }else {
-                    sectionTitle = "Status:  Disconnected"
-                }
+                sectionTitle = "Status:  Disconnected"
             }
-
-
-        case 1:
-            sectionTitle = "Perpherals Nearby"
-
-        default:
-            sectionTitle = " "
         }
+        
+
+//        switch section {
+//        case 0:
+//            if (Bike.sharedInstance.isDemoMode == true) {
+//                sectionTitle = "Status:  Demo Mode"
+//            }else {
+//                if (Bike.sharedInstance.isConnected) {
+//                    sectionTitle = "Status:  Connected"
+//                }else {
+//                    sectionTitle = "Status:  Disconnected"
+//                }
+//            }
+//
+//
+//        case 1:
+//            sectionTitle = "Perpherals Nearby"
+//
+//        default:
+//            sectionTitle = " "
+//        }
 
         return sectionTitle
     }
@@ -204,17 +239,16 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        //        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "CellIdentifier")
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellIdentifier", for: indexPath)
-        
         
         cell.backgroundColor = UIColor.white.withAlphaComponent(0.6)
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
         
+        cell.textLabel?.text = listOfTitle[indexPath.row]
+        cell.detailTextLabel?.text = listOfItems[listOfTitle[indexPath.row]]
+//        cell.detailTextLabel?.text = "detailTextLabel"
         
-        cell.textLabel?.text = self.listOfItems[indexPath.row]
-        cell.detailTextLabel?.text = self.listOfItems[indexPath.row]
 
         
         return cell
@@ -263,7 +297,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
         
-        listOfItems.removeAll()
         sendCommands(cmdCounter: 0)
 //        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
@@ -276,24 +309,41 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         cmdResponseCounter = cmdResponseCounter + 1
         if cmdResponseCounter>=3 {
             listOfItems.removeAll()
+
+            listOfItems[listOfTitle[0]] = Bike.sharedInstance.VINnumber
+            listOfItems[listOfTitle[1]] = Bike.sharedInstance.ECMversion
+            listOfItems[listOfTitle[2]] = Bike.sharedInstance.ECMcalib
+            listOfItems[listOfTitle[3]] = Bike.sharedInstance.deviceStatus
+            listOfItems[listOfTitle[4]] = Bike.sharedInstance.firmwareVersion
+            listOfItems[listOfTitle[5]] = Bike.sharedInstance.hardwareVersion
+            listOfItems[listOfTitle[6]] = Bike.sharedInstance.widebandState
+            listOfItems[listOfTitle[7]] = Bike.sharedInstance.widebandfversion
+            listOfItems[listOfTitle[8]] = Bike.sharedInstance.widebandhversion
+            listOfItems[listOfTitle[9]] = Bike.sharedInstance.iosVersion
+            listOfItems[listOfTitle[10]] = Bike.sharedInstance.appVersion
+            listOfItems[listOfTitle[11]] = Bike.sharedInstance.appBuildVersion
+            listOfItems[listOfTitle[12]] = Bike.sharedInstance.DEVbtversion
+            listOfItems[listOfTitle[13]] = Bike.sharedInstance.DEVbtmacid
+            listOfItems[listOfTitle[14]] = Bike.sharedInstance.VINyear
+    
             
-            listOfItems.append(Bike.sharedInstance.VINnumber)
-            listOfItems.append(Bike.sharedInstance.ECMversion)
-            listOfItems.append(Bike.sharedInstance.ECMcalib)
-            listOfItems.append(Bike.sharedInstance.deviceStatus)
-            listOfItems.append(Bike.sharedInstance.firmwareVersion)
-            listOfItems.append(Bike.sharedInstance.hardwareVersion)
-            
-            listOfItems.append(Bike.sharedInstance.widebandState)
-            listOfItems.append(Bike.sharedInstance.widebandfversion)
-            listOfItems.append(Bike.sharedInstance.widebandhversion)
-            listOfItems.append(Bike.sharedInstance.iosVersion)
-            listOfItems.append(Bike.sharedInstance.appVersion)
-            listOfItems.append(Bike.sharedInstance.appBuildVersion)
-            listOfItems.append(Bike.sharedInstance.DEVbtversion)
-            listOfItems.append(Bike.sharedInstance.DEVbtmacid)
-            listOfItems.append(Bike.sharedInstance.VINmodel)
-            listOfItems.append(Bike.sharedInstance.VINyear)
+//            listOfItems.append(Bike.sharedInstance.VINnumber)
+//            listOfItems.append(Bike.sharedInstance.ECMversion)
+//            listOfItems.append(Bike.sharedInstance.ECMcalib)
+//            listOfItems.append(Bike.sharedInstance.deviceStatus)
+//            listOfItems.append(Bike.sharedInstance.firmwareVersion)
+//            listOfItems.append(Bike.sharedInstance.hardwareVersion)
+//
+//            listOfItems.append(Bike.sharedInstance.widebandState)
+//            listOfItems.append(Bike.sharedInstance.widebandfversion)
+//            listOfItems.append(Bike.sharedInstance.widebandhversion)
+//            listOfItems.append(Bike.sharedInstance.iosVersion)
+//            listOfItems.append(Bike.sharedInstance.appVersion)
+//            listOfItems.append(Bike.sharedInstance.appBuildVersion)
+//            listOfItems.append(Bike.sharedInstance.DEVbtversion)
+//            listOfItems.append(Bike.sharedInstance.DEVbtmacid)
+//            listOfItems.append(Bike.sharedInstance.VINmodel)
+//            listOfItems.append(Bike.sharedInstance.VINyear)
             
             tableView.reloadData()
         }else {
