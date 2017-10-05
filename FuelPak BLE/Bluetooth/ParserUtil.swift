@@ -75,6 +75,7 @@ final class ParserUtil: NSObject {
     
     public func parseVinCmd(cmd: String, data: String) {
         let offset = 6
+        NSLog("parseVinCmd data: \(String(describing: data))")
         
         if (data[3]=="0" && data[4]=="D" && data[5]=="D")   //Valid Vin
         {
@@ -95,7 +96,8 @@ final class ParserUtil: NSObject {
     
     
     public func parseDevCmd(cmd: String, data: String) {
-
+        NSLog("parseDevCmd data: \(String(describing: data))")
+        
         Bike.sharedInstance.firmwareVersion = String(describing: data.substring(with: NSMakeRange(15, 33)))
         Bike.sharedInstance.hardwareVersion = String(describing: data.substring(with: NSMakeRange(6, 72)))
         
@@ -104,6 +106,7 @@ final class ParserUtil: NSObject {
 
     
     public func parseEcmCmd(cmd: String, data: String) {
+        NSLog("parseEcmCmd data: \(String(describing: data))")
         
         Bike.sharedInstance.ECMversion = String(describing: data.substring(with: NSMakeRange(14, 26)))
         Bike.sharedInstance.ECMcalib = String(describing: data.substring(with: NSMakeRange(14, 26)))
