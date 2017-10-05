@@ -309,7 +309,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }else {
             self.resultString = receivedString!
             // Post notification
-            NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.resultString)
+//            NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
         }
         
         NSLog("resultString: \(String(describing: receivedString))")

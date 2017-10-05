@@ -33,6 +33,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     private var btUtil = BluetoothUtil.sharedInstance
     private var listOfItems: [String] = []
     private var listOfItemsSection_0: [String] = []
+    private var cmdResponseCounter = 0
     
     
     
@@ -89,7 +90,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
-        sendCommands()
+        sendCommands(cmdCounter: 0)
 //        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
 //        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
@@ -230,10 +231,24 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    func sendCommands() {
-        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
-        BluetoothUtil.sharedInstance.write(cmd: "UDEV00")
-        BluetoothUtil.sharedInstance.write(cmd: "UECM00")
+    func sendCommands(cmdCounter: Int) {
+                
+        switch cmdCounter {
+        case 0:
+            cmdResponseCounter = 0
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+            
+        case 1:
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00")
+            
+        case 2:
+            BluetoothUtil.sharedInstance.write(cmd: "UECM00")
+        default:
+            return
+        }
+        
+        
+        
     }
     
     func registerNotification() {
@@ -247,8 +262,9 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
-
-        sendCommands()
+        
+        listOfItems.removeAll()
+        sendCommands(cmdCounter: 0)
 //        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
     }
@@ -256,17 +272,35 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func didUpdateValueForcharacteristic(notfication: NSNotification) {
         
-//        listOfItems.removeAll()
-        listOfItems.append(BluetoothUtil.sharedInstance.resultString)
-        tableView.reloadData()
         
+        cmdResponseCounter = cmdResponseCounter + 1
+        if cmdResponseCounter>=3 {
+            listOfItems.removeAll()
+            
+            listOfItems.append(Bike.sharedInstance.VINnumber)
+            listOfItems.append(Bike.sharedInstance.ECMversion)
+            listOfItems.append(Bike.sharedInstance.ECMcalib)
+            listOfItems.append(Bike.sharedInstance.deviceStatus)
+            listOfItems.append(Bike.sharedInstance.firmwareVersion)
+            listOfItems.append(Bike.sharedInstance.hardwareVersion)
+            
+            listOfItems.append(Bike.sharedInstance.widebandState)
+            listOfItems.append(Bike.sharedInstance.widebandfversion)
+            listOfItems.append(Bike.sharedInstance.widebandhversion)
+            listOfItems.append(Bike.sharedInstance.iosVersion)
+            listOfItems.append(Bike.sharedInstance.appVersion)
+            listOfItems.append(Bike.sharedInstance.appBuildVersion)
+            listOfItems.append(Bike.sharedInstance.DEVbtversion)
+            listOfItems.append(Bike.sharedInstance.DEVbtmacid)
+            listOfItems.append(Bike.sharedInstance.VINmodel)
+            listOfItems.append(Bike.sharedInstance.VINyear)
+            
+            tableView.reloadData()
+        }else {
+            sendCommands(cmdCounter: cmdResponseCounter)
+        }
         
     }
-    
-    
-    
-    
-
     
     
 }
