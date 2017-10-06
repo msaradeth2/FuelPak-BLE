@@ -37,7 +37,7 @@ final class ParserUtil: NSObject {
     
     
     
-    public func parsePacket(cmd: String, data: String) {
+    public func parsePacket(cmd: String, data: String, hexData: String) {
 
         if data.count < 64 {
             return
@@ -45,38 +45,47 @@ final class ParserUtil: NSObject {
         
 //        NSLog("parsePacket cmd: \(String(describing: cmd))    responseCode:\(String(describing: responseCode))     data:\(String(describing: data)) ")
 //        NSLog("parsePacket cmd: \(String(describing: cmd))")
-//        NSLog("parsePacket data: \(String(describing: data))")
+        NSLog("parsePacket data: \(String(describing: data))")
 //        NSLog("parsePacket resCode: \(String(describing: responseCode))")
 //        NSLog("parsePacket NSMakeRange(1, 3): \(String(describing: data.substring(with: NSMakeRange(1, 3))))")
         
         //UVIN00 Command
         if (cmd == "UVIN00" && data.substring(with: NSMakeRange(1, 3)) == "RVN") {
-            parseVinCmd(cmd: cmd, data: data)
+            parseVinCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         //UDEV00 Command
         if (cmd == "UDEV00" && data.substring(with: NSMakeRange(7, 3)) == "RDV") {
-            parseDevCmd(cmd: cmd, data: data)
+            parseDevCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         
         //UECM00 Command
         if (cmd == "UECM00" && data.substring(with: NSMakeRange(7, 3)) == "REM") {
-            parseEcmCmd(cmd: cmd, data: data)
+            parseEcmCmd(cmd: cmd, data: data, hexData: hexData)
         }
   
         
     }
     
-    public func parseVinCmd(cmd: String, data: String) {
-        let offset = 6 + 6
-        NSLog("parseVinCmd data: \(String(describing: data))")
-
-
-        Bike.sharedInstance.VINnumber = String(describing: data.substring(with: NSMakeRange(offset, 17)))
-        Bike.sharedInstance.VINyear = String(describing: data.substring(with: NSMakeRange(offset+17, 4)))
-        NSLog("parseVinCmd VINnumber: \(String(describing: Bike.sharedInstance.VINnumber))")
-        NSLog("parseVinCmd VINyear: \(String(describing: Bike.sharedInstance.VINyear))")
+    public func parseVinCmd(cmd: String, data: String, hexData: String) {
+        let offset = (6 + 6) * 2
+        let actualHexData = String(describing: data.substring(with: NSMakeRange(offset, hexData.count)))
+        
+//        NSLog("parseVinCmd data: \(String(describing: hexData))")
+        print("hexData: ", hexData)
+        print("actualHexData: ", actualHexData)
+        
+        Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
+        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 38))))
+        
+//        Bike.sharedInstance.VINnumber = String(describing: data.substring(with: NSMakeRange(offset, 17)))
+//        Bike.sharedInstance.VINyear = String(describing: data.substring(with: NSMakeRange(offset+17, 4)))
+//        NSLog("parseVinCmd VINnumber: \(String(describing: Bike.sharedInstance.VINnumber))")
+//        NSLog("parseVinCmd VINyear: \(String(describing: Bike.sharedInstance.VINyear))")
+        
+        print("Bike.sharedInstance.VINnumber:  ", Bike.sharedInstance.VINnumber)
+        print("VINyear:  ", Bike.sharedInstance.VINyear)
         
         
 //        Bike.sharedInstance.modelNumber = String(describing: data.substring(with: NSMakeRange(offset+17+4, 10)))
@@ -99,7 +108,7 @@ final class ParserUtil: NSObject {
     }
     
     
-    public func parseDevCmd(cmd: String, data: String) {
+    public func parseDevCmd(cmd: String, data: String, hexData: String) {
         NSLog("parseDevCmd data: \(String(describing: data))")
 //        data = data.sub
         
@@ -110,7 +119,7 @@ final class ParserUtil: NSObject {
     }
 
     
-    public func parseEcmCmd(cmd: String, data: String) {
+    public func parseEcmCmd(cmd: String, data: String, hexData: String) {
         NSLog("parseEcmCmd data: \(String(describing: data))")
         let offset = 6 + 6 + 6
         
@@ -136,6 +145,80 @@ final class ParserUtil: NSObject {
         
         NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
     }
+    
+    func convertHexToAscii(text: String) -> String {
+        
+        let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
+        let textNS = text as NSString
+        let matchesArray = regex.matches(in: textNS as String, options: [], range: NSMakeRange(0, textNS.length))
+        let characters = matchesArray.map {
+            Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
+        }
+        
+        return String(characters)
+    }
+    
+    
+//    public func hexToAscii(hexData: String) -> String {
+//        var asciiData = ""
+//
+//        for ii in stride(from: 0, to: hexData.count, by: 2) {
+//            print(ii)
+//            let str = hexData[ii] + hexData[ii+1];
+//            NSInteger
+//        }
+//
+////        for ii 0..hexData
+////
+//        return asciiData
+//
+//    }
+    
+//    public static String HexToAscii(String hex) {
+//    StringBuilder ascii = new StringBuilder();
+//    for (int i = 0; i < hex.length(); i += 2) {
+//    String str = hex.substring(i, i + 2);
+//    try {
+//    ascii.append((char) Integer.parseInt(str, 16));
+//    } catch (Exception e) {
+//    ascii.append("29");
+//    if (Constants.GD) Log.d("FP3 ConvertData Convert", "Bad conversion - " + str);
+//    }
+//    }
+//    return ascii.toString();
+//    }
+//
+//    /**
+//     * Converts a string represting hex data to UTF8
+//     *
+//     * @param hex - String in hex form
+//     * @return - UTF8 string equivalent
+//     */
+//    public static String HexToUTF8(String hex) {
+//    ArrayList<Byte> utf8 = new ArrayList<Byte>();
+//
+//    for (int i = 0; i < hex.length(); i += 2) {
+//    String str = hex.substring(i, i + 2);
+//    try {
+//    utf8.add((byte) Integer.parseInt(str, 16));
+//    } catch (Exception e) {
+//    utf8.add((byte) 29);
+//    if (Constants.GD) Log.d("FP3 ConvertData Convert", "Bad conversion - " + str);
+//    }
+//    }
+//
+//    byte[] utf8_byte = new byte[utf8.size()];
+//    for (int i = 0; i < utf8_byte.length; i = i + 1) {
+//    utf8_byte[i] = utf8.get(i);
+//    }
+//
+//    try {
+//    return (new String(utf8_byte, "UTF-8"));
+//    } catch (UnsupportedEncodingException e) {
+//    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//    }
+//    return null;
+//    }
     
 }
 

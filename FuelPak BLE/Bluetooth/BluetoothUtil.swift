@@ -308,28 +308,31 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
         let asciiData = String(bytes: bytesData, encoding: String.Encoding.ascii)
-        let resultHex = String(bytes: bytesData, encoding: String.Encoding.utf8)
+
+        //Convert bytesData to Hex Data
+        var hexData = ""
+        for ii in 0..<bytesData.count
+        {
+            let hexValue = String(format: "%02X",bytesData[ii])
+            hexData = hexData + hexValue
+            print (hexValue)
+        }
+        print ("hexData: ", hexData)
         
-//        let hexData = convertBytesDataToHex(bytesData: bytesData)
         
         if asciiData==self.cmd {
+            print(bytesData)
             //Got the Acknowlegement from FuelPak - do nothing for now
 //            NSLog("resultAscii: \(String(describing: resultAscii))")
         }else {
 
             // Parse data
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!)
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!, hexData: hexData)
             
         }
-//        print(resultHex!)
-        print(bytesData)
-        print(asciiData!)
+
+        print("asciiData: ", asciiData!)
         NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
-        NSLog("resultHex?.count: \(String(describing: resultHex?.count))    resultHex:\(String(describing: resultHex))")
-        
-        
-        
-//        NSLog("bytesData?.count: \(String(describing: bytesData?.count))    bytesData:\(String(describing: bytesData))")
         
     }
 
@@ -343,67 +346,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
+
     
-//    in swift 3 you can use the global functions stride(from:through:by:) and stride(from:to:by:) like for i in stride(from:1, to:max, by:2){...} –
-    
-    
-    func convertBytesDataToHex(bytesData: [UInt8]) -> String {
-        var hexData = ""
-        let hexLen = bytesData.count/4
-        
-        for ii in 0...hexLen {
-            let index = ii*4
-            
-//            NSLog("ii: \(String(describing: index))   \(String(describing: hexValue))   \(String(describing: hexData))    ")
-//            let val1 = bytesData[index]*8
-//            let val2 = bytesData[index+1]*4
-//            let val3 = bytesData[index]*2
-//            let val4 = bytesData[index]*1
-//            let hexVal = val1 + val2 + val3 + val4
-            let hexValue = bytesData[index]*8 + bytesData[index+1]*4 + bytesData[index]*2 + bytesData[index]*1
-            hexData = hexData + String(hexValue)
-            
-            NSLog("index: \(String(describing: index))   \(String(describing: hexValue))   \(String(describing: hexData))    ")
-        
-        }
-        
-        return hexData
-        
-    }
+
 }
 
-//extension Data {
-//    func hexEncodedString() -> String {
-//        return map { String(format: "%%04x", $0) }.joined()
-//    }
-//}
 
-//extension NSData {
-//    var hexDescription: String {
-//        return reduce("") {$0 + String(format: "%02x", $1)}
-//    }
-//}
-
-
-//extension NSData {
-//
-//    /// Return hexadecimal string representation of NSData bytes
-//    @objc(kdj_hexadecimalString)
-//    public var hexadecimalString: NSString {
-//        var bytes = [UInt8](repeating: 0, count: length)
-//        getBytes(&bytes, length: length)
-//
-//        let hexString = NSMutableString()
-//        for byte in bytes {
-//            hexString.appendFormat("%02x", UInt(byte))
-//        }
-//
-//        return NSString(string: hexString)
-//    }
-//}
-//extension NSData {
-//    func hexEncodedString() -> String {
-//        return map { String(format: "%02hhx", $0) }.joined()
-//    }
-//}
 
