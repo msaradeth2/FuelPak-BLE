@@ -111,12 +111,20 @@ final class ParserUtil: NSObject {
         }
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
+//        Bike.sharedInstance.ECMversion = convertHexToDecimal(hexString: String(describing: actualHexData.substring(with: NSMakeRange(24, 4))))
+        //        Bike.sharedInstance.ECMversion = String(describing: UInt64(String(describing: actualHexData.substring(with: NSMakeRange(24, 4))), radix:16))
+        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 24))))
+        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 4))))
+        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 4))))
+        //        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
         
-        Bike.sharedInstance.ECMnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 24))))
-        Bike.sharedInstance.ECMversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(24, 28))))
-        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 52))))
-        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 56))))
-        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
+        
+        
+//        Bike.sharedInstance.ECMnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 24))))
+//        Bike.sharedInstance.ECMversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(24, 28))))
+//        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 52))))
+//        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 56))))
+//        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
 //        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
 
         NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
@@ -129,6 +137,8 @@ final class ParserUtil: NSObject {
     }
     
     func convertHexToAscii(text: String) -> String {
+        NSLog("convertHexToAscii text: \(String(describing: text))")
+        
         
         let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
         let textNS = text as NSString
