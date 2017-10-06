@@ -93,10 +93,33 @@ final class ParserUtil: NSObject {
     
     public func parseDevCmd(cmd: String, data: String, hexData: String) {
         NSLog("parseDevCmd data: \(String(describing: data))")
-//        data = data.sub
+        let offset = (6 + 6) * 2
         
-        Bike.sharedInstance.firmwareVersion = String(describing: data.substring(with: NSMakeRange(12, 7)))
-        Bike.sharedInstance.hardwareVersion = String(describing: data.substring(with: NSMakeRange(6, 72)))
+        if invalidPacketSize(hexData: hexData, offset: offset) {
+//            return
+        }
+        
+        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
+        
+        Bike.sharedInstance.firmwareVersion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(30, 36)))).trim()
+        Bike.sharedInstance.hardwareVersion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(72, 42)))).trim()
+        Bike.sharedInstance.DEVbtversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(114, 54))))
+        Bike.sharedInstance.DEVodometer = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(210, 8))))
+        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
+        Bike.sharedInstance.DEVbtmacid = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(290, 24))))
+        
+        Bike.sharedInstance.widebandState = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(314, 2))))
+        Bike.sharedInstance.widebandfversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(316, 8))))
+        Bike.sharedInstance.widebandhversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(324, 6))))
+        
+        NSLog("parseDevCmd widebandState: \(String(describing: Bike.sharedInstance.widebandState))")
+        NSLog("parseDevCmd widebandfversion: \(String(describing: Bike.sharedInstance.widebandfversion))")
+        NSLog("parseDevCmd widebandhversion: \(String(describing: Bike.sharedInstance.widebandhversion))")
+        NSLog("parseDevCmd DEVbtversion: \(String(describing: Bike.sharedInstance.DEVbtversion))")
+        NSLog("parseDevCmd DEVbtmacid: \(String(describing: Bike.sharedInstance.DEVbtmacid))")
+        
+//        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
+
         
         NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
     }
@@ -104,7 +127,7 @@ final class ParserUtil: NSObject {
     
     public func parseEcmCmd(cmd: String, data: String, hexData: String) {
         NSLog("parseEcmCmd data: \(String(describing: data))")
-        let offset = 6 + 6 + 6
+        let offset = (6 + 6 + 6) * 2
         
         if invalidPacketSize(hexData: hexData, offset: offset) {
             return
@@ -187,80 +210,7 @@ final class ParserUtil: NSObject {
     }
     
     
-    
-//    func hexStringtoAscii(_ hexString : String) -> String {
-//
-//        let pattern = "(0x)?([0-9a-f]{2})"
-//        let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-//        let nsString = hexString as NSString
-//        let matches = regex.matches(in: hexString, options: [], range: NSMakeRange(0, nsString.length))
-//        let characters = matches.map {
-//            Character(UnicodeScalar(UInt32(nsString.substring(with: $0.range(at: 2)), radix: 16)!)!)
-//        }
-//        return String(characters)
-//    }
-    
-    
-//    public func hexToAscii(hexData: String) -> String {
-//        var asciiData = ""
-//
-//        for ii in stride(from: 0, to: hexData.count, by: 2) {
-//            print(ii)
-//            let str = hexData[ii] + hexData[ii+1];
-//            NSInteger
-//        }
-//
-////        for ii 0..hexData
-////
-//        return asciiData
-//
-//    }
-    
-//    public static String HexToAscii(String hex) {
-//    StringBuilder ascii = new StringBuilder();
-//    for (int i = 0; i < hex.length(); i += 2) {
-//    String str = hex.substring(i, i + 2);
-//    try {
-//    ascii.append((char) Integer.parseInt(str, 16));
-//    } catch (Exception e) {
-//    ascii.append("29");
-//    if (Constants.GD) Log.d("FP3 ConvertData Convert", "Bad conversion - " + str);
-//    }
-//    }
-//    return ascii.toString();
-//    }
-//
-//    /**
-//     * Converts a string represting hex data to UTF8
-//     *
-//     * @param hex - String in hex form
-//     * @return - UTF8 string equivalent
-//     */
-//    public static String HexToUTF8(String hex) {
-//    ArrayList<Byte> utf8 = new ArrayList<Byte>();
-//
-//    for (int i = 0; i < hex.length(); i += 2) {
-//    String str = hex.substring(i, i + 2);
-//    try {
-//    utf8.add((byte) Integer.parseInt(str, 16));
-//    } catch (Exception e) {
-//    utf8.add((byte) 29);
-//    if (Constants.GD) Log.d("FP3 ConvertData Convert", "Bad conversion - " + str);
-//    }
-//    }
-//
-//    byte[] utf8_byte = new byte[utf8.size()];
-//    for (int i = 0; i < utf8_byte.length; i = i + 1) {
-//    utf8_byte[i] = utf8.get(i);
-//    }
-//
-//    try {
-//    return (new String(utf8_byte, "UTF-8"));
-//    } catch (UnsupportedEncodingException e) {
-//    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//    }
-//    return null;
-//    }
+
     
 }
 
@@ -287,6 +237,14 @@ extension String
 //
 ////        return self[start...end]
 //    }
+}
+
+extension String
+{
+    func trim() -> String
+    {
+        return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
+    }
 }
 
 

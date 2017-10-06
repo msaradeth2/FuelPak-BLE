@@ -62,6 +62,7 @@ final class Bike: NSObject {
     var appBuildVersion = ""
     var DEVbtversion = ""; // Ver 5.2 iAP <date>
     var DEVbtmacid = "";     // 000666612345
+    var DEVodometer = "";
     
     var VINmodel = "";   // Softail
     var VINdesc = "";    // FXS Blackline FLSTC

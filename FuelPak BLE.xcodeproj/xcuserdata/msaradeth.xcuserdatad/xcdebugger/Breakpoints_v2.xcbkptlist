@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FuelPak BLE/Bluetooth/ParserUtil.swift"
-            timestampString = "529017615.143382"
+            timestampString = "529020498.006022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293">
+            startingLineNumber = "251"
+            endingLineNumber = "251">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -184,12 +184,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FuelPak BLE/Bluetooth/ParserUtil.swift"
-            timestampString = "529017615.14364"
+            timestampString = "529020498.006293"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "parseEcmCmd(cmd:data:hexData:)"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "parseDevCmd(cmd:data:hexData:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
