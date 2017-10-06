@@ -160,7 +160,7 @@ final class ParserUtil: NSObject {
     }
     
     func convertHexToAscii(text: String) -> String {
-        NSLog("convertHexToAscii text: \(String(describing: text))")
+        NSLog("convertHexToAscii text1: \(String(describing: text))")
         
         
         let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
@@ -169,6 +169,8 @@ final class ParserUtil: NSObject {
         let characters = matchesArray.map {
             Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
         }
+        
+        NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
         
         return String(characters)
     }
