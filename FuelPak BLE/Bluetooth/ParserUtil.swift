@@ -39,9 +39,9 @@ final class ParserUtil: NSObject {
     
     public func parsePacket(cmd: String, data: String, hexData: String) {
 
-        if data.count < 64 {
-            return
-        }
+//        if data.count < 64 {
+//            return
+//        }
         
 //        NSLog("parsePacket cmd: \(String(describing: cmd))    responseCode:\(String(describing: responseCode))     data:\(String(describing: data)) ")
 //        NSLog("parsePacket cmd: \(String(describing: cmd))")
@@ -69,39 +69,22 @@ final class ParserUtil: NSObject {
     }
     
     public func parseVinCmd(cmd: String, data: String, hexData: String) {
+        //removed leading headers
         let offset = (6 + 6) * 2
-        let actualHexData = String(describing: data.substring(with: NSMakeRange(offset, hexData.count)))
+        if invalidData(hexData: hexData, offset: offset) {
+//            return
+        }
         
-//        NSLog("parseVinCmd data: \(String(describing: hexData))")
-        print("hexData: ", hexData)
-        print("actualHexData: ", actualHexData)
+        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
+        
+        print("hexData     : ", hexData)
+        print("actualData  : ", actualHexData)
         
         Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
-        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 38))))
-        
-//        Bike.sharedInstance.VINnumber = String(describing: data.substring(with: NSMakeRange(offset, 17)))
-//        Bike.sharedInstance.VINyear = String(describing: data.substring(with: NSMakeRange(offset+17, 4)))
-//        NSLog("parseVinCmd VINnumber: \(String(describing: Bike.sharedInstance.VINnumber))")
-//        NSLog("parseVinCmd VINyear: \(String(describing: Bike.sharedInstance.VINyear))")
-        
-        print("Bike.sharedInstance.VINnumber:  ", Bike.sharedInstance.VINnumber)
+        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
+
+        print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
         print("VINyear:  ", Bike.sharedInstance.VINyear)
-        
-        
-//        Bike.sharedInstance.modelNumber = String(describing: data.substring(with: NSMakeRange(offset+17+4, 10)))
-        
-//        if (data[3]=="0" && data[4]=="D" && data[5]=="D")   //Valid Vin
-//        {
-//
-//            Bike.sharedInstance.VINnumber = String(describing: data.substring(with: NSMakeRange(offset, 17)))
-//            Bike.sharedInstance.VINyear = String(describing: data.substring(with: NSMakeRange(offset+17, 4)))
-//            Bike.sharedInstance.modelNumber = String(describing: data.substring(with: NSMakeRange(offset+17+4, 10)))
-//
-//        }else {
-//            Bike.sharedInstance.VINnumber = ""
-//            Bike.sharedInstance.VINyear = ""
-//            Bike.sharedInstance.modelNumber = ""
-//        }
         
         NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
 
@@ -157,6 +140,56 @@ final class ParserUtil: NSObject {
         
         return String(characters)
     }
+    
+    
+    //Validate packet size
+    func invalidData(hexData: String, offset: Int) -> Bool {
+        
+        //Get Packet size
+        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(10, 2)))
+        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
+        if packetSizeAscii.count != 1 {
+            return false
+        }
+        let packetSize = Int(packetSizeAscii)! * 64*2
+
+        //Get actual data
+        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
+        
+        NSLog("invalidData    packetSize: \(String(describing: packetSize))")
+        NSLog("invalidData actualHexData: \(String(describing: actualHexData.count))")
+        
+        //Compare the packetsize to Actual data length
+        if packetSize == actualHexData.count {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    
+    //Strip out header info and return actual data in packet
+    func getActualHexData(hexData: String, offset: Int) -> String {
+
+        let index = hexData.index(hexData.startIndex, offsetBy: offset)
+        let actualHexData = String(hexData.suffix(from: index))
+        
+        return actualHexData
+    }
+    
+    
+    
+//    func hexStringtoAscii(_ hexString : String) -> String {
+//
+//        let pattern = "(0x)?([0-9a-f]{2})"
+//        let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+//        let nsString = hexString as NSString
+//        let matches = regex.matches(in: hexString, options: [], range: NSMakeRange(0, nsString.length))
+//        let characters = matches.map {
+//            Character(UnicodeScalar(UInt32(nsString.substring(with: $0.range(at: 2)), radix: 16)!)!)
+//        }
+//        return String(characters)
+//    }
     
     
 //    public func hexToAscii(hexData: String) -> String {
