@@ -71,8 +71,8 @@ final class ParserUtil: NSObject {
     public func parseVinCmd(cmd: String, data: String, hexData: String) {
         //removed leading headers
         let offset = (6 + 6) * 2
-        if invalidData(hexData: hexData, offset: offset) {
-//            return
+        if invalidPacketSize(hexData: hexData, offset: offset) {
+            return
         }
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
@@ -143,7 +143,7 @@ final class ParserUtil: NSObject {
     
     
     //Validate packet size
-    func invalidData(hexData: String, offset: Int) -> Bool {
+    func invalidPacketSize(hexData: String, offset: Int) -> Bool {
         
         //Get Packet size
         let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(10, 2)))
@@ -151,16 +151,16 @@ final class ParserUtil: NSObject {
         if packetSizeAscii.count != 1 {
             return false
         }
-        let packetSize = Int(packetSizeAscii)! * 64*2
-
-        //Get actual data
-        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
         
-        NSLog("invalidData    packetSize: \(String(describing: packetSize))")
-        NSLog("invalidData actualHexData: \(String(describing: actualHexData.count))")
+        let packetSize = Int(packetSizeAscii)! * 128
+        let actualpaketSize = hexData.count - 12
+
+        NSLog("invalidData      packetSize: \(String(describing: packetSize))")
+        NSLog("invalidData actualpaketSize: \(String(describing: actualpaketSize))")
+        NSLog("invalidData         hexData: \(String(describing: hexData.count))")
         
         //Compare the packetsize to Actual data length
-        if packetSize == actualHexData.count {
+        if packetSize != actualpaketSize {
             return true
         }else {
             return false
