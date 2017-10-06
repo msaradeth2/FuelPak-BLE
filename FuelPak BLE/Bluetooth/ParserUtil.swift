@@ -106,25 +106,24 @@ final class ParserUtil: NSObject {
         NSLog("parseEcmCmd data: \(String(describing: data))")
         let offset = 6 + 6 + 6
         
-        Bike.sharedInstance.ECMnumber = String(describing: data.substring(with: NSMakeRange(offset, 12)))
-        NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
+        if invalidPacketSize(hexData: hexData, offset: offset) {
+            return
+        }
         
-        Bike.sharedInstance.ECMversion = String(describing: data.substring(with: NSMakeRange(offset+12, 2)))
-//        Bike.sharedInstance.ECMcalib = String(describing: data.substring(with: NSMakeRange(offset+12+2, 12)))
-//        Bike.sharedInstance.ECMseed = String(describing: data.substring(with: NSMakeRange(offset+12+2+12, 2)))
-//        Bike.sharedInstance.ECMkey = String(describing: data.substring(with: NSMakeRange(offset+12+2+12+2, 2)))
+        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
         
+        Bike.sharedInstance.ECMnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 24))))
+        Bike.sharedInstance.ECMversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(24, 28))))
+        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 52))))
+        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 56))))
+        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
+//        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
+
         NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
         NSLog("parseEcmCmd ECMversion: \(String(describing: Bike.sharedInstance.ECMversion))")
+        NSLog("parseEcmCmd ECMcalib: \(String(describing: Bike.sharedInstance.ECMcalib))")
         
-        print("%04x", Bike.sharedInstance.ECMversion)
-//        NSLog("parseVinCmd VINyear: \(String(describing: Bike.sharedInstance.VINyear))")
-//        NSLog("parseVinCmd VINyear: \(String(describing: Bike.sharedInstance.VINyear))")
-        
-        let str = Bike.sharedInstance.ECMversion
-        let data2 = str.data(using: .utf8)!
-        let hexString = data2.map{ String(format:"%04x", $0) }.joined()
-        NSLog("parseEcmCmd hexString: \(String(describing: hexString))")
+
         
         NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
     }
@@ -160,7 +159,7 @@ final class ParserUtil: NSObject {
         NSLog("invalidData         hexData: \(String(describing: hexData.count))")
         
         //Compare the packetsize to Actual data length
-        if packetSize != actualpaketSize {
+        if packetSize > actualpaketSize {
             return true
         }else {
             return false

@@ -315,7 +315,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         {
             let hexValue = String(format: "%02X",bytesData[ii])
             hexData = hexData + hexValue
-            print (hexValue)
+//            print (hexValue)
         }
         print ("hexData: ", hexData)
         
