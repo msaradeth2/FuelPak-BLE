@@ -9,6 +9,8 @@
 #import "DTCViewController.h"
 #import "EAController.h"
 
+
+
 #define MinCellHeight 94.0
 
 @interface DTCViewController ()
@@ -81,8 +83,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return MinCellHeight;
     
-    return UITableViewAutomaticDimension;
+//    return UITableViewAutomaticDimension;
     
     
     
@@ -509,6 +512,40 @@
 
 
 
+
+#pragma mark - Commands
+
+
+
+//[self readDtcCommand:0x30];
+//[self readDtcCommand:0x31];
+//[self readDtcCommand:0x32];
+
+- (void) sendReadDtcCommands
+{
+    [self readDtcCommand:0x30];
+}
+
+- (void) readDtcCommand: (unsigned char)type
+{
+    uint8_t buf[32];
+    
+    sprintf((char*)buf,"UTT%c00",type);
+    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
+    
+    //printf ("%s\n",buf);
+}
+
+
+- (void) clearDtcCommand: (unsigned char)type
+{
+    uint8_t buf[32];
+    
+    sprintf((char*)buf,"UKT%c00",type);
+    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
+    
+    //printf ("%s\n",buf);
+}
 
 
 
