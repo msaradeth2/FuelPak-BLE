@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "GCDiscreetNotificationView.h"
-//#import "EAController.h"
 #import "Util.h"
 #import "TCCellData.h"
-//#import "FuelPak_BLE-BluetoothUtil.h"
-//#import "FuelPak_BLE-BluetoothUtil.h"
-#import "FuelPak BLE-Bridging-Header.h"
+//#import "EAController.h"
+//#import "FuelPak BLE-Bridging-Header.h"
 
 
 @interface DTCViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSURLConnectionDelegate>

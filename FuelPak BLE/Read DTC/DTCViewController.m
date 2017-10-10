@@ -7,7 +7,6 @@
 //
 
 #import "DTCViewController.h"
-#import "EAController.h"
 
 
 
@@ -531,7 +530,7 @@
     uint8_t buf[32];
     
     sprintf((char*)buf,"UTT%c00",type);
-    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
+//    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
     
     //printf ("%s\n",buf);
 }
@@ -542,7 +541,7 @@
     uint8_t buf[32];
     
     sprintf((char*)buf,"UKT%c00",type);
-    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
+//    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
     
     //printf ("%s\n",buf);
 }
