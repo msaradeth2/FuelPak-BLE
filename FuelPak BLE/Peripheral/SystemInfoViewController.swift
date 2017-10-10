@@ -15,6 +15,13 @@ import CoreBluetooth
 class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CBPeripheralDelegate {
     
     // MARK:  Define Variables
+    enum Commands {
+        case UVIN00
+        case UDEV00
+        case UECM00
+
+    }
+    
     
     struct PeripheralsStructure {
         var peripheralInstance: CBPeripheral?
@@ -45,7 +52,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - Default Methods
     override func viewDidLoad() {
-        registerNotification()
+        addObservers()
         
         initData()
         
@@ -227,30 +234,41 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             return
         }
         
-        
-        
     }
     
     
-    // MARK:  Register/Remove Notification and Notification Delegation Methods
-    func registerNotification() {
+
+    // MARK:  Add/Remove Notification Observers.  Notification Delegation Methods
+    func addObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateValueForcharacteristic(notfication:)), name: .didUpdateValueForcharacteristicNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didDiscoverCharacteristic(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .devCommandNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .vinCommandNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .ecmCommandNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sendFirstCommand(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
+        
+    }
+    
+    func removeObservers() {
+        
+        NotificationCenter.default.removeObserver(self, name: .devCommandNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .vinCommandNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .ecmCommandNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didDiscoverCharacteristicsNotification, object: nil)
         
     }
     
     
 
     
-    @objc func didDiscoverCharacteristic(notfication: NSNotification) {
+    @objc func sendFirstCommand(notfication: NSNotification) {
         
         sendCommands(cmdCounter: 0)
         
     }
     
     
-    @objc func didUpdateValueForcharacteristic(notfication: NSNotification) {
+    @objc func processBluetoothReponse(notfication: NSNotification) {
         
         
         cmdResponseCounter = cmdResponseCounter + 1

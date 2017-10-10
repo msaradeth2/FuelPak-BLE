@@ -67,6 +67,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var cmd: String = ""
 
     
+    
+    // MARK:  Init Data
     func initData() {
         
         
@@ -110,10 +112,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
-    @objc public func printMyName() {
-        NSLog("printMyName ...")
-    }
-    
+
     
     
     @objc public func write(cmd: String) {
@@ -307,6 +306,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     
+    
+    // MARK: Handle Bluetooth Reponses here
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
@@ -322,7 +323,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             hexData = hexData + hexValue
 //            print (hexValue)
         }
-        print ("hexData: ", hexData)
+//        print ("hexData: ", hexData)
         
         
         if asciiData==self.cmd {
@@ -336,10 +337,13 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             
         }
 
-        print("asciiData: ", asciiData!)
-        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
+//        print("asciiData: ", asciiData!)
+//        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
         
     }
+    
+    
+    // MARK:  Helper methods
 
     @objc func interruptLocalTimer() {
         

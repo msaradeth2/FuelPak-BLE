@@ -71,11 +71,12 @@
     TCCellData *currCellData;
     
     NSBundle *langBundle;
+    int cmdResponseCounter;
     
 }
 
 @property (nonatomic, strong) IBOutlet UILabel *uilblDTCWarning;
-@property (nonatomic, strong) IBOutlet UITableView *uitableviewDTCcode;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *uinavbtnRefresh;
 

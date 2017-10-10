@@ -39,13 +39,13 @@ final class ParserUtil: NSObject {
     
     public func parsePacket(cmd: String, data: String, hexData: String) {
 
-//        if data.count < 64 {
-//            return
-//        }
         
 //        NSLog("parsePacket cmd: \(String(describing: cmd))    responseCode:\(String(describing: responseCode))     data:\(String(describing: data)) ")
-//        NSLog("parsePacket cmd: \(String(describing: cmd))")
-        NSLog("parsePacket data: \(String(describing: data))")
+        NSLog("parsePacket cmd: \(String(describing: cmd))")
+        NSLog("parsePacket RawData: \(String(describing: data))")
+        NSLog("parsePacket HexData: \(String(describing: hexData))")
+        
+        
 //        NSLog("parsePacket resCode: \(String(describing: responseCode))")
 //        NSLog("parsePacket NSMakeRange(1, 3): \(String(describing: data.substring(with: NSMakeRange(1, 3))))")
         
@@ -64,6 +64,14 @@ final class ParserUtil: NSObject {
         if (cmd == "UECM00" && data.substring(with: NSMakeRange(7, 3)) == "REM") {
             parseEcmCmd(cmd: cmd, data: data, hexData: hexData)
         }
+        
+        //UECM00, UECM01, UECM02 Command URT906DTC
+
+//        if (cmd.prefix(3) == "UTT") {
+        if (cmd.prefix(3) == "UTT" && data.substring(with: NSMakeRange(1, 2)) == "RT") {
+            parseUttCmd(cmd: cmd, data: data, hexData: hexData)
+        }
+        
   
         
     }
@@ -86,7 +94,7 @@ final class ParserUtil: NSObject {
         print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
         print("VINyear:  ", Bike.sharedInstance.VINyear)
         
-        NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.vinCommandNotification, object: nil)
 
     }
     
@@ -121,7 +129,7 @@ final class ParserUtil: NSObject {
 //        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
 
         
-        NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.devCommandNotification, object: nil)
     }
 
     
@@ -156,8 +164,34 @@ final class ParserUtil: NSObject {
         
 
         
-        NotificationCenter.default.post(name: Constants.didUpdateValueForcharacteristicNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.ecmCommandNotification, object: nil)
     }
+    
+    
+    public func parseUttCmd(cmd: String, data: String, hexData: String) {
+        //removed leading headers
+        let offset = (6 + 6) * 2
+//        if invalidPacketSize(hexData: hexData, offset: offset) {
+////            return
+//        }
+        
+//        let actualHexData = getActualHexData(hexData: hexData, offset: offset)
+        
+//        print("hexData     : ", hexData)
+//        print("actualData  : ", actualHexData)
+        
+//        Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
+//        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
+//
+//        print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
+//        print("VINyear:  ", Bike.sharedInstance.VINyear)
+        
+        NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)
+        
+    }
+    
+    
+    
     
     func convertHexToAscii(text: String) -> String {
         NSLog("convertHexToAscii text1: \(String(describing: text))")
@@ -205,6 +239,10 @@ final class ParserUtil: NSObject {
     //Strip out header info and return actual data in packet
     func getActualHexData(hexData: String, offset: Int) -> String {
 
+        if offset>=hexData.count {
+            return hexData
+        }
+        
         let index = hexData.index(hexData.startIndex, offsetBy: offset)
         let actualHexData = String(hexData.suffix(from: index))
         

@@ -20,14 +20,25 @@
 
 @implementation DTCViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     [self initData];
     
-    self.uitableviewDTCcode.delegate = self;
-    self.uitableviewDTCcode.dataSource = self;
+    if (Bike.sharedInstance.isDemoMode) {
+           [self readDtcShortDescriptionFromFile];
+    }else {
+        [self addObservers];
+        [self sendCommands:0];        
+    }
+    
+    
+    
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     
 //    self readDtcShortDescriptionFromFile];
 //    [self updateTheme];
@@ -41,7 +52,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.uitableviewDTCcode reloadData];
+    
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,11 +66,18 @@
 - (void) initData
 {
     listOfItems = [[NSMutableArray alloc] init];
-    
-    [self readDtcShortDescriptionFromFile];
+ 
 }
 
 
+- (IBAction)refreshButton:(id)sender {
+    [self sendCommands:0];
+}
+
+
+- (IBAction)clearButton:(id)sender {
+    
+}
 
 #pragma mark - UITableView Methods
 //func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -192,7 +211,7 @@
     //static NSString *CellIdentifier = @"Cell";
     NSString *CellIdentifier = [NSString stringWithFormat:@"Cells%ld", (long)[indexPath row] ];
     
-    UITableViewCell *cell = [self.uitableviewDTCcode dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:CellIdentifier];
@@ -326,7 +345,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.uitableviewDTCcode reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     TCCellData *cellData = [listOfItems objectAtIndex:[indexPath row]];
     
     if (cellData.isParent){
@@ -372,7 +391,7 @@
     }
     
     //Reload parent cell in with correct arrow image
-    [self.uitableviewDTCcode reloadRowsAtIndexPaths:@[cellData.indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:@[cellData.indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
 }
 
@@ -385,7 +404,7 @@
     if ([cellData.childItems count] == 0)
         return;
     
-    [self.uitableviewDTCcode beginUpdates];
+    [self.tableView beginUpdates];
     
     NSMutableArray *arrChild = [[NSMutableArray alloc] init];   //initialize child array for a given parent
     
@@ -405,9 +424,9 @@
         
     }
     //Add children of given parent from UI
-    [self.uitableviewDTCcode insertRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView insertRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
     
-    [self.uitableviewDTCcode endUpdates];
+    [self.tableView endUpdates];
     
 }
 
@@ -419,7 +438,7 @@
     if ([cellData.childItems count] == 0)
         return;
     
-    [self.uitableviewDTCcode beginUpdates];
+    [self.tableView beginUpdates];
     
     NSMutableArray *arrChild = [[NSMutableArray alloc] init];   //initialize child array for a given parent
     int childRow = cellData.row;
@@ -433,9 +452,9 @@
         
     }
     //Delete children of given parent from UI
-    [self.uitableviewDTCcode deleteRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView deleteRowsAtIndexPaths:arrChild withRowAnimation:UITableViewRowAnimationFade];
     
-    [self.uitableviewDTCcode endUpdates];
+    [self.tableView endUpdates];
     
 }
 
@@ -547,8 +566,83 @@
 
 
 
+//[self readDtcCommand:0x30];
+//[self readDtcCommand:0x31];
+//[self readDtcCommand:0x32];
 
-#pragma mark - Commands
+//- (void) sendReadDtcCommands
+//{
+//
+//    [[BluetoothUtil sharedInstance] printMyName];
+//    [[BluetoothUtil sharedInstance] writeWithCmd:@"UTT3000"];
+
+#pragma mark - Add/Remove Notification Observers.  Notification Delegation methods
+- (void) addObservers
+{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(processBluetoothReponse:)
+                                                 name:Constants.uttCommandNotification
+                                               object:nil];
+    
+    
+}
+
+
+- (void) removeObserver
+{
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Constants.uttCommandNotification object:nil];
+
+}
+
+
+
+
+- (void) processBluetoothReponse:(NSNotification *)notification
+{
+    cmdResponseCounter = cmdResponseCounter + 1;
+    if (cmdResponseCounter>=3) {
+        //            self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
+        //
+        //            for(NSString *key in [self.dtcdict allKeys]) {
+        //                //            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
+        //
+        //                troubleCode = key;
+        //                codeShortDescription = [self.dtcdict objectForKey:troubleCode];
+        //
+        //                tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+        //                [listOfItems addObject:tmpCellData];
+        //            }
+        //
+        //            listOfItems.removeAll()
+        //
+        //            listOfItems[listOfTitle[0]] = Bike.sharedInstance.VINnumber
+        //            listOfItems[listOfTitle[1]] = Bike.sharedInstance.ECMversion
+        //            listOfItems[listOfTitle[2]] = Bike.sharedInstance.ECMcalib
+        //            listOfItems[listOfTitle[3]] = Bike.sharedInstance.deviceStatus
+        //            listOfItems[listOfTitle[4]] = Bike.sharedInstance.firmwareVersion
+        //            listOfItems[listOfTitle[5]] = Bike.sharedInstance.hardwareVersion
+        //            listOfItems[listOfTitle[6]] = Bike.sharedInstance.widebandState
+        //            listOfItems[listOfTitle[7]] = Bike.sharedInstance.widebandfversion
+        //            listOfItems[listOfTitle[8]] = Bike.sharedInstance.widebandhversion
+        //            listOfItems[listOfTitle[9]] = Bike.sharedInstance.iosVersion
+        //            listOfItems[listOfTitle[10]] = Bike.sharedInstance.appVersion
+        //            listOfItems[listOfTitle[11]] = Bike.sharedInstance.appBuildVersion
+        //            listOfItems[listOfTitle[12]] = Bike.sharedInstance.DEVbtversion
+        //            listOfItems[listOfTitle[13]] = Bike.sharedInstance.DEVbtmacid
+        //            listOfItems[listOfTitle[14]] = Bike.sharedInstance.VINyear
+        
+        
+        //            self.tableView.reloadData;
+    }else {
+        [self sendCommands:cmdResponseCounter];
+        
+    }
+}
+
+
+#pragma mark - Send Commands
 
 
 
@@ -556,15 +650,39 @@
 //[self readDtcCommand:0x31];
 //[self readDtcCommand:0x32];
 
-- (void) sendReadDtcCommands
+- (void) sendCommands: (int)cmdCounter
 {
     
-    [[BluetoothUtil sharedInstance] printMyName];
-    [[BluetoothUtil sharedInstance] writeWithCmd:@"UTT3000"];
+    switch (cmdCounter) {
+    case 0:
+        cmdResponseCounter = 0;
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000"];
+        break;
+        
+    case 1:
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100"];
+        break;
+        
+    case 2:
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200"];
+        break;
+            
+    default:
+            break;
+    }
     
-//    [self readDtcCommand:0x30];
-//    [[BluetoothUtil sharedInstance]
 }
+
+
+//- (void) sendReadDtcCommands
+//{
+//
+////    [[BluetoothUtil sharedInstance] printMyName];
+//    [[BluetoothUtil sharedInstance] writeWithCmd:@"UTT3000"];
+//
+////    [self readDtcCommand:0x30];
+////    [[BluetoothUtil sharedInstance]
+//}
 
 - (void) readDtcCommand: (unsigned char)type
 {
@@ -653,7 +771,7 @@
 //    
 //    
     
-//    [self.uitableviewDTCcode setSeparatorColor:[[EAController sharedController] getCellSeparatorColor] ];
+//    [self.tableView setSeparatorColor:[[EAController sharedController] getCellSeparatorColor] ];
     
     
 

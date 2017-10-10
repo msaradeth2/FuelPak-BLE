@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rE4-Wi-Wj9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rE4-Wi-Wj9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,8 +28,16 @@
                                 </constraints>
                                 <items>
                                     <navigationItem title="Read Trouble Code" id="fva-Si-CeC">
-                                        <barButtonItem key="leftBarButtonItem" image="nav_trash.png" id="rWx-LI-dhd"/>
-                                        <barButtonItem key="rightBarButtonItem" image="nav_refresh.png" id="NnY-ct-vWg"/>
+                                        <barButtonItem key="leftBarButtonItem" image="nav_trash.png" id="rWx-LI-dhd">
+                                            <connections>
+                                                <action selector="clearButton:" destination="TIm-Ee-YLN" id="BpV-e0-RbL"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" image="nav_refresh.png" id="NnY-ct-vWg">
+                                            <connections>
+                                                <action selector="refreshButton:" destination="TIm-Ee-YLN" id="OAV-ae-hqb"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -51,11 +59,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Read DTC" id="IuE-Ch-ze5"/>
                     <connections>
+                        <outlet property="tableView" destination="J3R-nZ-psO" id="Wpm-kY-LZH"/>
                         <outlet property="uibtnClear" destination="rWx-LI-dhd" id="4ZQ-iz-33U"/>
                         <outlet property="uinavbarMain" destination="gVr-Ob-7A1" id="Wud-pi-xwS"/>
                         <outlet property="uinavbtnRefresh" destination="NnY-ct-vWg" id="M8l-zG-DiG"/>
                         <outlet property="uinavitemMainTitle" destination="fva-Si-CeC" id="oa5-6g-rUe"/>
-                        <outlet property="uitableviewDTCcode" destination="J3R-nZ-psO" id="HmN-C3-mJK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yax-OD-rc2" userLabel="First Responder" sceneMemberID="firstResponder"/>

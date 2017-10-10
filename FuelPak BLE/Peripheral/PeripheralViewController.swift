@@ -37,7 +37,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     //MARK:  Default Methods
     
     override func viewDidLoad() {
-        registerNotification()
+        
+        addObservers()
         
         initData()
         
@@ -48,6 +49,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+//        addObservers()
         
         BluetoothUtil.sharedInstance.peripheralDict.removeAll()
         tableView.reloadData()
@@ -210,9 +213,9 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 
     
 
-    // MARK:  Register/Remove Notification and Notification Delegation Methods
+    // MARK:  Add/Remove Notification Observers.  Notification Delegation Methods
     
-    func registerNotification() {
+    func addObservers() {
 
         NotificationCenter.default.addObserver(self, selector: #selector(didConnectPeripheral(notification:)), name: .didConnectPeripheralNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didFailToConnect(notfication:)), name: .didFailToConnectNotification, object: nil)
@@ -220,6 +223,15 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
 
+    func removeObservers() {
+        
+//        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: .didConnectPeripheralNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didFailToConnectNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didDiscoverPeripheralNotification, object: nil)
+
+    }
+    
     
     @objc func didConnectPeripheral(notification: NSNotification) {
         Bike.sharedInstance.isDemoMode = false
