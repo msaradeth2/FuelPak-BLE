@@ -17,7 +17,7 @@ import CoreBluetooth
 final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: - Shared Instance
-    static let sharedInstance: BluetoothUtil = {
+    @objc static let sharedInstance: BluetoothUtil = {
         let instance = BluetoothUtil()
         // setup code
         return instance
@@ -110,8 +110,13 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
+    @objc public func printMyName() {
+        NSLog("printMyName ...")
+    }
     
-    func write(cmd: String) {
+    
+    
+    @objc public func write(cmd: String) {
         self.cmd = cmd
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)

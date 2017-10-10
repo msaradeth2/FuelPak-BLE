@@ -80,7 +80,7 @@
                                     <constraint firstAttribute="height" constant="44" id="5MZ-Lc-Bs2"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Peripherals" id="ppy-O8-rca">
+                                    <navigationItem title="Fuelpak BLE" id="ppy-O8-rca">
                                         <barButtonItem key="rightBarButtonItem" title="Demo Mode" id="4ab-Ke-0Lc">
                                             <connections>
                                                 <action selector="evtDemoModeButton:" destination="rE4-Wi-Wj9" id="d7k-mC-4Lb"/>

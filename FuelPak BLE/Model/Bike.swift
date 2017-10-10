@@ -16,7 +16,7 @@ import UIKit
 final class Bike: NSObject {
     
     // MARK: - Shared Instance
-    static let sharedInstance: Bike = {
+    @objc static let sharedInstance: Bike = {
         let instance = Bike()
         // setup code
         return instance
@@ -43,8 +43,8 @@ final class Bike: NSObject {
     var softwareVersion = ""
     var systemId = ""
     
-    var isDemoMode = false
-    var isConnected = false
+    @objc var isDemoMode = false
+    @objc var isConnected = false
     
     //From Fuelpak
     var VINnumber = "";  // 1HD1JPV34CB010700

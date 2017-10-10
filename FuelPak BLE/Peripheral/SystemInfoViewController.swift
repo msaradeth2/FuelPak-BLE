@@ -195,25 +195,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
 
-//        switch section {
-//        case 0:
-//            if (Bike.sharedInstance.isDemoMode == true) {
-//                sectionTitle = "Status:  Demo Mode"
-//            }else {
-//                if (Bike.sharedInstance.isConnected) {
-//                    sectionTitle = "Status:  Connected"
-//                }else {
-//                    sectionTitle = "Status:  Disconnected"
-//                }
-//            }
-//
-//
-//        case 1:
-//            sectionTitle = "Perpherals Nearby"
-//
-//        default:
-//            sectionTitle = " "
-//        }
+
 
         return sectionTitle
     }

@@ -7,8 +7,10 @@
 //
 
 #import "DTCViewController.h"
+#import <FuelPak_BLE-Swift.h>
 
-
+//#import <TestSwift-Swift.h>
+//#import <ProductName/ProductModuleName-Swift.h>
 
 #define MinCellHeight 94.0
 
@@ -59,6 +61,40 @@
 
 
 #pragma mark - UITableView Methods
+//func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//
+//    var sectionTitle: String
+//    if (Bike.sharedInstance.isDemoMode == true) {
+//        sectionTitle = "Status:  Demo Mode"
+//    }else {
+//        if (Bike.sharedInstance.isConnected) {
+//            sectionTitle = "Status:  Connected"
+//        }else {
+//            sectionTitle = "Status:  Disconnected"
+//        }
+//    }
+//
+//
+//
+//
+//    return sectionTitle
+//}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionTitle;
+    if (Bike.sharedInstance.isDemoMode == true) {
+        sectionTitle = @"Status:  Demo Mode";
+    }else {
+        if (Bike.sharedInstance.isConnected) {
+            sectionTitle = @"Status:  Connected";
+        }else {
+            sectionTitle = @"Status:  Disconnected";
+        }
+    }
+    
+    return sectionTitle;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -522,7 +558,12 @@
 
 - (void) sendReadDtcCommands
 {
-    [self readDtcCommand:0x30];
+    
+    [[BluetoothUtil sharedInstance] printMyName];
+    [[BluetoothUtil sharedInstance] writeWithCmd:@"UTT3000"];
+    
+//    [self readDtcCommand:0x30];
+//    [[BluetoothUtil sharedInstance]
 }
 
 - (void) readDtcCommand: (unsigned char)type
@@ -555,6 +596,7 @@
     
     NSString *resourceDirectory = [[NSBundle mainBundle] resourcePath];
     NSString *imageName  = [resourceDirectory stringByAppendingPathComponent:@"background33.png"];
+    
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:  [UIImage imageWithContentsOfFile: imageName]   ]];
 //    [self.uinavbarMain setTintColor: [[EAController sharedController] getNavBarTintColor]];
 //    
