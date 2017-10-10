@@ -13,6 +13,9 @@ import CoreBluetooth
 
 
 class PeripheralViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CBPeripheralDelegate {
+    
+    // MARK:  Define Variables
+    
     struct PeripheralsStructure {
         var peripheralInstance: CBPeripheral?
         var peripheralRSSI: NSNumber?
@@ -28,6 +31,11 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
     private var localTimer: Timer = Timer()
 
+    
+    
+    
+    //MARK:  Default Methods
+    
     override func viewDidLoad() {
         registerNotification()
         
@@ -59,6 +67,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
+    
+    //MARK:  Init Data
     func initData() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -72,7 +82,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
 
     
-    
+    // MARK: Events Methods
     
     @IBAction func evtDemoModeButton(_ sender: Any) {
         
@@ -96,15 +106,10 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 
     
     
-    func updateTable() {
 
-        self.tableView.reloadData()
-        
-        
-    }
     
     
-    
+    // MARK: - TableView Delegation methods
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -201,18 +206,11 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
         
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
-    }
-    
 
 
     
 
-    
+    // MARK:  Register/Remove Notification and Notification Delegation Methods
     
     func registerNotification() {
 
@@ -249,6 +247,26 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        }
 //    }
     
+    
+    // MARK: Helper Methods
+    func updateTable() {
+        
+        self.tableView.reloadData()
+        
+        
+    }
+    
+    
+    
+    // MARK:  Prepare For Segue
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+    }
+    
+
 }
 
 

@@ -14,6 +14,8 @@ import CoreBluetooth
 
 class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CBPeripheralDelegate {
     
+    // MARK:  Define Variables
+    
     struct PeripheralsStructure {
         var peripheralInstance: CBPeripheral?
         var peripheralRSSI: NSNumber?
@@ -39,7 +41,9 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    // MARK - Default Methods
+    
+    
+    // MARK: - Default Methods
     override func viewDidLoad() {
         registerNotification()
         
@@ -67,6 +71,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
+    // MARK: Initialize Data
     func initData() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -98,8 +103,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    
-    
+    // MARK: Events Methods
     
     @IBAction func evtBackButton(_ sender: Any) {
         print("evtBackButton")
@@ -114,27 +118,13 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         print("evtRefreshButton")
         
         sendCommands(cmdCounter: 0)
-//        print("BluetoothUtil.sharedInstance.write(cmd: \"UVIN00\")")
-//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
-        
-//        self.tableView.reloadData()
+
     }
     
     
+
     
-    func exitViewController() {
-        print("exitViewController")
-    }
-    
-    
-    func updateTable() {
-        
-        self.tableView.reloadData()
-        
-        
-    }
-    
-    
+    // MARK: - TableView Delegation methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -143,18 +133,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return listOfTitle.count
-        
-//        switch section {
-//        case 0:
-//            return listOfItemsSection_0.count
-//
-//        case 1:
-//            return listOfItems.count
-//
-//        default:
-//            return 0
-//        }
-
         
     }
     
@@ -200,22 +178,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         return sectionTitle
     }
     
-    
-    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//
-//        switch section {
-//        case 0:
-//            return 93.0
-//
-//        case 1:
-//            return 50.0
-//
-//        default:
-//            return 0
-//        }
-//    }
-    
+
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -247,6 +210,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
+    // MARK:  Send Commands
     func sendCommands(cmdCounter: Int) {
                 
         switch cmdCounter {
@@ -267,6 +231,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    
+    // MARK:  Register/Remove Notification and Notification Delegation Methods
     func registerNotification() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateValueForcharacteristic(notfication:)), name: .didUpdateValueForcharacteristicNotification, object: nil)
@@ -275,12 +241,11 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    
+
     
     @objc func didDiscoverCharacteristic(notfication: NSNotification) {
         
         sendCommands(cmdCounter: 0)
-//        BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
         
     }
     
@@ -307,25 +272,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             listOfItems[listOfTitle[12]] = Bike.sharedInstance.DEVbtversion
             listOfItems[listOfTitle[13]] = Bike.sharedInstance.DEVbtmacid
             listOfItems[listOfTitle[14]] = Bike.sharedInstance.VINyear
-    
-            
-//            listOfItems.append(Bike.sharedInstance.VINnumber)
-//            listOfItems.append(Bike.sharedInstance.ECMversion)
-//            listOfItems.append(Bike.sharedInstance.ECMcalib)
-//            listOfItems.append(Bike.sharedInstance.deviceStatus)
-//            listOfItems.append(Bike.sharedInstance.firmwareVersion)
-//            listOfItems.append(Bike.sharedInstance.hardwareVersion)
-//
-//            listOfItems.append(Bike.sharedInstance.widebandState)
-//            listOfItems.append(Bike.sharedInstance.widebandfversion)
-//            listOfItems.append(Bike.sharedInstance.widebandhversion)
-//            listOfItems.append(Bike.sharedInstance.iosVersion)
-//            listOfItems.append(Bike.sharedInstance.appVersion)
-//            listOfItems.append(Bike.sharedInstance.appBuildVersion)
-//            listOfItems.append(Bike.sharedInstance.DEVbtversion)
-//            listOfItems.append(Bike.sharedInstance.DEVbtmacid)
-//            listOfItems.append(Bike.sharedInstance.VINmodel)
-//            listOfItems.append(Bike.sharedInstance.VINyear)
             
             tableView.reloadData()
         }else {
@@ -334,6 +280,20 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    
+    // MARK: Helper Methods
+    
+    func exitViewController() {
+        print("exitViewController")
+    }
+    
+    
+    func updateTable() {
+        
+        self.tableView.reloadData()
+        
+        
+    }
     
 }
 
