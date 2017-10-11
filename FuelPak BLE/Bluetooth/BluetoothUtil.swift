@@ -17,6 +17,8 @@ import CoreBluetooth
 
 final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
+    
+    
     // MARK: - Shared Instance
     @objc static let sharedInstance: BluetoothUtil = {
         let instance = BluetoothUtil()
@@ -66,6 +68,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var discoveredSevice: CBService?
 //    var resultString: String = ""
     var cmd: String = ""
+    var asciiData: String = ""
+
 
     
     
@@ -325,6 +329,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         let asciiData = String(bytes: bytesData, encoding: String.Encoding.ascii)
 
+        self
         //Convert bytesData to Hex Data
         var hexData = ""
         for ii in 0..<bytesData.count
@@ -336,17 +341,25 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //        print ("hexData: ", hexData)
         
         
+        
+        //Got the Acknowlegement from FuelPak - do nothing for now
         if asciiData==self.cmd {
-            if Constants.debugOn {
-                print(self.cmd)
+            if Constants.debugOn2 {
+                NSLog("Acknowlegement: \(String(describing: self.cmd))")
+//                print(self.cmd)
             }
             
             //Got the Acknowlegement from FuelPak - do nothing for now
 //            NSLog("resultAscii: \(String(describing: resultAscii))")
         }else {
 
-            // Parse data
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!, hexData: hexData)
+            if validPacketSize(rawData: asciiData!, hexData: hexData, offset: 0) {
+                // Parse data
+                ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!, hexData: hexData)
+            }else {
+
+            }
+
             
         }
 
@@ -368,9 +381,77 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
-
     
-
+    //Validate packet size
+    func validPacketSize(rawData: String, hexData: String, offset: Int) -> Bool {
+        if Constants.debugOn1 {
+            NSLog("parsePacket cmd: \(String(describing: self.cmd))")
+            NSLog("parsePacket RawData: \(String(describing: rawData))")
+            NSLog("parsePacket HexData: \(String(describing: hexData))")
+        }
+        
+        //Get Packet size
+        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
+        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
+        if packetSizeAscii.count != 1 {
+            return false
+        }
+        
+        let packetSize = Int(packetSizeAscii)! * 128
+        let actualpaketSize = hexData.count - 24
+        
+        if Constants.debugOn1 {
+            NSLog("validPacketSize      packetSize: \(String(describing: packetSize))")
+            NSLog("validPacketSize actualpaketSize: \(String(describing: actualpaketSize))")
+            NSLog("validPacketSize         hexData: \(String(describing: hexData.count))")
+        }
+        
+        
+        
+        //Compare the packetsize to Actual data length
+        if packetSize == actualpaketSize {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    //Strip out header info and return actual data in packet
+    func getActualHexData(hexData: String, offset: Int) -> String {
+        
+        if offset>=hexData.count {
+            return hexData
+        }
+        
+        let index = hexData.index(hexData.startIndex, offsetBy: offset)
+        let actualHexData = String(hexData.suffix(from: index))
+        
+        return actualHexData
+    }
+    
+    
+    func convertHexToAscii(text: String) -> String {
+        if Constants.debugOn {
+            NSLog("convertHexToAscii text1: \(String(describing: text))")
+        }
+        
+        
+        
+        let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
+        let textNS = text as NSString
+        let matchesArray = regex.matches(in: textNS as String, options: [], range: NSMakeRange(0, textNS.length))
+        let characters = matchesArray.map {
+            Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
+        }
+        
+        if Constants.debugOn {
+            NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
+        }
+        
+        
+        return String(characters)
+    }
+    
 }
 
 
