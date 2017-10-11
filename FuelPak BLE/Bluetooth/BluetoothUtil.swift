@@ -70,6 +70,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var cmd: String = ""
     var asciiDataBuffer: String = ""
     var hexDataBuffer: String = ""
+    var actualHexDataBuffer: String = ""
+    
 
 
     
@@ -325,6 +327,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     // MARK: Handle Bluetooth Reponses here
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         var acknowledgement: String = ""
+        let offset = (6 + 6 + 6) * 2
+        
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
@@ -348,7 +352,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             self.hexDataBuffer = ""
             
             if Constants.debugOn2 {
-                NSLog("Acknowlegement: \(String(describing: acknowledgement))")
+                NSLog("peripheral: Acknowlegement: \(String(describing: acknowledgement))")
             }
         }
         
@@ -360,16 +364,17 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         {
             let hexValue = String(format: "%02X",bytesData[ii])
             self.hexDataBuffer = self.hexDataBuffer + hexValue  ////Accumulate hexData
-            //            print (hexValue)
         }
         
         
         if allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
             // Parse data
-            NSLog("Acknowlegement: allPacketsArrived")
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
+            NSLog("peripheral: allPacketsArrived")
+            
+            self.actualHexDataBuffer = getActualHexData(hexData: self.hexDataBuffer, offset: offset)
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
         }else {
-            NSLog("Acknowlegement: Wait for more packets to arrive")
+            NSLog("peripheral: Waiting for more packets to arrive")
             //Wait for the rest of data
         }
         
