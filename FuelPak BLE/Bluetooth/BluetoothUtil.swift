@@ -68,7 +68,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var discoveredSevice: CBService?
 //    var resultString: String = ""
     var cmd: String = ""
-    var asciiData: String = ""
+    var asciiDataBuffer: String = ""
+    var hexDataBuffer: String = ""
 
 
     
@@ -323,45 +324,48 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK: Handle Bluetooth Reponses here
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        
+        var acknowledgement: String = ""
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
-        let asciiData = String(bytes: bytesData, encoding: String.Encoding.ascii)
+        let packetDataAscii = String(bytes: bytesData, encoding: String.Encoding.ascii)
+        let packetSize = String(describing: packetDataAscii).count
 
-        self
-        //Convert bytesData to Hex Data
-        var hexData = ""
+        if packetSize >= 6 {
+            acknowledgement = String(describing: packetDataAscii?.substring(with: NSMakeRange(0, 5)))
+        }
+        
+        if acknowledgement==self.cmd {
+            //Init data for this commmands
+            self.asciiDataBuffer = packetDataAscii!
+            self.hexDataBuffer = ""
+            
+            if Constants.debugOn2 {
+                NSLog("Acknowlegement: \(String(describing: acknowledgement))")
+            }
+        }else {
+            //Accumulate packet data
+            self.asciiDataBuffer = self.asciiDataBuffer + packetDataAscii!
+        }
+        
+        //Convert bytesData to Hex Data and accumulate it
         for ii in 0..<bytesData.count
         {
             let hexValue = String(format: "%02X",bytesData[ii])
-            hexData = hexData + hexValue
-//            print (hexValue)
+            self.hexDataBuffer = self.hexDataBuffer + hexValue  ////Accumulate hexData
+            //            print (hexValue)
         }
-//        print ("hexData: ", hexData)
         
         
-        
-        //Got the Acknowlegement from FuelPak - do nothing for now
-        if asciiData==self.cmd {
-            if Constants.debugOn2 {
-                NSLog("Acknowlegement: \(String(describing: self.cmd))")
-//                print(self.cmd)
-            }
-            
-            //Got the Acknowlegement from FuelPak - do nothing for now
-//            NSLog("resultAscii: \(String(describing: resultAscii))")
+        if validPacketSize(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
+            // Parse data
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
         }else {
-
-            if validPacketSize(rawData: asciiData!, hexData: hexData, offset: 0) {
-                // Parse data
-                ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: asciiData!, hexData: hexData)
-            }else {
-
-            }
-
-            
+            //Wait for the rest of data
         }
+        
+        
+
 
 //        print("asciiData: ", asciiData!)
 //        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
