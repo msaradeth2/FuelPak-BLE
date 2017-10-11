@@ -59,20 +59,20 @@ final class ParserUtil: NSObject {
         }
         
         //UDEV00 Command
-        if (cmd == "UDEV00" && data.substring(with: NSMakeRange(13, 3)) == "RDV") {
+        if (cmd == "UDEV00" && data.substring(with: NSMakeRange(7, 3)) == "RDV") {
             parseDevCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         
         //UECM00 Command
-        if (cmd == "UECM00" && data.substring(with: NSMakeRange(13, 3)) == "REM") {
+        if (cmd == "UECM00" && data.substring(with: NSMakeRange(7, 3)) == "REM") {
             parseEcmCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         //UECM00, UECM01, UECM02 Command URT906DTC
 
 //        if (cmd.prefix(3) == "UTT") {
-        if (cmd.prefix(3) == "UTT" && data.substring(with: NSMakeRange(1, 2)) == "RT") {
+        if (cmd.prefix(3) == "UTT" && data.substring(with: NSMakeRange(7, 2)) == "RT") {
             parseUttCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
@@ -187,7 +187,7 @@ final class ParserUtil: NSObject {
     
     public func parseUttCmd(cmd: String, data: String, hexData: String) {
         //removed leading headers
-        let offset = (6 + 6) * 2
+        let offset = (6 + 6 + 6) * 2
 //        if invalidPacketSize(hexData: hexData, offset: offset) {
 ////            return
 //        }
