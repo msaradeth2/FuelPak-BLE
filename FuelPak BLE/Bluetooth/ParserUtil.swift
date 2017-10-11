@@ -155,10 +155,36 @@ final class ParserUtil: NSObject {
     
     
     public func parseUttCmd(cmd: String, data: String, hexData: String) {
+        let dataOffset = 8
 
+        let numberOfDtcCodesStr = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(2, 6))))
         
-//        print("hexData     : ", hexData)
-//        print("actualData  : ", actualHexData)
+//        // Hexadecimal to decimal
+//        let h2 = "1c"
+//        let d4 = Int(h2, radix: 16)!
+//        print(d4) // 28
+//
+//        let numberOfDtcCodes = Int(numberOfDtcCodesStr, radix: 16)
+        
+        
+        
+//        listDtc = [text componentsSeparatedByString:@"_"];
+//        listcount = [listDtc count];
+        
+        
+        let dtcCodes = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-8))))
+        let dtcCodesArr =  dtcCodes.split(separator: "_")
+        
+        print("numberOfDtcCodes     : ", numberOfDtcCodesStr)
+        print("dtcCodes  : ", dtcCodes)
+        print("dtcCodesArr.count  : ", dtcCodesArr.count)
+        print("dtcCodesArr  : ", dtcCodesArr)
+        
+        var ii: Int = 0
+        for dtcCode in dtcCodesArr {
+            ii = ii + 1
+            print("%d.  dtcCode  :%s ", ii, dtcCode)
+        }
         
 //        Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
 //        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
@@ -177,9 +203,7 @@ final class ParserUtil: NSObject {
         if Constants.debugOn {
             NSLog("convertHexToAscii text1: \(String(describing: text))")
         }
-        
-        
-        
+                        
         let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
         let textNS = text as NSString
         let matchesArray = regex.matches(in: textNS as String, options: [], range: NSMakeRange(0, textNS.length))
