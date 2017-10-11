@@ -329,26 +329,33 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
         let packetDataAscii = String(bytes: bytesData, encoding: String.Encoding.ascii)
-        let packetSize = String(describing: packetDataAscii).count
 
-        if packetSize >= 6 {
-            acknowledgement = String(describing: packetDataAscii?.substring(with: NSMakeRange(0, 5)))
+
+        //Get the Acknowledgement
+        for ii in 0..<bytesData.count
+        {
+            let strValue = String(format: "%c",bytesData[ii])
+            acknowledgement = acknowledgement + strValue  ////Accumulate hexData
+            if ii == 5  {
+                break   //Only need the first six characters
+            }
         }
-        
+                
+        //if data is acknowledgement reset data buffer
         if acknowledgement==self.cmd {
             //Init data for this commmands
-            self.asciiDataBuffer = packetDataAscii!
+            self.asciiDataBuffer = ""
             self.hexDataBuffer = ""
             
             if Constants.debugOn2 {
                 NSLog("Acknowlegement: \(String(describing: acknowledgement))")
             }
-        }else {
-            //Accumulate packet data
-            self.asciiDataBuffer = self.asciiDataBuffer + packetDataAscii!
         }
         
-        //Convert bytesData to Hex Data and accumulate it
+        //Accumulate packet data
+        self.asciiDataBuffer = self.asciiDataBuffer + packetDataAscii!
+        
+        //Convert bytesData to Hex Data and accumulate hexDataBuffer
         for ii in 0..<bytesData.count
         {
             let hexValue = String(format: "%02X",bytesData[ii])
@@ -360,7 +367,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         if allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
             // Parse data
             NSLog("Acknowlegement: allPacketsArrived")
-//            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
+            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
         }else {
             NSLog("Acknowlegement: Wait for more packets to arrive")
             //Wait for the rest of data
