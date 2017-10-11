@@ -357,10 +357,12 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         
-        if validPacketSize(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
+        if allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
             // Parse data
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
+            NSLog("Acknowlegement: allPacketsArrived")
+//            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.hexDataBuffer)
         }else {
+            NSLog("Acknowlegement: Wait for more packets to arrive")
             //Wait for the rest of data
         }
         
@@ -387,33 +389,34 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     //Validate packet size
-    func validPacketSize(rawData: String, hexData: String, offset: Int) -> Bool {
+    func allPacketsArrived(rawData: String, hexData: String, offset: Int) -> Bool {
         if Constants.debugOn1 {
             NSLog("parsePacket cmd: \(String(describing: self.cmd))")
             NSLog("parsePacket RawData: \(String(describing: rawData))")
             NSLog("parsePacket HexData: \(String(describing: hexData))")
         }
         
+        if hexData.count < 24 {
+            return false    //Don't have enough data yet
+        }
+        
         //Get Packet size
         let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
         let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
-        if packetSizeAscii.count != 1 {
-            return false
-        }
-        
+
         let packetSize = Int(packetSizeAscii)! * 128
         let actualpaketSize = hexData.count - 24
         
         if Constants.debugOn1 {
-            NSLog("validPacketSize      packetSize: \(String(describing: packetSize))")
-            NSLog("validPacketSize actualpaketSize: \(String(describing: actualpaketSize))")
-            NSLog("validPacketSize         hexData: \(String(describing: hexData.count))")
+            NSLog("allPacketsArrived      packetSize: \(String(describing: packetSize))     actualpaketSize: \(String(describing: actualpaketSize))")
+//            NSLog("allPacketsArrived actualpaketSize: \(String(describing: actualpaketSize))")
+//            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
         }
         
         
         
         //Compare the packetsize to Actual data length
-        if packetSize == actualpaketSize {
+        if actualpaketSize >= packetSize {
             return true
         }else {
             return false

@@ -54,18 +54,18 @@ final class ParserUtil: NSObject {
 //        NSLog("parsePacket NSMakeRange(1, 3): \(String(describing: data.substring(with: NSMakeRange(1, 3))))")
         
         //UVIN00 Command
-        if (cmd == "UVIN00" && data.substring(with: NSMakeRange(1, 3)) == "RVN") {
+        if (cmd == "UVIN00" && data.substring(with: NSMakeRange(7, 3)) == "RVN") {
             parseVinCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         //UDEV00 Command
-        if (cmd == "UDEV00" && data.substring(with: NSMakeRange(7, 3)) == "RDV") {
+        if (cmd == "UDEV00" && data.substring(with: NSMakeRange(13, 3)) == "RDV") {
             parseDevCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
         
         //UECM00 Command
-        if (cmd == "UECM00" && data.substring(with: NSMakeRange(7, 3)) == "REM") {
+        if (cmd == "UECM00" && data.substring(with: NSMakeRange(13, 3)) == "REM") {
             parseEcmCmd(cmd: cmd, data: data, hexData: hexData)
         }
         
@@ -82,10 +82,10 @@ final class ParserUtil: NSObject {
     
     public func parseVinCmd(cmd: String, data: String, hexData: String) {
         //removed leading headers
-        let offset = (6 + 6) * 2
-        if invalidPacketSize(hexData: hexData, offset: offset) {
-            return
-        }
+        let offset = (6 + 6 + 6) * 2
+//        if invalidPacketSize(hexData: hexData, offset: offset) {
+//            return
+//        }
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
         
@@ -111,11 +111,11 @@ final class ParserUtil: NSObject {
     
     public func parseDevCmd(cmd: String, data: String, hexData: String) {
         if Constants.debugOn {NSLog("parseDevCmd data: \(String(describing: data))")}
-        let offset = (6 + 6) * 2
+        let offset = (6 + 6 + 6) * 2
         
-        if invalidPacketSize(hexData: hexData, offset: offset) {
-//            return
-        }
+//        if invalidPacketSize(hexData: hexData, offset: offset) {
+////            return
+//        }
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
         
@@ -151,9 +151,9 @@ final class ParserUtil: NSObject {
         
         let offset = (6 + 6 + 6) * 2
         
-        if invalidPacketSize(hexData: hexData, offset: offset) {
-            return
-        }
+//        if invalidPacketSize(hexData: hexData, offset: offset) {
+//            return
+//        }
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
 //        Bike.sharedInstance.ECMversion = convertHexToDecimal(hexString: String(describing: actualHexData.substring(with: NSMakeRange(24, 4))))

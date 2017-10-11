@@ -28,7 +28,7 @@ final class Constants: NSObject {
     @objc static let ecmCommandNotification =  Notification.Name("ecmCommandNotification")
     @objc static let uttCommandNotification =  Notification.Name("uttCommandNotification")
     
-    @objc static let debugOn =  false;
+    @objc static let debugOn =  true;
     @objc static let debugOn1 =  true;
     @objc static let debugOn2 =  true;
     
