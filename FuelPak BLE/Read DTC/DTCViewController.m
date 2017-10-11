@@ -31,7 +31,7 @@
            [self readDtcShortDescriptionFromFile];
     }else {
         [self addObservers];
-        [self sendCommands:0];        
+        [self sendReadDtcCommands:0];        
     }
     
     
@@ -71,7 +71,7 @@
 
 
 - (IBAction)refreshButton:(id)sender {
-    [self sendCommands:0];
+    [self sendReadDtcCommands:0];
 }
 
 
@@ -636,7 +636,7 @@
         
         //            self.tableView.reloadData;
     }else {
-        [self sendCommands:cmdResponseCounter];
+        [self sendReadDtcCommands:cmdResponseCounter];
         
     }
 }
@@ -650,7 +650,7 @@
 //[self readDtcCommand:0x31];
 //[self readDtcCommand:0x32];
 
-- (void) sendCommands: (int)cmdCounter
+- (void) sendReadDtcCommands: (int)cmdCounter
 {
     
     switch (cmdCounter) {
@@ -684,15 +684,15 @@
 ////    [[BluetoothUtil sharedInstance]
 //}
 
-- (void) readDtcCommand: (unsigned char)type
-{
-    uint8_t buf[32];
-    
-    sprintf((char*)buf,"UTT%c00",type);
-//    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
-    
-    //printf ("%s\n",buf);
-}
+//- (void) readDtcCommand: (unsigned char)type
+//{
+//    uint8_t buf[32];
+//
+//    sprintf((char*)buf,"UTT%c00",type);
+////    [[EAController sharedController] writeData:[NSData dataWithBytes:buf length:6]];
+//
+//    //printf ("%s\n",buf);
+//}
 
 
 - (void) clearDtcCommand: (unsigned char)type

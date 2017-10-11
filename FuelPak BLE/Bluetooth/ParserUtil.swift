@@ -41,9 +41,13 @@ final class ParserUtil: NSObject {
 
         
 //        NSLog("parsePacket cmd: \(String(describing: cmd))    responseCode:\(String(describing: responseCode))     data:\(String(describing: data)) ")
-        NSLog("parsePacket cmd: \(String(describing: cmd))")
-        NSLog("parsePacket RawData: \(String(describing: data))")
-        NSLog("parsePacket HexData: \(String(describing: hexData))")
+        
+        if Constants.debugOn1 {
+            NSLog("parsePacket cmd: \(String(describing: cmd))")
+            NSLog("parsePacket RawData: \(String(describing: data))")
+            NSLog("parsePacket HexData: \(String(describing: hexData))")
+        }
+
         
         
 //        NSLog("parsePacket resCode: \(String(describing: responseCode))")
@@ -85,14 +89,20 @@ final class ParserUtil: NSObject {
         
         let actualHexData = getActualHexData(hexData: hexData, offset: offset)
         
-        print("hexData     : ", hexData)
-        print("actualData  : ", actualHexData)
+        if Constants.debugOn {
+            print("hexData     : ", hexData)
+            print("actualData  : ", actualHexData)
+        }
+
         
         Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
         Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
 
-        print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
-        print("VINyear:  ", Bike.sharedInstance.VINyear)
+        if Constants.debugOn {
+            print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
+            print("VINyear:  ", Bike.sharedInstance.VINyear)
+        }
+
         
         NotificationCenter.default.post(name: Constants.vinCommandNotification, object: nil)
 
@@ -100,7 +110,7 @@ final class ParserUtil: NSObject {
     
     
     public func parseDevCmd(cmd: String, data: String, hexData: String) {
-        NSLog("parseDevCmd data: \(String(describing: data))")
+        if Constants.debugOn {NSLog("parseDevCmd data: \(String(describing: data))")}
         let offset = (6 + 6) * 2
         
         if invalidPacketSize(hexData: hexData, offset: offset) {
@@ -120,11 +130,14 @@ final class ParserUtil: NSObject {
         Bike.sharedInstance.widebandfversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(316, 8))))
         Bike.sharedInstance.widebandhversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(324, 6))))
         
-        NSLog("parseDevCmd widebandState: \(String(describing: Bike.sharedInstance.widebandState))")
-        NSLog("parseDevCmd widebandfversion: \(String(describing: Bike.sharedInstance.widebandfversion))")
-        NSLog("parseDevCmd widebandhversion: \(String(describing: Bike.sharedInstance.widebandhversion))")
-        NSLog("parseDevCmd DEVbtversion: \(String(describing: Bike.sharedInstance.DEVbtversion))")
-        NSLog("parseDevCmd DEVbtmacid: \(String(describing: Bike.sharedInstance.DEVbtmacid))")
+        if Constants.debugOn {
+            NSLog("parseDevCmd widebandState: \(String(describing: Bike.sharedInstance.widebandState))")
+            NSLog("parseDevCmd widebandfversion: \(String(describing: Bike.sharedInstance.widebandfversion))")
+            NSLog("parseDevCmd widebandhversion: \(String(describing: Bike.sharedInstance.widebandhversion))")
+            NSLog("parseDevCmd DEVbtversion: \(String(describing: Bike.sharedInstance.DEVbtversion))")
+            NSLog("parseDevCmd DEVbtmacid: \(String(describing: Bike.sharedInstance.DEVbtmacid))")
+        }
+
         
 //        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
 
@@ -134,7 +147,8 @@ final class ParserUtil: NSObject {
 
     
     public func parseEcmCmd(cmd: String, data: String, hexData: String) {
-        NSLog("parseEcmCmd data: \(String(describing: data))")
+        if Constants.debugOn {NSLog("parseEcmCmd data: \(String(describing: data))")}
+        
         let offset = (6 + 6 + 6) * 2
         
         if invalidPacketSize(hexData: hexData, offset: offset) {
@@ -158,9 +172,12 @@ final class ParserUtil: NSObject {
 //        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
 //        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
 
-        NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
-        NSLog("parseEcmCmd ECMversion: \(String(describing: Bike.sharedInstance.ECMversion))")
-        NSLog("parseEcmCmd ECMcalib: \(String(describing: Bike.sharedInstance.ECMcalib))")
+        if Constants.debugOn {
+            NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
+            NSLog("parseEcmCmd ECMversion: \(String(describing: Bike.sharedInstance.ECMversion))")
+            NSLog("parseEcmCmd ECMcalib: \(String(describing: Bike.sharedInstance.ECMcalib))")
+        }
+
         
 
         
@@ -194,7 +211,10 @@ final class ParserUtil: NSObject {
     
     
     func convertHexToAscii(text: String) -> String {
-        NSLog("convertHexToAscii text1: \(String(describing: text))")
+        if Constants.debugOn {
+            NSLog("convertHexToAscii text1: \(String(describing: text))")
+        }
+        
         
         
         let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
@@ -204,7 +224,10 @@ final class ParserUtil: NSObject {
             Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
         }
         
-        NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
+        if Constants.debugOn {
+            NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
+        }
+        
         
         return String(characters)
     }
@@ -223,9 +246,13 @@ final class ParserUtil: NSObject {
         let packetSize = Int(packetSizeAscii)! * 128
         let actualpaketSize = hexData.count - 12
 
-        NSLog("invalidData      packetSize: \(String(describing: packetSize))")
-        NSLog("invalidData actualpaketSize: \(String(describing: actualpaketSize))")
-        NSLog("invalidData         hexData: \(String(describing: hexData.count))")
+        if Constants.debugOn {
+            NSLog("invalidData      packetSize: \(String(describing: packetSize))")
+            NSLog("invalidData actualpaketSize: \(String(describing: actualpaketSize))")
+            NSLog("invalidData         hexData: \(String(describing: hexData.count))")
+        }
+        
+
         
         //Compare the packetsize to Actual data length
         if packetSize > actualpaketSize {

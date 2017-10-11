@@ -12,6 +12,7 @@ import Foundation
 import CoreBluetooth
 
 
+
 //final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
 final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -79,6 +80,26 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
 
+    
+    // MARK:  Write Command
+    
+    @objc public func write(cmd: String) {
+        self.cmd = cmd
+        var bytesData = [UInt8] (cmd.utf8)
+        let writeData = Data(bytes: &bytesData, count: bytesData.count)
+        
+        if Constants.debugOn {
+            NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
+            NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
+        }
+
+        
+        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+        
+    }
+    
+    
+    
    // MARK: - Public methods
 
     
@@ -114,21 +135,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
 
     
-    
-    @objc public func write(cmd: String) {
-        self.cmd = cmd
-        var bytesData = [UInt8] (cmd.utf8)
-        let writeData = Data(bytes: &bytesData, count: bytesData.count)
-        
-        NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
-        NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
-        
-        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-        
-    }
-    
-    
-    
+
     
     func scanForPeripherals() {
         cbCentralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
@@ -301,8 +308,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        NSLog("didWriteValueFor characteristic")
-        NSLog("didWriteValueFor characteristice uuid: \(String(describing: characteristicInstance?.uuid))")
+        if Constants.debugOn {
+            NSLog("didWriteValueFor characteristic")
+            NSLog("didWriteValueFor characteristice uuid: \(String(describing: characteristicInstance?.uuid))")
+        }
+
     }
     
     
@@ -327,7 +337,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         
         if asciiData==self.cmd {
-            print(bytesData)
+            if Constants.debugOn {
+                print(self.cmd)
+            }
+            
             //Got the Acknowlegement from FuelPak - do nothing for now
 //            NSLog("resultAscii: \(String(describing: resultAscii))")
         }else {
