@@ -220,8 +220,6 @@
 		5EF6AEB31F7D5E7A000AA782 /* EAController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EAController.m; sourceTree = "<group>"; };
 		5EF6AEB41F7D5E7A000AA782 /* UIButton+Glossy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
 		5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
-		5EF6AEB61F7D5E7A000AA782 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		5EF6AEB71F7D5E7A000AA782 /* Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		5EF8CB441F74245700D5FDBF /* FuelPak BLE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuelPak BLE-Bridging-Header.h"; sourceTree = "<group>"; };
 		5EF8CB451F74245700D5FDBF /* DTCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCViewController.h; sourceTree = "<group>"; };
 		5EF8CB461F74245700D5FDBF /* DTCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCViewController.m; sourceTree = "<group>"; };
@@ -368,8 +366,6 @@
 				5EF6AEB31F7D5E7A000AA782 /* EAController.m */,
 				5EF6AEB41F7D5E7A000AA782 /* UIButton+Glossy.h */,
 				5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */,
-				5EF6AEB61F7D5E7A000AA782 /* Util.h */,
-				5EF6AEB71F7D5E7A000AA782 /* Util.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
