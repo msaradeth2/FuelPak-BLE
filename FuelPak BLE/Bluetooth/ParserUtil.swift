@@ -172,25 +172,61 @@ final class ParserUtil: NSObject {
 //        listcount = [listDtc count];
         
         
-        let dtcCodes = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-8))))
-        let dtcCodesArr =  dtcCodes.split(separator: "_")
+        let dtcCodes = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-dataOffset))))
+        let dtcCodesArr =  parseDtcCodes(dtcCodes: dtcCodes)
         
         print("numberOfDtcCodes     : ", numberOfDtcCodesStr)
         print("dtcCodes  : ", dtcCodes)
         print("dtcCodesArr.count  : ", dtcCodesArr.count)
         print("dtcCodesArr  : ", dtcCodesArr)
         
-        var ii: Int = 0
-        for dtcCode in dtcCodesArr {
-            ii = ii + 1
-            print("%d.  dtcCode  :%s ", ii, dtcCode)
-        }
+
         
-//        Bike.sharedInstance.VINnumber = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
-//        Bike.sharedInstance.VINyear = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
+//        var ii: Int = 0
+//        var dtcCode: String = ""
 //
-//        print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
-//        print("VINyear:  ", Bike.sharedInstance.VINyear)
+//        for tmpDtcCode in dtcCodesArr {
+//            ii = ii + 1
+//            print("tmpDtcCode:", ii, tmpDtcCode)
+//
+//            let tmpArray = tmpDtcCode.split(separator: ".")
+//
+//            var index = 0
+//            for tmpStr in tmpArray {
+//                if index == 0  {
+//                    dtcCode = String(tmpStr)
+//                }
+//                index = index + 1
+//                print(tmpStr, dtcCode)
+//            }
+//
+//
+////            var dtcCode = tmpArray[0]
+//            let firstDigit = Int(dtcCode.prefix(1))!
+//            var myDtcCode: String = ""
+//
+//            switch (firstDigit) {
+//            case 0:
+//                myDtcCode = "P" + dtcCode.suffix(dtcCode.count-1)
+//
+//            case 1:
+//                myDtcCode = "C" + dtcCode.suffix(dtcCode.count-1)
+//
+//            case 2:
+//                myDtcCode = "B" + dtcCode.suffix(dtcCode.count-1)
+//
+//            case 3:
+//                myDtcCode = "U" + dtcCode.suffix(dtcCode.count-1)
+//
+//            default:
+//                myDtcCode = ""
+//                break;
+//            }
+//            print(tmpArray[0], myDtcCode)
+//
+//        }
+        
+
         
         NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)
         
@@ -198,6 +234,57 @@ final class ParserUtil: NSObject {
     
     
     
+    func parseDtcCodes(dtcCodes: String) -> Array<String> {
+        var dtcCodeArray: Array<String> = [String]()
+        var ii: Int = 0
+        var dtcCode: String = ""
+        var myDtcCode: String = ""
+        
+        let dtcCodesArr =  dtcCodes.split(separator: "_")
+
+        for tmpDtcCode in dtcCodesArr {
+            ii = ii + 1
+            print("tmpDtcCode:", ii, tmpDtcCode)
+            
+            let tmpArray = tmpDtcCode.split(separator: ".")
+            
+            //Get dtcCode - the first element of tmpArray
+            var index = 0
+            for tmpStr in tmpArray {
+                if index == 0  {
+                    dtcCode = String(tmpStr)
+                }
+                index = index + 1
+                print(tmpStr, dtcCode)
+            }
+            
+            
+            //Replace leading number with Character
+            let firstDigit = Int(dtcCode.prefix(1))!
+            switch (firstDigit) {
+            case 0:
+                myDtcCode = "P" + dtcCode.suffix(dtcCode.count-1)
+                
+            case 1:
+                myDtcCode = "C" + dtcCode.suffix(dtcCode.count-1)
+                
+            case 2:
+                myDtcCode = "B" + dtcCode.suffix(dtcCode.count-1)
+                
+            case 3:
+                myDtcCode = "U" + dtcCode.suffix(dtcCode.count-1)
+                
+            default:
+                myDtcCode = ""
+                break;
+            }
+            print(tmpArray[0], myDtcCode)
+            
+            dtcCodeArray.append(myDtcCode)
+        }
+        
+        return dtcCodeArray
+    }
 
     
 
