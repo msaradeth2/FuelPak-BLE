@@ -179,55 +179,7 @@ final class ParserUtil: NSObject {
         print("dtcCodes  : ", dtcCodes)
         print("dtcCodesArr.count  : ", dtcCodesArr.count)
         print("dtcCodesArr  : ", dtcCodesArr)
-        
-
-        
-//        var ii: Int = 0
-//        var dtcCode: String = ""
-//
-//        for tmpDtcCode in dtcCodesArr {
-//            ii = ii + 1
-//            print("tmpDtcCode:", ii, tmpDtcCode)
-//
-//            let tmpArray = tmpDtcCode.split(separator: ".")
-//
-//            var index = 0
-//            for tmpStr in tmpArray {
-//                if index == 0  {
-//                    dtcCode = String(tmpStr)
-//                }
-//                index = index + 1
-//                print(tmpStr, dtcCode)
-//            }
-//
-//
-////            var dtcCode = tmpArray[0]
-//            let firstDigit = Int(dtcCode.prefix(1))!
-//            var myDtcCode: String = ""
-//
-//            switch (firstDigit) {
-//            case 0:
-//                myDtcCode = "P" + dtcCode.suffix(dtcCode.count-1)
-//
-//            case 1:
-//                myDtcCode = "C" + dtcCode.suffix(dtcCode.count-1)
-//
-//            case 2:
-//                myDtcCode = "B" + dtcCode.suffix(dtcCode.count-1)
-//
-//            case 3:
-//                myDtcCode = "U" + dtcCode.suffix(dtcCode.count-1)
-//
-//            default:
-//                myDtcCode = ""
-//                break;
-//            }
-//            print(tmpArray[0], myDtcCode)
-//
-//        }
-        
-
-        
+                
         NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)
         
     }
