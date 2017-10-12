@@ -223,13 +223,13 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         switch cmdCounter {
         case 0:
             cmdResponseCounter = 0
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00")
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", numberOfMilliseconds: 1000)
             
         case 1:
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00")
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", numberOfMilliseconds: 250)
             
         case 2:
-            BluetoothUtil.sharedInstance.write(cmd: "UECM00")
+            BluetoothUtil.sharedInstance.write(cmd: "UECM00", numberOfMilliseconds: 1000)
         default:
             return
         }

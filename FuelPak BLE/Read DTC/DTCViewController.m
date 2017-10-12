@@ -566,15 +566,7 @@
 
 
 
-//[self readDtcCommand:0x30];
-//[self readDtcCommand:0x31];
-//[self readDtcCommand:0x32];
 
-//- (void) sendReadDtcCommands
-//{
-//
-//    [[BluetoothUtil sharedInstance] printMyName];
-//    [[BluetoothUtil sharedInstance] writeWithCmd:@"UTT3000"];
 
 #pragma mark - Add/Remove Notification Observers.  Notification Delegation methods
 - (void) addObservers
@@ -656,15 +648,15 @@
     switch (cmdCounter) {
     case 0:
         cmdResponseCounter = 0;
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000"];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfMilliseconds: 4000];
         break;
         
     case 1:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100"];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfMilliseconds: 4000];
         break;
         
     case 2:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200"];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfMilliseconds: 4000];
         break;
             
     default:

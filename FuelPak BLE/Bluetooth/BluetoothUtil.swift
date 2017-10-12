@@ -90,7 +90,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK:  Write Command
     
-    @objc public func write(cmd: String) {
+    @objc public func write(cmd: String, numberOfMilliseconds: Int) {
         self.cmd = cmd
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
