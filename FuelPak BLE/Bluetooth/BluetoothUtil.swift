@@ -367,11 +367,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         
-        if allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, offset: 0) {
+        if Util.sharedInstance.allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, cmd: self.cmd) {
             // Parse data
             NSLog("peripheral: allPacketsArrived")
             
-            self.actualHexDataBuffer = getActualHexData(hexData: self.hexDataBuffer, offset: offset)
+            self.actualHexDataBuffer = Util.sharedInstance.getActualHexData(hexData: self.hexDataBuffer, offset: offset)
             ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
         }else {
             NSLog("peripheral: Waiting for more packets to arrive")
@@ -399,77 +399,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
-    
-    //Validate packet size
-    func allPacketsArrived(rawData: String, hexData: String, offset: Int) -> Bool {
-        if Constants.debugOn1 {
-            NSLog("parsePacket cmd: \(String(describing: self.cmd))")
-            NSLog("parsePacket RawData: \(String(describing: rawData))")
-            NSLog("parsePacket HexData: \(String(describing: hexData))")
-        }
-        
-        if hexData.count < 24 {
-            return false    //Don't have enough data yet
-        }
-        
-        //Get Packet size
-        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
-        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
 
-        let packetSize = Int(packetSizeAscii)! * 128
-        let actualpaketSize = hexData.count - 24
-        
-        if Constants.debugOn1 {
-            NSLog("allPacketsArrived      packetSize: \(String(describing: packetSize))     actualpaketSize: \(String(describing: actualpaketSize))")
-//            NSLog("allPacketsArrived actualpaketSize: \(String(describing: actualpaketSize))")
-//            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
-        }
-        
-        
-        
-        //Compare the packetsize to Actual data length
-        if actualpaketSize >= packetSize {
-            return true
-        }else {
-            return false
-        }
-    }
-    
-    //Strip out header info and return actual data in packet
-    func getActualHexData(hexData: String, offset: Int) -> String {
-        
-        if offset>=hexData.count {
-            return hexData
-        }
-        
-        let index = hexData.index(hexData.startIndex, offsetBy: offset)
-        let actualHexData = String(hexData.suffix(from: index))
-        
-        return actualHexData
-    }
-    
-    
-    func convertHexToAscii(text: String) -> String {
-        if Constants.debugOn {
-            NSLog("convertHexToAscii text1: \(String(describing: text))")
-        }
-        
-        
-        
-        let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
-        let textNS = text as NSString
-        let matchesArray = regex.matches(in: textNS as String, options: [], range: NSMakeRange(0, textNS.length))
-        let characters = matchesArray.map {
-            Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
-        }
-        
-        if Constants.debugOn {
-            NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
-        }
-        
-        
-        return String(characters)
-    }
     
 }
 

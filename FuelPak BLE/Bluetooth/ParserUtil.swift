@@ -78,8 +78,8 @@ final class ParserUtil: NSObject {
 //            print("hexData  : ", hexData)
 //        }
         
-        Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(0, 34))))
-        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(34, 8))))
+        Bike.sharedInstance.VINnumber = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(0, 34))))
+        Bike.sharedInstance.VINyear = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(34, 8))))
 
         if Constants.debugOn {
             print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
@@ -95,16 +95,16 @@ final class ParserUtil: NSObject {
     public func parseDevCmd(cmd: String, data: String, hexData: String) {
         if Constants.debugOn {NSLog("parseDevCmd data: \(String(describing: data))")}
         
-        Bike.sharedInstance.firmwareVersion = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(30, 36)))).trim()
-        Bike.sharedInstance.hardwareVersion = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(72, 42)))).trim()
-        Bike.sharedInstance.DEVbtversion = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(114, 54))))
-        Bike.sharedInstance.DEVodometer = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(210, 8))))
-        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(256, 34))))
-        Bike.sharedInstance.DEVbtmacid = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(290, 24))))
+        Bike.sharedInstance.firmwareVersion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(30, 36)))).trim()
+        Bike.sharedInstance.hardwareVersion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(72, 42)))).trim()
+        Bike.sharedInstance.DEVbtversion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(114, 54))))
+        Bike.sharedInstance.DEVodometer = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(210, 8))))
+        Bike.sharedInstance.DEVlinkedvin = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(256, 34))))
+        Bike.sharedInstance.DEVbtmacid = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(290, 24))))
         
-        Bike.sharedInstance.widebandState = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(314, 2))))
-        Bike.sharedInstance.widebandfversion = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(316, 8))))
-        Bike.sharedInstance.widebandhversion = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(324, 6))))
+        Bike.sharedInstance.widebandState = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(314, 2))))
+        Bike.sharedInstance.widebandfversion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(316, 8))))
+        Bike.sharedInstance.widebandhversion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(324, 6))))
         
         if Constants.debugOn {
             NSLog("parseDevCmd widebandState: \(String(describing: Bike.sharedInstance.widebandState))")
@@ -115,7 +115,7 @@ final class ParserUtil: NSObject {
         }
 
         
-//        Bike.sharedInstance.DEVlinkedvin = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
+//        Bike.sharedInstance.DEVlinkedvin = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
 
         
         NotificationCenter.default.post(name: Constants.devCommandNotification, object: nil)
@@ -127,19 +127,19 @@ final class ParserUtil: NSObject {
 
 //        Bike.sharedInstance.ECMversion = convertHexToDecimal(hexString: String(describing: actualHexData.substring(with: NSMakeRange(24, 4))))
         //        Bike.sharedInstance.ECMversion = String(describing: UInt64(String(describing: actualHexData.substring(with: NSMakeRange(24, 4))), radix:16))
-        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(28, 24))))
-        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(52, 4))))
-        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(56, 4))))
-        //        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
+        Bike.sharedInstance.ECMcalib = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(28, 24))))
+        Bike.sharedInstance.ECMseed = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(52, 4))))
+        Bike.sharedInstance.ECMkey = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(56, 4))))
+        //        Bike.sharedInstance.setSecurityMask = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
         
         
         
-//        Bike.sharedInstance.ECMnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 24))))
-//        Bike.sharedInstance.ECMversion = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(24, 28))))
-//        Bike.sharedInstance.ECMcalib = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 52))))
-//        Bike.sharedInstance.ECMseed = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 56))))
-//        Bike.sharedInstance.ECMkey = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
-//        Bike.sharedInstance.setSecurityMask = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
+//        Bike.sharedInstance.ECMnumber = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 24))))
+//        Bike.sharedInstance.ECMversion = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(24, 28))))
+//        Bike.sharedInstance.ECMcalib = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(28, 52))))
+//        Bike.sharedInstance.ECMseed = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(52, 56))))
+//        Bike.sharedInstance.ECMkey = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(56, 60))))
+//        Bike.sharedInstance.setSecurityMask = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(68, 80))))
 
         if Constants.debugOn {
             NSLog("parseEcmCmd ECMnumber: \(String(describing: Bike.sharedInstance.ECMnumber))")
@@ -157,7 +157,7 @@ final class ParserUtil: NSObject {
     public func parseUttCmd(cmd: String, data: String, hexData: String) {
         let dataOffset = 8
 
-        let numberOfDtcCodesStr = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(2, 6))))
+        let numberOfDtcCodesStr = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(2, 6))))
         
 //        // Hexadecimal to decimal
 //        let h2 = "1c"
@@ -172,7 +172,7 @@ final class ParserUtil: NSObject {
 //        listcount = [listDtc count];
         
         
-        let dtcCodes = convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-8))))
+        let dtcCodes = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-8))))
         let dtcCodesArr =  dtcCodes.split(separator: "_")
         
         print("numberOfDtcCodes     : ", numberOfDtcCodesStr)
@@ -186,8 +186,8 @@ final class ParserUtil: NSObject {
             print("%d.  dtcCode  :%s ", ii, dtcCode)
         }
         
-//        Bike.sharedInstance.VINnumber = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
-//        Bike.sharedInstance.VINyear = convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
+//        Bike.sharedInstance.VINnumber = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(0, 34))))
+//        Bike.sharedInstance.VINyear = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(34, 8))))
 //
 //        print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
 //        print("VINyear:  ", Bike.sharedInstance.VINyear)
@@ -198,64 +198,12 @@ final class ParserUtil: NSObject {
     
     
     
-    
-    func convertHexToAscii(text: String) -> String {
-        if Constants.debugOn {
-            NSLog("convertHexToAscii text1: \(String(describing: text))")
-        }
-                        
-        let regex = try! NSRegularExpression(pattern: "(0x)?([0-9A-Fa-f]{2})", options: .caseInsensitive)
-        let textNS = text as NSString
-        let matchesArray = regex.matches(in: textNS as String, options: [], range: NSMakeRange(0, textNS.length))
-        let characters = matchesArray.map {
-            Character(UnicodeScalar(UInt32(textNS.substring(with: $0.range(at: 2)), radix: 16)!)!)
-        }
-        
-        if Constants.debugOn {
-            NSLog("convertHexToAscii text2: \(String(describing: String(characters)))")
-        }
-        
-        
-        return String(characters)
-    }
-    
 
     
 
     
 }
 
-// extend String to enable sub-script with Int to get Character or sub-string
-extension String
-{
-    subscript (i: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: i)]
-    }
 
-    // for convenience we should include String return
-    subscript (i: Int) -> String {
-        return String(self[i] as Character)
-    }
-    
-    func substring(with nsrange: NSRange) -> Substring? {
-        guard let range = Range(nsrange, in: self) else { return nil }
-        return self[range]
-    }
-        
-//    subscript (r: Range<Int>) -> String {
-//        let start = self.index(self.startIndex, offsetBy: r.lowerBound)
-//        let end = self.index(self.startIndex, offsetBy: r.upperBound)
-//
-////        return self[start...end]
-//    }
-}
-
-extension String
-{
-    func trim() -> String
-    {
-        return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
-    }
-}
 
 

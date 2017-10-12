@@ -93,6 +93,7 @@
 		5ED6EF571F75872000380934 /* livedata2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3D1F75872000380934 /* livedata2.plist */; };
 		5ED6EF581F75872000380934 /* livedata3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5ED6EF3E1F75872000380934 /* livedata3.plist */; };
 		5EDBF0BA1F7D93F800646E7E /* PeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDBF0B91F7D93F800646E7E /* PeripheralViewController.swift */; };
+		5EE0C6CE1F8FC1C800B0CBF6 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE0C6CD1F8FC1C800B0CBF6 /* Util.swift */; };
 		5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB461F74245700D5FDBF /* DTCViewController.m */; };
 		5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8CB4A1F74262A00D5FDBF /* GCDiscreetNotificationView.m */; };
 		5EF8CB6C1F742B6000D5FDBF /* nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB511F742B6000D5FDBF /* nav_back.png */; };
@@ -214,6 +215,7 @@
 		5ED6EF3E1F75872000380934 /* livedata3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = livedata3.plist; sourceTree = "<group>"; };
 		5EDBF0B51F7D7D9900646E7E /* BlueCapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlueCapKit.framework; sourceTree = "<group>"; };
 		5EDBF0B91F7D93F800646E7E /* PeripheralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralViewController.swift; sourceTree = "<group>"; };
+		5EE0C6CD1F8FC1C800B0CBF6 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		5EF6AEB01F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoneCancelNumberPadToolbar.h; sourceTree = "<group>"; };
 		5EF6AEB11F7D5E7A000AA782 /* DoneCancelNumberPadToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoneCancelNumberPadToolbar.m; sourceTree = "<group>"; };
 		5EF6AEB21F7D5E7A000AA782 /* EAController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EAController.h; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				5EF6AEB31F7D5E7A000AA782 /* EAController.m */,
 				5EF6AEB41F7D5E7A000AA782 /* UIButton+Glossy.h */,
 				5EF6AEB51F7D5E7A000AA782 /* UIButton+Glossy.m */,
+				5EE0C6CD1F8FC1C800B0CBF6 /* Util.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5E9D6DA11F82F21D0020768C /* Constants.swift in Sources */,
 				5E0CA3ED1F7DBB890050A0F5 /* FuelPakInfo.swift in Sources */,
+				5EE0C6CE1F8FC1C800B0CBF6 /* Util.swift in Sources */,
 				5EDBF0BA1F7D93F800646E7E /* PeripheralViewController.swift in Sources */,
 				5E44F2021F85614B0062CF5F /* ParserUtil.swift in Sources */,
 				5EF8CB4B1F74262A00D5FDBF /* GCDiscreetNotificationView.m in Sources */,
