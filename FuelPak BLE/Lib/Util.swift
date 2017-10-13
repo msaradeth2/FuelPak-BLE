@@ -45,9 +45,8 @@ final class Util: NSObject {
     
     
     //Validate packet size
-    func allPacketsArrived(rawData: String, hexData: String, cmd: String) -> Bool {
+    func allPacketsArrived(rawData: String, hexData: String) -> Bool {
         if Constants.debugOn1 {
-            NSLog("parsePacket cmd: \(String(describing: cmd))")
             NSLog("parsePacket RawData: \(String(describing: rawData))")
             NSLog("parsePacket HexData: \(String(describing: hexData))")
         }

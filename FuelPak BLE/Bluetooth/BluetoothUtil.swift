@@ -67,12 +67,17 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var peripheralDict = [String: PeripheralsStructure]()
     var discoveredSevice: CBService?
 //    var resultString: String = ""
-    var cmd: String = ""
+
     var asciiDataBuffer: String = ""
     var hexDataBuffer: String = ""
     var actualHexDataBuffer: String = ""
+    var cmdSent: [String] = []
+    
     var timeoutCounter = 0
     var timerCmdTimeout: Timer = Timer()
+    
+    // Create a new (key: string, value: string) dictionary and add three values using the subscript syntax
+//    var cmdDict: Dictionary = [String: String]()
 
     
     
@@ -91,9 +96,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     // MARK:  Write Command
     
     @objc public func write(cmd: String, numberOfSeconds: Double) {
-        self.cmd = cmd
+//        self.cmd = cmd
+        
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
+        self.cmdSent.append(cmd)
         
         if Constants.debugOn {
             NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
@@ -102,7 +109,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-        startTimerCmdTimeout(numberOfSeconds: numberOfSeconds)
+        
+        
+//        startTimerCmdTimeout(numberOfSeconds: numberOfSeconds)
     }
     
     
@@ -378,12 +387,16 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
                 
         //if data is acknowledgement reset data buffer
-        if acknowledgement==self.cmd {
+        if cmdSent.contains(acknowledgement) {
+            let cmdSentIndex = cmdSent.index(of: acknowledgement)
+            cmdSent.remove(at: cmdSentIndex!)
             resetDataBuffer()
+            
             if Constants.debugOn2 {
                 NSLog("peripheral: Acknowlegement: \(String(describing: acknowledgement))")
             }
         }
+
         
         //Accumulate packet data
         self.asciiDataBuffer = self.asciiDataBuffer + packetDataAscii!
@@ -396,13 +409,15 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         
-        if Util.sharedInstance.allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, cmd: self.cmd) {
+        if Util.sharedInstance.allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer) {
             // Parse data
             NSLog("peripheral: allPacketsArrived")
             stopTimerCmdTimeout()
             
             self.actualHexDataBuffer = Util.sharedInstance.getActualHexData(hexData: self.hexDataBuffer, offset: offset)
-            ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
+            
+            let cmd = String(self.asciiDataBuffer.prefix(6))
+            ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
         }else {
             NSLog("peripheral: Waiting for more data to arrive")
             //Wait for the rest of data
