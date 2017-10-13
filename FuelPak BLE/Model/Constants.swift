@@ -27,6 +27,8 @@ final class Constants: NSObject {
     @objc static let devCommandNotification =  Notification.Name("devCommandNotification")
     @objc static let ecmCommandNotification =  Notification.Name("ecmCommandNotification")
     @objc static let uttCommandNotification =  Notification.Name("uttCommandNotification")
+    @objc static let commandTimeoutNotification =  Notification.Name("commandTimeoutNotification")
+    
     
     @objc static let debugOn =  true;
     @objc static let debugOn1 =  true;
@@ -65,5 +67,6 @@ extension Notification.Name {
     static let devCommandNotification =  Notification.Name("devCommandNotification")
     static let ecmCommandNotification =  Notification.Name("ecmCommandNotification")
     static let uttCommandNotification =  Notification.Name("uttCommandNotification")
+    static let commandTimeoutNotification =  Notification.Name("commandTimeoutNotification")
 }
 

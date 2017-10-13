@@ -648,15 +648,15 @@
     switch (cmdCounter) {
     case 0:
         cmdResponseCounter = 0;
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfMilliseconds: 4000];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfSeconds: 4];
         break;
         
     case 1:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfMilliseconds: 4000];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfSeconds: 4];
         break;
         
     case 2:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfMilliseconds: 4000];
+        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfSeconds: 4];
         break;
             
     default:

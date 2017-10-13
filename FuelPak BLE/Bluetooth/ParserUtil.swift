@@ -196,7 +196,7 @@ final class ParserUtil: NSObject {
 
         for tmpDtcCode in dtcCodesArr {
             ii = ii + 1
-            print("tmpDtcCode:", ii, tmpDtcCode)
+//            print("tmpDtcCode:", ii, tmpDtcCode)
             
             let tmpArray = tmpDtcCode.split(separator: ".")
             
@@ -207,7 +207,7 @@ final class ParserUtil: NSObject {
                     dtcCode = String(tmpStr)
                 }
                 index = index + 1
-                print(tmpStr, dtcCode)
+//                print(tmpStr, dtcCode)
             }
             
             

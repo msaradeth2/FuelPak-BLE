@@ -71,8 +71,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var asciiDataBuffer: String = ""
     var hexDataBuffer: String = ""
     var actualHexDataBuffer: String = ""
-    
-
+    var timeoutCounter = 0
+    var timerCmdTimeout: Timer = Timer()
 
     
     
@@ -90,7 +90,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK:  Write Command
     
-    @objc public func write(cmd: String, numberOfMilliseconds: Int) {
+    @objc public func write(cmd: String, numberOfSeconds: Double) {
         self.cmd = cmd
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
@@ -102,14 +102,46 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-        
+        startTimerCmdTimeout(numberOfSeconds: numberOfSeconds)
     }
     
     
     
-   // MARK: - Public methods
-
+    // MARK:  Montitor Command Timeout
+    func startTimerCmdTimeout(numberOfSeconds: Double) {
+        self.timeoutCounter = 0
+        
+        self.timerCmdTimeout = Timer.scheduledTimer(timeInterval: numberOfSeconds, target: self, selector: #selector(handleCommandTimeout), userInfo: nil, repeats: true)
+    }
     
+    func stopTimerCmdTimeout() {
+        self.timerCmdTimeout.invalidate()
+    }
+    
+    
+    @objc func handleCommandTimeout(notfication: NSNotification) {
+        
+        self.timeoutCounter = self.timeoutCounter + 1
+        if Constants.debugOn {
+            NSLog("handleCommandTimeout: \(String(describing: timeoutCounter))")
+        }
+        
+        //On Command Timeout
+        if self.timeoutCounter > 1 {
+            stopTimerCmdTimeout()
+            //Post command timeout notification
+            NotificationCenter.default.post(name: Constants.commandTimeoutNotification, object: nil)
+            if Constants.debugOn {
+                NSLog("handleCommandTimeout: NotificationCenter.default.post(name: Constants.commandTimeoutNotification, object: nil)")
+            }
+            resetDataBuffer()
+        }
+    }
+    
+    
+    
+    
+    // MARK: - Public methods
     public func startScan() {
 
         self.peripheralDict.removeAll()
@@ -347,10 +379,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 
         //if data is acknowledgement reset data buffer
         if acknowledgement==self.cmd {
-            //Init data for this commmands
-            self.asciiDataBuffer = ""
-            self.hexDataBuffer = ""
-            
+            resetDataBuffer()
             if Constants.debugOn2 {
                 NSLog("peripheral: Acknowlegement: \(String(describing: acknowledgement))")
             }
@@ -370,12 +399,14 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         if Util.sharedInstance.allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer, cmd: self.cmd) {
             // Parse data
             NSLog("peripheral: allPacketsArrived")
+            stopTimerCmdTimeout()
             
             self.actualHexDataBuffer = Util.sharedInstance.getActualHexData(hexData: self.hexDataBuffer, offset: offset)
             ParserUtil.sharedInstance.parsePacket(cmd: self.cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
         }else {
-            NSLog("peripheral: Waiting for more packets to arrive")
+            NSLog("peripheral: Waiting for more data to arrive")
             //Wait for the rest of data
+            //Or If imcomplete data - do not process
         }
         
         
@@ -384,6 +415,13 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 //        print("asciiData: ", asciiData!)
 //        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
         
+    }
+    
+    
+    func resetDataBuffer() {
+        //Init data for this commmands
+        self.asciiDataBuffer = ""
+        self.hexDataBuffer = ""
     }
     
     
