@@ -68,7 +68,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK:  Share Data
     var peripheralDict = [String: PeripheralsStructure]()
-    var respUttCommand: Array<String> = [String]()
+    @objc var respUttCommand: Array<String> = [String]()
 
     // MARK:  Init Data
     func initData() {

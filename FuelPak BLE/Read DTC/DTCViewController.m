@@ -27,12 +27,12 @@
     
     [self initData];
     
-//    if (Bike.sharedInstance.is) {
-//           [self readDtcShortDescriptionFromFile];
-//    }else {
-//        [self addObservers];
-//        [self sendReadDtcCommands:0];
-//    }
+    if ([[Bike sharedInstance] isConnected]) {
+        [self addObservers];
+        [self sendReadDtcCommands];
+    }else {
+        [self readDtcShortDescriptionFromFile];
+    }
     
     
     
@@ -71,7 +71,7 @@
 
 
 - (IBAction)refreshButton:(id)sender {
-    [self sendReadDtcCommands:0];
+    [self sendReadDtcCommands];
 }
 
 
@@ -584,43 +584,23 @@
 
 - (void) processBluetoothReponse:(NSNotification *)notification
 {
+    NSString *troubleCode, *codeShortDescription;
+    NSArray *troubleCodeArr;
+    
     cmdResponseCounter = cmdResponseCounter + 1;
     if (cmdResponseCounter>=3) {
-        //            self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
-        //
-        //            for(NSString *key in [self.dtcdict allKeys]) {
-        //                //            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
-        //
-        //                troubleCode = key;
-        //                codeShortDescription = [self.dtcdict objectForKey:troubleCode];
-        //
-        //                tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
-        //                [listOfItems addObject:tmpCellData];
-        //            }
-        //
-        //            listOfItems.removeAll()
-        //
-        //            listOfItems[listOfTitle[0]] = Bike.sharedInstance.VINnumber
-        //            listOfItems[listOfTitle[1]] = Bike.sharedInstance.ECMversion
-        //            listOfItems[listOfTitle[2]] = Bike.sharedInstance.ECMcalib
-        //            listOfItems[listOfTitle[3]] = Bike.sharedInstance.deviceStatus
-        //            listOfItems[listOfTitle[4]] = Bike.sharedInstance.firmwareVersion
-        //            listOfItems[listOfTitle[5]] = Bike.sharedInstance.hardwareVersion
-        //            listOfItems[listOfTitle[6]] = Bike.sharedInstance.widebandState
-        //            listOfItems[listOfTitle[7]] = Bike.sharedInstance.widebandfversion
-        //            listOfItems[listOfTitle[8]] = Bike.sharedInstance.widebandhversion
-        //            listOfItems[listOfTitle[9]] = Bike.sharedInstance.iosVersion
-        //            listOfItems[listOfTitle[10]] = Bike.sharedInstance.appVersion
-        //            listOfItems[listOfTitle[11]] = Bike.sharedInstance.appBuildVersion
-        //            listOfItems[listOfTitle[12]] = Bike.sharedInstance.DEVbtversion
-        //            listOfItems[listOfTitle[13]] = Bike.sharedInstance.DEVbtmacid
-        //            listOfItems[listOfTitle[14]] = Bike.sharedInstance.VINyear
         
-        
-        //            self.tableView.reloadData;
-    }else {
-        [self sendReadDtcCommands:cmdResponseCounter];
-        
+        troubleCodeArr = [BluetoothUtil sharedInstance].respUttCommand;
+        for (int ii=0; ii<troubleCodeArr.count  ; ii++) {
+            troubleCode = troubleCodeArr[ii];
+            codeShortDescription = [self.dtcdict objectForKey:troubleCode];
+            
+            NSLog(@"%@   %@ ", troubleCode, codeShortDescription);
+            
+            TCCellData *tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+            [listOfItems addObject:tmpCellData];
+            
+        }
     }
 }
 
@@ -633,28 +613,40 @@
 //[self readDtcCommand:0x31];
 //[self readDtcCommand:0x32];
 
-- (void) sendReadDtcCommands: (int)cmdCounter
+- (void) sendReadDtcCommands
 {
+    cmdResponseCounter = 0;
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfSeconds: 4];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfSeconds: 4];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfSeconds: 4];
     
-    switch (cmdCounter) {
-    case 0:
-        cmdResponseCounter = 0;
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfSeconds: 4];
-        break;
-        
-    case 1:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfSeconds: 4];
-        break;
-        
-    case 2:
-        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfSeconds: 4];
-        break;
-            
-    default:
-            break;
-    }
+
     
 }
+
+
+//- (void) sendReadDtcCommands: (int)cmdCounter
+//{
+//    
+//    switch (cmdCounter) {
+//    case 0:
+//        cmdResponseCounter = 0;
+//        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfSeconds: 4];
+//        break;
+//        
+//    case 1:
+//        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfSeconds: 4];
+//        break;
+//        
+//    case 2:
+//        [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfSeconds: 4];
+//        break;
+//            
+//    default:
+//            break;
+//    }
+//    
+//}
 
 
 //- (void) sendReadDtcCommands
