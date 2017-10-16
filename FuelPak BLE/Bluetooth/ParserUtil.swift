@@ -37,6 +37,7 @@ final class ParserUtil: NSObject {
     
     
     
+    // MARK: - Parse Reponses to Commmand
     public func parsePacket(cmd: String, data: String, hexData: String) {
         
         if Constants.debugOn1 {
@@ -72,6 +73,8 @@ final class ParserUtil: NSObject {
         
     }
     
+    
+    // MARK: - Parse VIN Commmand
     public func parseVinCmd(cmd: String, data: String, hexData: String) {
 //        if Constants.debugOn {
 //            print("data     : ", data)
@@ -92,6 +95,7 @@ final class ParserUtil: NSObject {
     }
     
     
+    // MARK: - Parse DEV Commmand
     public func parseDevCmd(cmd: String, data: String, hexData: String) {
         if Constants.debugOn {NSLog("parseDevCmd data: \(String(describing: data))")}
         
@@ -122,6 +126,7 @@ final class ParserUtil: NSObject {
     }
 
     
+    // MARK: - Parse ECM Commmand
     public func parseEcmCmd(cmd: String, data: String, hexData: String) {
 //        if Constants.debugOn {NSLog("parseEcmCmd data: \(String(describing: data))")}
 
@@ -154,6 +159,8 @@ final class ParserUtil: NSObject {
     }
     
     
+    
+    // MARK: - Parse UTT Commmand - Get DTC codes
     public func parseUttCmd(cmd: String, data: String, hexData: String) {
         let dataOffset = 8
 
@@ -174,6 +181,7 @@ final class ParserUtil: NSObject {
         
         let dtcCodes = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(dataOffset, hexData.count-dataOffset))))
         let dtcCodesArr =  parseDtcCodes(dtcCodes: dtcCodes)
+        BluetoothUtil.sharedInstance.respUttCommand = dtcCodesArr
         
         print("numberOfDtcCodes     : ", numberOfDtcCodesStr)
         print("dtcCodes  : ", dtcCodes)

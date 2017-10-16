@@ -28,7 +28,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var demoModeButton: UIBarButtonItem!
 
     private var peripheral: CBPeripheral?
-    private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
+//    private var centralManager = BluetoothUtil.sharedInstance.cbCentralManager
     private var localTimer: Timer = Timer()
 
     

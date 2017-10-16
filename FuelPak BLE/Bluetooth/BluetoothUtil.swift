@@ -40,46 +40,36 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         var timeStamp: Date?
     }
 
-    //Start here
+    // MARK: Private Data
     fileprivate let serviceUUID = CBUUID(string: "49535343-FE7D-4AE5-8FA9-9FAFD205E455")
     fileprivate let characteristicUUID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
 //    fileprivate let characteristicUUID = CBUUID(string: "49535343-8841-43F4-A8D4-ECBE34729BB3")
-    
-    
     fileprivate var characteristicInstance: CBCharacteristic?
-    
     fileprivate var alertController: UIAlertController?
     fileprivate var localTimer: Timer = Timer()
     fileprivate var rssiTime: Date = Date()
-    
     fileprivate var previousPeripheralRSSIValue: Int = 0
     fileprivate var indexPathForSelectedRow: IndexPath?
     fileprivate var remoteCommandEnabled: Bool = false
     fileprivate var upgradeEnabled: Bool = false
     fileprivate var appDelegate: AppDelegate = AppDelegate()
-
     fileprivate var appResults: NSArray = NSArray()
-    
     fileprivate var peripheralInstance: CBPeripheral?
-
+    fileprivate var cbCentralManager: CBCentralManager!
+    fileprivate var discoveredSevice: CBService?
+    fileprivate var commandsSent: [String] = []
+    fileprivate var timeoutCounter = 0
+    fileprivate var timerCmdTimeout: Timer = Timer()
+    fileprivate var btDataStreamAscii: String = ""
+    fileprivate var btDataStreamHex: String = ""
+    fileprivate var isParsingBtDataStream: Bool = false
+    fileprivate var parseBtDataStreamTimer: Timer = Timer()
     
-    var cbCentralManager: CBCentralManager!
+    
+    // MARK:  Share Data
     var peripheralDict = [String: PeripheralsStructure]()
-    var discoveredSevice: CBService?
-//    var resultString: String = ""
+    var respUttCommand: Array<String> = [String]()
 
-
-    var commandsSent: [String] = []
-    
-    var timeoutCounter = 0
-    var timerCmdTimeout: Timer = Timer()
-
-    var btDataStreamAscii: String = ""
-    var btDataStreamHex: String = ""
-    var isParsingBtDataStream: Bool = false
-    var parseBtDataStreamTimer: Timer = Timer()
-    
-    
     // MARK:  Init Data
     func initData() {
         

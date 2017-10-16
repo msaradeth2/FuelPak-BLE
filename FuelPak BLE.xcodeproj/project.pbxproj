@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5E0CA3EB1F7DB9320050A0F5 /* Bike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */; };
-		5E0CA3ED1F7DBB890050A0F5 /* FuelPakInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */; };
 		5E1184B01F7EEFA100D2341B /* BluetoothUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1184AF1F7EEFA100D2341B /* BluetoothUtil.swift */; };
 		5E1E370A1F829B120082BA79 /* SystemInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */; };
 		5E44F2021F85614B0062CF5F /* ParserUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44F2011F85614B0062CF5F /* ParserUtil.swift */; };
@@ -126,7 +125,6 @@
 
 /* Begin PBXFileReference section */
 		5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bike.swift; sourceTree = "<group>"; };
-		5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuelPakInfo.swift; sourceTree = "<group>"; };
 		5E1184AF1F7EEFA100D2341B /* BluetoothUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothUtil.swift; sourceTree = "<group>"; };
 		5E1E37091F829B120082BA79 /* SystemInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfoViewController.swift; sourceTree = "<group>"; };
 		5E44F2011F85614B0062CF5F /* ParserUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserUtil.swift; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */,
-				5E0CA3EC1F7DBB890050A0F5 /* FuelPakInfo.swift */,
 				5E9D6DA01F82F21D0020768C /* Constants.swift */,
 			);
 			path = Model;
@@ -720,7 +717,6 @@
 				5EF8CB471F74245700D5FDBF /* DTCViewController.m in Sources */,
 				5EB54C8E1F7330E9008D9373 /* ViewController.swift in Sources */,
 				5E9D6DA11F82F21D0020768C /* Constants.swift in Sources */,
-				5E0CA3ED1F7DBB890050A0F5 /* FuelPakInfo.swift in Sources */,
 				5EE0C6CE1F8FC1C800B0CBF6 /* Util.swift in Sources */,
 				5EDBF0BA1F7D93F800646E7E /* PeripheralViewController.swift in Sources */,
 				5E44F2021F85614B0062CF5F /* ParserUtil.swift in Sources */,
