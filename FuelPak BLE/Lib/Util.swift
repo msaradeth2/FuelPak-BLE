@@ -56,10 +56,7 @@ final class Util: NSObject {
         }
         
         //Get Packet size
-        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
-        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
-        
-        let packetSize = Int(packetSizeAscii)! * 128
+        let packetSize = getPacketSize(hexData: hexData)
         let actualpaketSize = hexData.count - 24
         
         if Constants.debugOn1 {
@@ -68,8 +65,7 @@ final class Util: NSObject {
             //            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
         }
         
-        
-        
+                
         //Compare the packetsize to Actual data length
         if actualpaketSize >= packetSize {
             return true
@@ -79,7 +75,7 @@ final class Util: NSObject {
     }
     
     //Strip out header info and return actual data in packet
-    func getActualHexData(hexData: String, offset: Int) -> String {
+    func removeHeaderInfo(hexData: String, offset: Int) -> String {
         
         if offset>=hexData.count {
             return hexData
@@ -89,6 +85,24 @@ final class Util: NSObject {
         let actualHexData = String(hexData.suffix(from: index))
         
         return actualHexData
+    }
+    
+    
+    func getPacketSize(hexData: String) -> Int {
+        var packetSize: Int = -1
+        
+        if hexData.count < 24 {
+            return packetSize    //Don't have enough data yet
+        }
+        
+        //Get Packet size
+        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
+        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
+        
+        packetSize = Int(packetSizeAscii)! * 128
+        
+        return packetSize
+        
     }
     
     
@@ -114,6 +128,15 @@ final class Util: NSObject {
         return String(characters)
     }
     
+    func convertAsciiToHex(text: String) -> String {
+        
+        // Convert from text -> hex
+        let hex = text.utf8.map{ $0 }.reduce("") {
+            $0 + String($1, radix: 16, uppercase: false)
+        }
+        
+        return hex        
+    }
     
 }
 
@@ -156,9 +179,9 @@ extension Character {
     var string: String { return String(self) }
 }
 
-extension String.CharacterView {
-    var string: String { return String(self) }
-}
+//extension String.CharacterView {
+//    var string: String { return String(self) }
+//}
 
 extension Sequence where Iterator.Element == UnicodeScalar {
     var string: String { return String(String.UnicodeScalarView(self)) }

@@ -68,17 +68,16 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var discoveredSevice: CBService?
 //    var resultString: String = ""
 
-    var asciiDataBuffer: String = ""
-    var hexDataBuffer: String = ""
-    var actualHexDataBuffer: String = ""
-    var cmdSent: [String] = []
+
+    var commandsSent: [String] = []
     
     var timeoutCounter = 0
     var timerCmdTimeout: Timer = Timer()
-    
-    // Create a new (key: string, value: string) dictionary and add three values using the subscript syntax
-//    var cmdDict: Dictionary = [String: String]()
 
+    var btDataStreamAscii: String = ""
+    var btDataStreamHex: String = ""
+    var isParsingBtDataStream: Bool = false
+    var parseBtDataStreamTimer: Timer = Timer()
     
     
     // MARK:  Init Data
@@ -89,6 +88,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         appDelegate = (UIApplication.shared.delegate as! AppDelegate)
         cbCentralManager = CBCentralManager(delegate: self, queue: nil)
         localTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(interruptLocalTimer), userInfo: nil, repeats: true)
+        
+        let numberofSeconds = 0.25
+        self.isParsingBtDataStream = false
+        parseBtDataStreamTimer = Timer.scheduledTimer(timeInterval: numberofSeconds, target: self, selector: #selector(parseBtDataStream), userInfo: nil, repeats: true)
     }
     
 
@@ -100,7 +103,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
-        self.cmdSent.append(cmd)
+        self.commandsSent.append(cmd)
         
         if Constants.debugOn {
             NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
@@ -143,7 +146,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             if Constants.debugOn {
                 NSLog("handleCommandTimeout: NotificationCenter.default.post(name: Constants.commandTimeoutNotification, object: nil)")
             }
-            resetDataBuffer()
+//            resetDataBuffer()
         }
     }
     
@@ -367,77 +370,109 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK: Handle Bluetooth Reponses here
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        var acknowledgement: String = ""
-        let offset = (6 + 6 + 6) * 2
         
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
         
         let packetDataAscii = String(bytes: bytesData, encoding: String.Encoding.ascii)
-
-
-        //Get the Acknowledgement
+        
+        //Convert bytesData to Hex Data
+        var tmpHexDataBuffer: String = ""
         for ii in 0..<bytesData.count
         {
-            let strValue = String(format: "%c",bytesData[ii])
-            acknowledgement = acknowledgement + strValue  ////Accumulate hexData
-            if ii == 5  {
-                break   //Only need the first six characters
-            }
-        }
-                
-        //if data is acknowledgement reset data buffer
-        if cmdSent.contains(acknowledgement) {
-            let cmdSentIndex = cmdSent.index(of: acknowledgement)
-            cmdSent.remove(at: cmdSentIndex!)
-            resetDataBuffer()
-            
-            if Constants.debugOn2 {
-                NSLog("peripheral: Acknowlegement: \(String(describing: acknowledgement))")
-            }
+            let hexValue = String(format: "%02X", bytesData[ii])
+            tmpHexDataBuffer = tmpHexDataBuffer.appending(hexValue)  ////Accumulate hexData
         }
 
-        
-        //Accumulate packet data
-        self.asciiDataBuffer = self.asciiDataBuffer + packetDataAscii!
-        
-        //Convert bytesData to Hex Data and accumulate hexDataBuffer
-        for ii in 0..<bytesData.count
-        {
-            let hexValue = String(format: "%02X",bytesData[ii])
-            self.hexDataBuffer = self.hexDataBuffer + hexValue  ////Accumulate hexData
-        }
-        
-        
-        if Util.sharedInstance.allPacketsArrived(rawData: self.asciiDataBuffer, hexData: self.hexDataBuffer) {
-            // Parse data
-            NSLog("peripheral: allPacketsArrived")
-            stopTimerCmdTimeout()
-            
-            self.actualHexDataBuffer = Util.sharedInstance.getActualHexData(hexData: self.hexDataBuffer, offset: offset)
-            
-            let cmd = String(self.asciiDataBuffer.prefix(6))
-            ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: self.asciiDataBuffer, hexData: self.actualHexDataBuffer)
-        }else {
-            NSLog("peripheral: Waiting for more data to arrive")
-            //Wait for the rest of data
-            //Or If imcomplete data - do not process
-        }
-        
-        
-
-
-//        print("asciiData: ", asciiData!)
-//        NSLog("asciiData?.count: \(String(describing: asciiData?.count))    resultAscii:\(String(describing: asciiData))")
+        //Append new data to btDataStreamAscii
+        self.btDataStreamAscii.append(packetDataAscii!)
+        self.btDataStreamHex.append(tmpHexDataBuffer)
         
     }
     
     
-    func resetDataBuffer() {
-        //Init data for this commmands
-        self.asciiDataBuffer = ""
-        self.hexDataBuffer = ""
+    
+    
+    // MARK:  Process data stream from bluetooth
+    
+    @objc func parseBtDataStream() {
+        let offset = (6 + 6 + 6) * 2
+        let offsetAscii = 6 + 6 + 6
+        
+        if self.isParsingBtDataStream == true {
+            return
+        }
+        
+        NSLog("in parseBtDataStream")
+        
+        
+        //Get first Acknowledgement for the command found in btDataStream
+        let cmd = parseForAcknowledgement()
+        NSLog("parseBtDataStream cmd: \(String(describing: cmd))", self.btDataStreamHex.count)
+        
+        if !(Util.sharedInstance.allPacketsArrived(rawData: self.btDataStreamAscii, hexData: self.btDataStreamHex) ) {
+            NSLog("return NOT allPacketsArrived")
+            self.isParsingBtDataStream = false
+            return
+        }
+        
+        
+        //Start Parsing Data - Only allow one parsing process at a time
+        self.isParsingBtDataStream = true
+        
+
+        //Get packet size
+        let packetSizeHex = Util.sharedInstance.getPacketSize(hexData: self.btDataStreamHex)
+        let packetSizeAscii =  packetSizeHex / 2
+        
+        //Get data for the found command form btDataStream
+        let dataBufferAscii = String(self.btDataStreamAscii.prefix(packetSizeAscii))
+        let dataBufferHex = String(self.btDataStreamHex.prefix(packetSizeHex))
+        let actualDataBufferHex = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferHex, offset: offset))  //Remove header information
+        let actualDataBufferAscii = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferAscii, offset: offsetAscii))  //Remove header information
+        
+        NSLog("dataBufferAscii.count=%d, %d   dataBufferHex.count=%d, %d",  dataBufferAscii.count, actualDataBufferAscii.count, dataBufferHex.count, actualDataBufferHex.count)
+        
+        //Parse response found for the command sent
+        ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: dataBufferAscii, hexData: actualDataBufferHex)
+
+        
+        //Remove response from btDataStream
+        self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-packetSizeAscii) )
+        self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-packetSizeHex))
+        
+        self.isParsingBtDataStream = false
+        
     }
+    
+    
+    func parseForAcknowledgement() -> String {
+        var foundCmdAck = ""
+        
+        while self.btDataStreamAscii.count > 0 {
+            var index = 0
+            for cmd in self.commandsSent {
+                NSLog("parseForAcknowledgement cmd:  \(String(describing: cmd))   %d", self.commandsSent.count)
+                if self.btDataStreamAscii.hasPrefix(cmd) {
+                    foundCmdAck = cmd
+                    self.commandsSent.remove(at: index)
+                    return foundCmdAck
+                }
+                index = index + 1
+            }
+            //If not found - trim the leading characters
+            self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-1))
+            self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-2))
+
+        }
+        
+        return foundCmdAck
+        
+    }
+    
+    
+
+    
     
     
     // MARK:  Helper methods
