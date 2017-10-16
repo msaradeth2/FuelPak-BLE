@@ -91,7 +91,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
         
         print("evtDemoModeButton")
         
-        Bike.sharedInstance.isDemoMode = true
+        Bike.sharedInstance.btStatus = Constants.BtStatus.isDemoMode
         
         performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
     }
@@ -234,7 +234,7 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     @objc func didConnectPeripheral(notification: NSNotification) {
-        Bike.sharedInstance.isDemoMode = false
+        Bike.sharedInstance.btStatus = Constants.BtStatus.Connected
         BluetoothUtil.sharedInstance.stopScan()
 
         performSegue(withIdentifier: "PeripheralsOutTabViewControllerIn", sender: self)
@@ -259,6 +259,8 @@ class PeripheralViewController: UIViewController, UITableViewDelegate, UITableVi
 //        }
 //    }
     
+    
+
     
     // MARK: Helper Methods
     func updateTable() {

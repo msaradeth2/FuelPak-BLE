@@ -253,7 +253,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        Bike.sharedInstance.isConnected = true
+        Bike.sharedInstance.btStatus = Constants.BtStatus.Connected
         peripheral.delegate = self
         peripheral.discoverServices([serviceUUID])
         
@@ -265,7 +265,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        Bike.sharedInstance.isConnected = false
+        Bike.sharedInstance.btStatus = Constants.BtStatus.NotConnected
+        
      
         NSLog("didDisconnectPeripheral peripheral: \(String(describing: peripheral.name))")
         
@@ -274,7 +275,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        Bike.sharedInstance.isConnected = false
+        Bike.sharedInstance.btStatus = Constants.BtStatus.NotConnected
         
         // Post notification
         NotificationCenter.default.post(name: Constants.didFailToConnectNotification, object: nil)
@@ -399,23 +400,19 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         let offset = (6 + 6 + 6) * 2
         let offsetAscii = 6 + 6 + 6
         
-        if self.isParsingBtDataStream == true {
+        if self.isParsingBtDataStream || !Bike.sharedInstance.isConnected() {
             return
         }
-        
-        NSLog("in parseBtDataStream")
-        
-        
+
         //Get first Acknowledgement for the command found in btDataStream
         let cmd = parseForAcknowledgement()
-        NSLog("parseBtDataStream cmd: \(String(describing: cmd))", self.btDataStreamHex.count)
-        
-        if !(Util.sharedInstance.allPacketsArrived(rawData: self.btDataStreamAscii, hexData: self.btDataStreamHex) ) {
-            NSLog("return NOT allPacketsArrived")
+        if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(rawData: self.btDataStreamAscii, hexData: self.btDataStreamHex) ) {
             self.isParsingBtDataStream = false
             return
         }
-        
+        if Constants.debugOn {
+            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   self.btDataStreamHex.count=%",  self.btDataStreamHex.count)
+        }
         
         //Start Parsing Data - Only allow one parsing process at a time
         self.isParsingBtDataStream = true
@@ -431,7 +428,15 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         let actualDataBufferHex = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferHex, offset: offset))  //Remove header information
         let actualDataBufferAscii = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferAscii, offset: offsetAscii))  //Remove header information
         
-        NSLog("dataBufferAscii.count=%d, %d   dataBufferHex.count=%d, %d",  dataBufferAscii.count, actualDataBufferAscii.count, dataBufferHex.count, actualDataBufferHex.count)
+        if Constants.debugOn {
+            NSLog("parseBtDataStream dataBufferAscii.count=%d, %d   dataBufferHex.count=%d, %d",  dataBufferAscii.count, actualDataBufferAscii.count, dataBufferHex.count, actualDataBufferHex.count)
+        }
+        
+        if Constants.debugOn4 {
+            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   packetSizeHex=%d, actualDataBufferHex.count=%d    packetSizeAscii=%d, actualDataBufferAscii.count=%d ", packetSizeHex, packetSizeAscii, actualDataBufferHex.count, actualDataBufferAscii.count)
+            NSLog("parseBtDataStream actualDataBufferAscii: \(String(describing: actualDataBufferAscii))")
+            NSLog("parseBtDataStream actualDataBufferHex: \(String(describing: actualDataBufferHex))")
+        }
         
         //Parse response found for the command sent
         ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: dataBufferAscii, hexData: actualDataBufferHex)
@@ -452,7 +457,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         while self.btDataStreamAscii.count > 0 {
             var index = 0
             for cmd in self.commandsSent {
-                NSLog("parseForAcknowledgement cmd:  \(String(describing: cmd))   %d", self.commandsSent.count)
+                if Constants.debugOn {
+                    NSLog("parseForAcknowledgement cmd:  \(String(describing: cmd))   %d", self.commandsSent.count)
+                }                
                 if self.btDataStreamAscii.hasPrefix(cmd) {
                     foundCmdAck = cmd
                     self.commandsSent.remove(at: index)

@@ -13,6 +13,22 @@ import UIKit
 
 //final class Bike: NSObject {
 final class Constants: NSObject {
+        
+    // MARK: - Shared Instance
+    static let sharedInstance: Constants = {
+        let instance = Constants()
+        // setup code
+        return instance
+    }()
+    
+    // MARK: - Initialization Method
+    override init() {
+        super.init()
+
+        //        initBluetoothUtility()
+    }
+    
+    
     
     // Define Notification Names
     @objc static let didDiscoverPeripheralNotification =  Notification.Name("didDiscoverPeripheralNotification")
@@ -30,22 +46,23 @@ final class Constants: NSObject {
     @objc static let commandTimeoutNotification =  Notification.Name("commandTimeoutNotification")
     
     
-    @objc static let debugOn =  true;
-    @objc static let debugOn1 =  true;
-    @objc static let debugOn2 =  true;
+//    @objc static let debugOn =  true;
+//    @objc static let debugOn1 =  true;
+//    @objc static let debugOn2 =  true;
+    @objc static let debugOn =  false;
+    @objc static let debugOn1 =  false;
+    @objc static let debugOn2 =  false;
     
-    // MARK: - Shared Instance
-    static let sharedInstance: Constants = {
-        let instance = Constants()
-        // setup code
-        return instance
-    }()
-    
-    // MARK: - Initialization Method
-    override init() {
-        super.init()
-
-        //        initBluetoothUtility()
+    @objc static let debugOn4 =  true;
+ 
+    // MARK:  Define Variables
+    enum BtStatus {
+        case isDemoMode
+        case Connected
+        case NotConnected
+        case Connecting
+//        case FailToConnect
+        
     }
     
 }

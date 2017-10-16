@@ -43,8 +43,8 @@ final class Bike: NSObject {
     var softwareVersion = ""
     var systemId = ""
     
-    @objc var isDemoMode = false
-    @objc var isConnected = false
+//    @objc var isDemoMode = false
+//    @objc var isConnected = false
     
     //From Fuelpak
     var VINnumber = "";  // 1HD1JPV34CB010700
@@ -74,7 +74,7 @@ final class Bike: NSObject {
     var ECMkey = "";       // 0xDBE5
     var ECMextended = "";
     
-    
+    var btStatus: Constants.BtStatus = Constants.BtStatus.NotConnected
 
     
     // 0 no slot, A thru L valid slots
@@ -87,6 +87,66 @@ final class Bike: NSObject {
 //    unsigned long tampersealcount;
     
    
+    
+    
+    // MARK:  Blooth Status
+    @objc func isDemoMode() -> Bool {
+        
+        if Bike.sharedInstance.btStatus == Constants.BtStatus.isDemoMode {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc func isConnected() -> Bool {
+        
+        if Bike.sharedInstance.btStatus == Constants.BtStatus.Connected {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc func isNotConnected() -> Bool {
+        
+        if Bike.sharedInstance.btStatus == Constants.BtStatus.NotConnected {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc func isConnecting() -> Bool {
+        
+        if Bike.sharedInstance.btStatus == Constants.BtStatus.Connecting {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc func getBtStatusStr() -> String {
+        var btStatusStr = ""
+        
+        
+        switch Bike.sharedInstance.btStatus {
+        case .isDemoMode:
+            btStatusStr = "Status:  Demo Mode"
+            
+        case .Connected:
+            btStatusStr = "Status:  Connected"
+            
+        case .NotConnected:
+            btStatusStr = "Status:  Not Connected"
+            
+        default:
+            btStatusStr = "Status: Not Connected"
+        }
+        
+        return btStatusStr
+    }
+    
 
     
 }

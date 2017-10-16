@@ -27,12 +27,12 @@
     
     [self initData];
     
-    if (Bike.sharedInstance.isDemoMode) {
-           [self readDtcShortDescriptionFromFile];
-    }else {
-        [self addObservers];
-        [self sendReadDtcCommands:0];        
-    }
+//    if (Bike.sharedInstance.is) {
+//           [self readDtcShortDescriptionFromFile];
+//    }else {
+//        [self addObservers];
+//        [self sendReadDtcCommands:0];
+//    }
     
     
     
@@ -101,18 +101,9 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionTitle;
-    if (Bike.sharedInstance.isDemoMode == true) {
-        sectionTitle = @"Status:  Demo Mode";
-    }else {
-        if (Bike.sharedInstance.isConnected) {
-            sectionTitle = @"Status:  Connected";
-        }else {
-            sectionTitle = @"Status:  Disconnected";
-        }
-    }
+
+    return [[Bike sharedInstance] getBtStatusStr];
     
-    return sectionTitle;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
