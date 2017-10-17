@@ -137,6 +137,31 @@ final class Util: NSObject {
         
         return hex        
     }
+
+    
+    
+    func convertBytesToHex(bytesArr: Array<UInt8>) -> String {
+        
+        //Convert bytesArr to Hex String
+        var tmpHexDataBuffer: String = ""
+        for ii in 0..<bytesArr.count
+        {
+            let hexValue = String(format: "%02X", bytesArr[ii])
+            tmpHexDataBuffer = tmpHexDataBuffer.appending(hexValue)  ////Accumulate hexData
+        }
+        
+        return tmpHexDataBuffer
+    }
+    
+    
+    func convertStringsToHex(myString: String) -> String {
+        
+        //Convert Strings to Hex String
+        let tmpHexDataBuffer = myString.unicodeScalars.filter { $0.isASCII }.map { String(format: "%X", $0.value) }.joined()
+        
+        return tmpHexDataBuffer
+    }
+    
     
 }
 

@@ -62,6 +62,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var timerCmdTimeout: Timer = Timer()
     fileprivate var btDataStreamAscii: String = ""
     fileprivate var btDataStreamHex: String = ""
+    fileprivate var btDataStreamBytes: Array<UInt8> = [UInt8]()
+
     fileprivate var isParsingBtDataStream: Bool = false
     fileprivate var parseBtDataStreamTimer: Timer = Timer()
     
@@ -357,31 +359,22 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     }
     
-    
+//
     
     // MARK: Handle Bluetooth Reponses here
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         var bytesData = [UInt8] (repeating: 0, count: characteristic.value!.count)
             (characteristic.value! as NSData).getBytes(&bytesData, length: characteristic.value!.count)
+
+        self.btDataStreamBytes.append(contentsOf: bytesData)
         
         let packetDataAscii = String(bytes: bytesData, encoding: String.Encoding.ascii)
-        
-        //Convert bytesData to Hex Data
-        var tmpHexDataBuffer: String = ""
-        for ii in 0..<bytesData.count
-        {
-            let hexValue = String(format: "%02X", bytesData[ii])
-            tmpHexDataBuffer = tmpHexDataBuffer.appending(hexValue)  ////Accumulate hexData
-        }
-
-        //Append new data to btDataStreamAscii
         self.btDataStreamAscii.append(packetDataAscii!)
-        self.btDataStreamHex.append(tmpHexDataBuffer)
         
     }
     
-    
+
     
     
     // MARK:  Process data stream from bluetooth
@@ -410,6 +403,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         //Get packet size
         let packetSizeHex = Util.sharedInstance.getPacketSize(hexData: self.btDataStreamHex)
+        if packetSizeHex < 128 {
+            self.isParsingBtDataStream = false
+            return
+        }
         let packetSizeAscii =  packetSizeHex / 2
         
         //Get data for the found command form btDataStream
