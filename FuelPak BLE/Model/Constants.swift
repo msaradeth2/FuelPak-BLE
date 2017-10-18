@@ -55,6 +55,13 @@ final class Constants: NSObject {
     
     @objc static let debugOn4 =  true;
  
+    // MARK:  Define Notification Constant Variables
+    static let timedOut: String = "timedOut"
+    static let cmdStatus: String = "cmdStatus"
+    static let cmdCode: String = "cmdCode"
+    
+    
+    
     // MARK:  Define Variables
     enum BtStatus {
         case isDemoMode
@@ -65,7 +72,51 @@ final class Constants: NSObject {
         
     }
     
+    enum CommandCode {
+        case UVIN00
+        case UDEV00
+        case UECM00
+        case UTT000
+        case UTT001
+        case UTT002
+        case UNKNOWN
+        case ALL
+        
+    }
+    
+    public func getCmdCode(cmd:String) -> CommandCode {
+        
+        if cmd == "UVIN00" {
+            return CommandCode.UVIN00
+            
+        }else if cmd == "UDEV00" {
+            return CommandCode.UDEV00
+            
+        }else if cmd == "UDEV00" {
+            return CommandCode.UDEV00
+            
+        }else if cmd == "UECM00" {
+            return CommandCode.UECM00
+            
+        }else if cmd == "UTT000" {
+            return CommandCode.UTT000
+            
+        }else if cmd == "UTT001" {
+            return CommandCode.UTT001
+            
+        }else if cmd == "UTT002" {
+            return CommandCode.UTT002
+            
+        }else {
+            return CommandCode.UNKNOWN
+        }
+        
+    }
+    
+    
 }
+
+
 
 
 

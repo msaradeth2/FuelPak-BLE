@@ -627,12 +627,11 @@
 - (void) sendReadDtcCommands
 {
     cmdResponseCounter = 0;
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" numberOfSeconds: 4];
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" numberOfSeconds: 4];
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" numberOfSeconds: 4];
     
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
 
-    
 }
 
 

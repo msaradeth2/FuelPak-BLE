@@ -68,6 +68,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var isParsingBtDataStream: Bool = false
     fileprivate var parseBtDataStreamTimer: Timer = Timer()
     
+    fileprivate var cmdInfoArr: [CmdInfo] = []
     
     // MARK:  Share Data
     var peripheralDict = [String: PeripheralsStructure]()
@@ -91,8 +92,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK:  Write Command
     
-    @objc public func write(cmd: String, numberOfSeconds: Double) {
-//        self.cmd = cmd
+    @objc public func write(cmd: String, timeoutInSeconds: Double, notificationName: Notification.Name) {
+
+
+        self.cmdInfoArr.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName))
         
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
@@ -108,6 +111,24 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         
 //        startTimerCmdTimeout(numberOfSeconds: numberOfSeconds)
+    }
+    
+    
+    
+    func testTime() {
+        let date1 = Date()
+        let date2 = Date().addingTimeInterval(100)
+        
+        if date1 == date2 {
+            print("date1 == date2")
+        }
+        else if date1 > date2 {
+            print("date1 > date2")
+        }
+        else if date1 < date2 {
+            print("date1 < date2")
+        }
+        
     }
     
     
@@ -241,6 +262,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
             
             NSLog("didDiscover peripheral: \(peripheralName)")
+        }
+        
+        if Bike.sharedInstance.isNotConnected() && peripheralDict.count == 1 {
+            connect(peripheral: peripheral)
         }
         
     }

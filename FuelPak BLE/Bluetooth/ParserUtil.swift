@@ -188,7 +188,7 @@ final class ParserUtil: NSObject {
         print("dtcCodesArr.count  : ", dtcCodesArr.count)
         print("dtcCodesArr  : ", dtcCodesArr)
                 
-        NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)        
         
     }
     

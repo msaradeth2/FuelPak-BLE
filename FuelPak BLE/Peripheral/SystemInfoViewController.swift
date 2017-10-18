@@ -207,22 +207,19 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
         switch cmdCode {
         case .UVIN00:
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", numberOfSeconds: 1)
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.vinCommandNotification)
             
         case .UDEV00:
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", numberOfSeconds: 0.25)
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification)
             
         case .UECM00:
-            BluetoothUtil.sharedInstance.write(cmd: "UECM00", numberOfSeconds: 1)
+            BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification)
             
         case .ALL:
             cmdResponseCounter = 0  //reset counter
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", numberOfSeconds: 0.25)
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", numberOfSeconds: 1)
-            BluetoothUtil.sharedInstance.write(cmd: "UECM00", numberOfSeconds: 1)
-//            
-//        default:
-//            return
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification)
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.devCommandNotification)
+            BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification)
         }
         
     }
@@ -233,11 +230,13 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK:  Add/Remove Notification Observers.  Notification Delegation Methods
     func addObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .devCommandNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .vinCommandNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(processBluetoothReponse(notfication:)), name: .ecmCommandNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationCallback(notification:)), name: .devCommandNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationCallback(notification:)), name: .vinCommandNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationCallback(notification:)), name: .ecmCommandNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(sendAllCommands(notfication:)), name: .didDiscoverCharacteristicsNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sendAllCommands(notification:)), name: .didDiscoverCharacteristicsNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI(notification:)), name: .didConnectPeripheralNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI(notification:)), name: .didDisconnectPeripheralNotification, object: nil)
         
     }
     
@@ -247,21 +246,42 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         NotificationCenter.default.removeObserver(self, name: .vinCommandNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: .ecmCommandNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: .didDiscoverCharacteristicsNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didConnectPeripheralNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didDisconnectPeripheralNotification, object: nil)
         
     }
     
     
 
 
-    @objc func sendAllCommands(notfication: NSNotification) {
+    @objc func sendAllCommands(notification: NSNotification) {
 
         sendCommand(cmdCode: CommandCode.ALL)
 
     }
     
-    
-    @objc func processBluetoothReponse(notfication: NSNotification) {
+    @objc func updateUI(notification: NSNotification) {
         
+        switch Bike.sharedInstance.btStatus {
+        case .Connected:
+            self.tableView.reloadData()
+            
+        case .NotConnected:
+            self.tableView.reloadData()
+            
+        default:
+            break
+        }
+        
+    }
+    
+    
+    
+    @objc func notificationCallback(notification: NSNotification) {
+        
+        if handledTimeout(notification: notification) {
+            return
+        }
         
         cmdResponseCounter = cmdResponseCounter + 1
         listOfItems.removeAll()
@@ -285,6 +305,40 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.reloadData()
 
         
+    }
+    
+    
+    func handledTimeout(notification: NSNotification) -> Bool {
+        var cmdInfo: CmdInfo
+        var timedout: Bool = false
+        
+        guard let userInfo = notification.userInfo else { return false}
+        let cmdStatus = userInfo[Constants.cmdStatus] as! String
+        
+        if cmdStatus == Constants.timedOut {
+            guard let notificationObject = notification.object else { return false}
+            cmdInfo = notificationObject as! CmdInfo
+                        
+            switch cmdInfo.cmdCode {
+            case .UDEV00:
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                timedout = true
+                
+            case .UVIN00:
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                timedout = true
+                
+            case .UECM00:
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                timedout = true
+
+            default:
+                break
+            }
+        }
+        
+        return timedout
+
     }
     
     

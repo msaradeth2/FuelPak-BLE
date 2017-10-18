@@ -121,6 +121,7 @@
 		5EF8CB831F742B6000D5FDBF /* nav_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */; };
 		5EF8CB841F742B6000D5FDBF /* nav_undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB691F742B6000D5FDBF /* nav_undo.png */; };
 		5EF8CB851F742B6000D5FDBF /* nav_undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */; };
+		5EFAE3011F97DC6A00145ED4 /* CmdInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFAE3001F97DC6A00145ED4 /* CmdInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,6 +252,7 @@
 		5EF8CB681F742B6000D5FDBF /* nav_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_trash@2x.png"; sourceTree = "<group>"; };
 		5EF8CB691F742B6000D5FDBF /* nav_undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_undo.png; sourceTree = "<group>"; };
 		5EF8CB6A1F742B6000D5FDBF /* nav_undo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_undo@2x.png"; sourceTree = "<group>"; };
+		5EFAE3001F97DC6A00145ED4 /* CmdInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +273,7 @@
 			children = (
 				5E0CA3EA1F7DB9320050A0F5 /* Bike.swift */,
 				5E9D6DA01F82F21D0020768C /* Constants.swift */,
+				5EFAE3001F97DC6A00145ED4 /* CmdInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EFAE3011F97DC6A00145ED4 /* CmdInfo.swift in Sources */,
 				5E0CA3EB1F7DB9320050A0F5 /* Bike.swift in Sources */,
 				5E1184B01F7EEFA100D2341B /* BluetoothUtil.swift in Sources */,
 				5ED6EF1A1F75672300380934 /* TCCellData.m in Sources */,
