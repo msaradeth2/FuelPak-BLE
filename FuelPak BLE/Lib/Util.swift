@@ -42,22 +42,25 @@ final class Util: NSObject {
         
     }
     
-    
-    
+
     //Validate packet size
-    func allPacketsArrived(rawData: String, hexData: String) -> Bool {
+    func allPacketsArrived(asciiBuffer: String) -> Bool {
+        let headerLength = 12
+        
+//        let strBuff/er = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
+        
         if Constants.debugOn1 {
-            NSLog("parsePacket RawData: \(String(describing: rawData))")
-            NSLog("parsePacket HexData: \(String(describing: hexData))")
+            NSLog("parsePacket RawData: \(String(describing: asciiBuffer))")
+            //            NSLog("parsePacket HexData: \(String(describing: hexData))")
         }
         
-        if hexData.count < 24 {
+        if asciiBuffer.count < headerLength {
             return false    //Don't have enough data yet
         }
         
         //Get Packet size
-        let packetSize = getPacketSize(hexData: hexData)
-        let actualpaketSize = hexData.count - 24
+        let packetSize = getPacketSize(asciiBuffer: asciiBuffer)
+        let actualpaketSize = asciiBuffer.count - headerLength
         
         if Constants.debugOn1 {
             NSLog("allPacketsArrived      packetSize: \(String(describing: packetSize))     actualpaketSize: \(String(describing: actualpaketSize))")
@@ -65,7 +68,7 @@ final class Util: NSObject {
             //            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
         }
         
-                
+        
         //Compare the packetsize to Actual data length
         if actualpaketSize >= packetSize {
             return true
@@ -73,6 +76,72 @@ final class Util: NSObject {
             return false
         }
     }
+    
+    
+    
+//    //Validate packet size
+//    func allPacketsArrived(byteBuffer: Array<UInt8>) -> Bool {
+//        let headerLength = 12
+//
+//        let strBuffer = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
+//
+//        if Constants.debugOn1 {
+//            NSLog("parsePacket RawData: \(String(describing: strBuffer))")
+////            NSLog("parsePacket HexData: \(String(describing: hexData))")
+//        }
+//
+//        if byteBuffer.count < headerLength {
+//            return false    //Don't have enough data yet
+//        }
+//
+//        //Get Packet size
+//        let packetSize = getPacketSize(byteBuffer: byteBuffer)
+//        let actualpaketSize = byteBuffer.count - headerLength
+//
+//        if Constants.debugOn1 {
+//            NSLog("allPacketsArrived      packetSize: \(String(describing: packetSize))     actualpaketSize: \(String(describing: actualpaketSize))")
+//            //            NSLog("allPacketsArrived actualpaketSize: \(String(describing: actualpaketSize))")
+//            //            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
+//        }
+//
+//
+//        //Compare the packetsize to Actual data length
+//        if actualpaketSize >= packetSize {
+//            return true
+//        }else {
+//            return false
+//        }
+//    }
+    
+    
+//    func allPacketsArrived(rawData: String, hexData: String) -> Bool {
+//        if Constants.debugOn1 {
+//            NSLog("parsePacket RawData: \(String(describing: rawData))")
+//            NSLog("parsePacket HexData: \(String(describing: hexData))")
+//        }
+//
+//        if hexData.count < 24 {
+//            return false    //Don't have enough data yet
+//        }
+//
+//        //Get Packet size
+//        let packetSize = getPacketSize(hexData: hexData)
+//        let actualpaketSize = hexData.count - 24
+//
+//        if Constants.debugOn1 {
+//            NSLog("allPacketsArrived      packetSize: \(String(describing: packetSize))     actualpaketSize: \(String(describing: actualpaketSize))")
+//            //            NSLog("allPacketsArrived actualpaketSize: \(String(describing: actualpaketSize))")
+//            //            NSLog("allPacketsArrived         hexData: \(String(describing: hexData.count))")
+//        }
+//
+//
+//        //Compare the packetsize to Actual data length
+//        if actualpaketSize >= packetSize {
+//            return true
+//        }else {
+//            return false
+//        }
+//    }
     
     //Strip out header info and return actual data in packet
     func removeHeaderInfo(hexData: String, offset: Int) -> String {
@@ -87,23 +156,55 @@ final class Util: NSObject {
         return actualHexData
     }
     
-    
-    func getPacketSize(hexData: String) -> Int {
+
+    func getPacketSize(asciiBuffer: String) -> Int {
+        let headerLen = 12
         var packetSize: Int = -1
         
-        if hexData.count < 24 {
-            return packetSize    //Don't have enough data yet
+        if asciiBuffer.count < headerLen {
+            return -1    //Don't have enough data yet
         }
         
-        //Get Packet size
-        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
-        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
+//        let byte = UInt8(byteBuffer.index(byteBuffer.startIndex, offsetBy: headerLen-1))
+//        let byte2 = byteBuffer.index(byteBuffer.startIndex, offsetBy: headerLen-1)
+//        packetSize = Util.sharedInstance.convertBytesToDecimal(byte: byte)
         
-        packetSize = Int(packetSizeAscii)! * 128
+//        let headerInfo = Util.sharedInstance.convertBytesToAscii(byteBuffer: byteBuffer, length: headerLen)
+//        let headerInfo = String(describing: byteBuffer.prefix(headerLen))
+        
+        let headerInfo = String(asciiBuffer.prefix(headerLen))
+        let packetSizeTxt = String(headerInfo.suffix(1))
+        
+//String(self.btDataStreamAscii.prefix(packetSize))
+        
+//        let headerInfo = Util.sharedInstance.convertBytesToHex(bytesArr: text, packSize: 8)
+//        let packetSizeTxt = String(Util.sharedInstance.convertBytesToHex(byte: byte))
+        
+        packetSize = Int(packetSizeTxt, radix: 32)!
+        packetSize = packetSize * 64
+        
+//        packetSize = byte2 * 64
         
         return packetSize
         
     }
+    
+//    func getPacketSize(hexData: String) -> Int {
+//        var packetSize: Int = -1
+//
+//        if hexData.count < 24 {
+//            return packetSize    //Don't have enough data yet
+//        }
+//
+//        //Get Packet size
+//        let packetSizeTxt = String(describing: hexData.substring(with: NSMakeRange(22, 2)))
+//        let packetSizeAscii = convertHexToAscii(text: packetSizeTxt)
+//
+//        packetSize = Int(packetSizeAscii)! * 128
+//
+//        return packetSize
+//
+//    }
     
     
     func convertHexToAscii(text: String) -> String {
@@ -138,22 +239,69 @@ final class Util: NSObject {
         return hex        
     }
 
-    
-    
-    func convertBytesToHex(bytesArr: Array<UInt8>) -> String {
+    func convertBytesToDecimal(byte: UInt8) -> Int {
         
-        //Convert bytesArr to Hex String
-        var tmpHexDataBuffer: String = ""
-        for ii in 0..<bytesArr.count
-        {
-            let hexValue = String(format: "%02X", bytesArr[ii])
-            tmpHexDataBuffer = tmpHexDataBuffer.appending(hexValue)  ////Accumulate hexData
-        }
+        //Convert bytes to Decimal
+        let hexVal = Util.sharedInstance.convertBytesToHex(byte: byte)
+        let intVal = Int(hexVal, radix: 16)!
+
+        print("convertBytesToDecimal:   byte=%d   decVal  ", byte, intVal)
         
-        return tmpHexDataBuffer
+        return intVal
     }
     
     
+    func convertBytesToHex(byte: UInt8) -> String {
+        
+        //Convert bytes to Hex
+        
+        let hexValue = String(format: "%02X", byte)
+        print("convertBytesToHex:   bytesArr.count=%d   tmpHexDataBuffer.count=%d  ", byte, hexValue)
+        
+        //         return String(tmpHexDataBuffer)
+        
+        return String(hexValue)
+    }
+    
+    
+    
+    func convertBytesToHex(byteBuffer: Array<UInt8>) -> String {
+        
+        //Convert bytesArr to Hex String
+        var tmpHexDataBuffer: String = ""
+        for ii in 0..<byteBuffer.count
+        {
+            let hexValue = String(format: "%02X", byteBuffer[ii])
+            tmpHexDataBuffer = tmpHexDataBuffer.appending(hexValue)  ////Accumulate hexData
+        }
+        
+        print("convertBytesToHex:   bytesArr.count=%d   tmpHexDataBuffer.count=%d  ", byteBuffer.count, tmpHexDataBuffer.count)
+
+//         return String(tmpHexDataBuffer)
+        
+        return String(tmpHexDataBuffer)
+    }
+    
+    
+//    func convertBytesToAscii(byteBuffer: Array<UInt8>, length: Int) -> String {
+//        var asciiBuffer: String = ""
+//        if byteBuffer.count == 0 {
+//            return ""
+//        }
+//
+//        let tmpAsciiBuffer = String(bytes: byteBuffer, encoding: String.Encoding.utf8)
+//        asciiBuffer.append(tmpAsciiBuffer!)
+//
+//        if asciiBuffer.count >= length {
+//            return String(asciiBuffer.prefix(length))
+//        }else {
+//            return String(asciiBuffer)
+//        }
+//
+//    }
+    
+    
+
     func convertStringsToHex(myString: String) -> String {
         
         //Convert Strings to Hex String

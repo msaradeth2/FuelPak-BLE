@@ -58,10 +58,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var cbCentralManager: CBCentralManager!
     fileprivate var discoveredSevice: CBService?
     fileprivate var commandsSent: [String] = []
+    fileprivate var commandsSentBytes: [UInt8] = []
     fileprivate var timeoutCounter = 0
     fileprivate var timerCmdTimeout: Timer = Timer()
     fileprivate var btDataStreamAscii: String = ""
-    fileprivate var btDataStreamHex: String = ""
+//    fileprivate var btDataStreamHex: String = ""
     fileprivate var btDataStreamBytes: Array<UInt8> = [UInt8]()
 
     fileprivate var isParsingBtDataStream: Bool = false
@@ -380,21 +381,27 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     // MARK:  Process data stream from bluetooth
     
     @objc func parseBtDataStream() {
+        var byteBuffer: Array<UInt8> = [UInt8]()
+//        var asciiBuffer: String = ""
+        
         let offset = (6 + 6 + 6) * 2
         let offsetAscii = 6 + 6 + 6
         
-        if self.isParsingBtDataStream || !Bike.sharedInstance.isConnected() {
+        if self.btDataStreamBytes.count == 0 || self.isParsingBtDataStream || !Bike.sharedInstance.isConnected() {
             return
         }
+        
+//        testDataStreamBytes(bytesArr: self.btDataStreamBytes, packSize: 64)
 
         //Get first Acknowledgement for the command found in btDataStream
+//        Util.sharedInstance.allPacketsArrived(rawData: <#T##String#>, hexData: <#T##String#>)
         let cmd = parseForAcknowledgement()
-        if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(rawData: self.btDataStreamAscii, hexData: self.btDataStreamHex) ) {
+        if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
             self.isParsingBtDataStream = false
             return
         }
         if Constants.debugOn {
-            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   self.btDataStreamHex.count=%",  self.btDataStreamHex.count)
+            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   self.btDataStreamAscii.count=%",  self.btDataStreamAscii.count)
         }
         
         //Start Parsing Data - Only allow one parsing process at a time
@@ -402,16 +409,24 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
 
         //Get packet size
-        let packetSizeHex = Util.sharedInstance.getPacketSize(hexData: self.btDataStreamHex)
-        if packetSizeHex < 128 {
+        let packetSize = Util.sharedInstance.getPacketSize(asciiBuffer: self.btDataStreamAscii)
+        if packetSize < 64 {
             self.isParsingBtDataStream = false
             return
         }
-        let packetSizeAscii =  packetSizeHex / 2
         
-        //Get data for the found command form btDataStream
-        let dataBufferAscii = String(self.btDataStreamAscii.prefix(packetSizeAscii))
-        let dataBufferHex = String(self.btDataStreamHex.prefix(packetSizeHex))
+        //Get the reponse for a command from btDataStreamBytes
+        byteBuffer.append(contentsOf: self.btDataStreamBytes.prefix(packetSize))
+//        asciiBuffer.append(contentsOf: self.btDataStreamAscii.prefix(packetSize))
+
+
+        //Get data for the command from btDataStreamBytes
+//        let dataBufferAscii0 = String(data: mData, encoding: String.Encoding.utf8)!
+//        let dataBufferAscii = Util.sharedInstance.convertBytesToAscii(byteBuffer: byteBuffer, length: byteBuffer.count)
+        
+        let dataBufferAscii = String(self.btDataStreamAscii.prefix(packetSize))
+        let dataBufferHex = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
+        
         let actualDataBufferHex = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferHex, offset: offset))  //Remove header information
         let actualDataBufferAscii = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferAscii, offset: offsetAscii))  //Remove header information
         
@@ -420,7 +435,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         if Constants.debugOn4 {
-            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   packetSizeHex=%d, actualDataBufferHex.count=%d    packetSizeAscii=%d, actualDataBufferAscii.count=%d ", packetSizeHex, packetSizeAscii, actualDataBufferHex.count, actualDataBufferAscii.count)
+            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   packetSize=%d, actualDataBufferHex.count=%d   actualDataBufferAscii.count=%d ", packetSize, actualDataBufferHex.count, actualDataBufferAscii.count)
             NSLog("parseBtDataStream actualDataBufferAscii: \(String(describing: actualDataBufferAscii))")
             NSLog("parseBtDataStream actualDataBufferHex: \(String(describing: actualDataBufferHex))")
         }
@@ -429,24 +444,86 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: dataBufferAscii, hexData: actualDataBufferHex)
 
         
-        //Remove response from btDataStream
-        self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-packetSizeAscii) )
-        self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-packetSizeHex))
+        //Remove response from btDataStreamBytes
+        self.btDataStreamBytes.removeFirst(packetSize)
+        self.btDataStreamAscii.removeFirst(packetSize)
+        
+        
+        
+//        self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-packetSizeAscii) )
+//        
+//        let x = self.btDataStreamBytes
+//        
+//        
+//        self.btDataStreamBytes.removeFirst(packetSizeBytes)
+//        let x2 = self.btDataStreamBytes
+//        
+//        print("convertBytesToHex: ", x.count, x2.count)
+//        
+//        print ("convertBytesToHex x :", x)
+//        print ("convertBytesToHex x2:", x2)
+        
+        
+//        self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-packetSizeHex))
         
         self.isParsingBtDataStream = false
         
     }
     
+    func testDataStreamBytes(byteBuffer: Array<UInt8>, packSize: Int) -> String {
+        
+       
+        print("testDataStreamBytes bytesArr:  ", byteBuffer.count, byteBuffer)
+        let x1 = byteBuffer
+        var x2 = x1
+        
+        var byteArray: Array<UInt8> = [UInt8]()
+        
+        var hex = ""
+        var ch = ""
+        var ii = 0
+        for byte in x1 {
+            byteArray.removeAll()
+            byteArray.append(byte)
+
+            hex = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
+            ch = Util.sharedInstance.convertHexToAscii(text: hex)
+            
+            let tmpStr = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count - ii))
+            let tmpAsciiVal = String(tmpStr.prefix(1))
+            
+            print("testDataStreamBytes byte:  ", ii, byte, tmpAsciiVal, ch)
+                
+            x2.removeFirst(1)
+            
+            print("testDataStreamBytes x1:  ", x1.count,  x1)
+            print("testDataStreamBytes x2:  ", x2.count, x2)
+
+            ii = ii + 1
+            
+        }
+        
+        return ""
+        
+        
+    }
+    
+    
     
     func parseForAcknowledgement() -> String {
         var foundCmdAck = ""
         
+//        if self.btDataStreamBytes.count == 0 {
+//            return ""
+//        }
+        
         while self.btDataStreamAscii.count > 0 {
             var index = 0
             for cmd in self.commandsSent {
+
                 if Constants.debugOn {
                     NSLog("parseForAcknowledgement cmd:  \(String(describing: cmd))   %d", self.commandsSent.count)
-                }                
+                }
                 if self.btDataStreamAscii.hasPrefix(cmd) {
                     foundCmdAck = cmd
                     self.commandsSent.remove(at: index)
@@ -454,9 +531,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 }
                 index = index + 1
             }
+            
             //If not found - trim the leading characters
-            self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-1))
-            self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-2))
+            self.btDataStreamBytes.removeFirst()
+            self.btDataStreamAscii.removeFirst()
 
         }
         
