@@ -16,8 +16,9 @@ class CmdInfo: NSObject {
     var notificationName: Notification.Name  
     var startTime: Date = Date()
     var endTime: Date = Date()
-    var timeoutTime: Date = Date()
+    var timedoutAt: Date? = nil
     var cmdCode: Constants.CommandCode
+    var cmdStatus: String = ""
     
     init(cmd:String, timeoutInSeconds: Double, notificationName:Notification.Name) {
         self.cmd = cmd

@@ -321,15 +321,15 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
                         
             switch cmdInfo.cmdCode {
             case .UDEV00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
                 
             case .UVIN00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
                 
             case .UECM00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timeoutTime)
+                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
 
             default:

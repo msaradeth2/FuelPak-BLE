@@ -57,8 +57,8 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var peripheralInstance: CBPeripheral?
     fileprivate var cbCentralManager: CBCentralManager!
     fileprivate var discoveredSevice: CBService?
-    fileprivate var commandsSent: [String] = []
-    fileprivate var commandsSentBytes: [UInt8] = []
+    fileprivate var cmdInfoList: [CmdInfo] = []
+    fileprivate var cmdInfoListBytes: [UInt8] = []
     fileprivate var timeoutCounter = 0
     fileprivate var timerCmdTimeout: Timer = Timer()
     fileprivate var btDataStreamAscii: String = ""
@@ -68,7 +68,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     fileprivate var isParsingBtDataStream: Bool = false
     fileprivate var parseBtDataStreamTimer: Timer = Timer()
     
-    fileprivate var cmdInfoArr: [CmdInfo] = []
+//    fileprivate var cmdInfoList: [CmdInfo] = []
     
     // MARK:  Share Data
     var peripheralDict = [String: PeripheralsStructure]()
@@ -94,23 +94,19 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     @objc public func write(cmd: String, timeoutInSeconds: Double, notificationName: Notification.Name) {
 
-
-        self.cmdInfoArr.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName))
-        
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
-        self.commandsSent.append(cmd)
+
+        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+    
+        self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName))
+        
         
         if Constants.debugOn {
             NSLog("connect peripheralInstance: \(String(describing: peripheralInstance?.name))")
             NSLog("connect characteristicInstance uuid: \(String(describing: characteristicInstance?.uuid))")
         }
 
-        
-        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-        
-        
-//        startTimerCmdTimeout(numberOfSeconds: numberOfSeconds)
     }
     
     
@@ -408,7 +404,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     @objc func parseBtDataStream() {
         var byteBuffer: Array<UInt8> = [UInt8]()
  
-        let offset = (6 + 6 + 6) * 2
+        let offsetHex = (6 + 6 + 6) * 2
         let offsetAscii = 6 + 6 + 6
         
         if self.btDataStreamBytes.count == 0 || self.isParsingBtDataStream || !Bike.sharedInstance.isConnected() {
@@ -416,7 +412,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         //Get first Acknowledgement for the command found in btDataStream
-        let cmd = parseForAcknowledgement()
+        let cmd = parseForAcknowledgement()        
+        checkTimedout() //handle timeout
+        
         if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
             self.isParsingBtDataStream = false
             return
@@ -443,7 +441,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         let dataBufferAscii = String(self.btDataStreamAscii.prefix(packetSize))
         let dataBufferHex = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
         
-        let actualDataBufferHex = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferHex, offset: offset))  //Remove header information
+        let actualDataBufferHex = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferHex, offset: offsetHex))  //Remove header information
         let actualDataBufferAscii = String(Util.sharedInstance.removeHeaderInfo(hexData: dataBufferAscii, offset: offsetAscii))  //Remove header information
         
         if Constants.debugOn {
@@ -472,25 +470,22 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     func parseForAcknowledgement() -> String {
-        var foundCmdAck = ""
-        
-//        if self.btDataStreamBytes.count == 0 {
-//            return ""
-//        }
+        let notFound: String = ""
         
         while self.btDataStreamAscii.count > 0 {
-            var index = 0
-            for cmd in self.commandsSent {
+            for (index, cmdInfo) in self.cmdInfoList.enumerated() {
 
+                if self.btDataStreamAscii.hasPrefix(cmdInfo.cmd) {
+                    self.cmdInfoList.remove(at: index)
+                    removeDuplicateCommands(mCmdInfo: cmdInfo)  //duplicate commands can share same response
+                    
+                    return cmdInfo.cmd
+                }
+                
                 if Constants.debugOn {
-                    NSLog("parseForAcknowledgement cmd:  \(String(describing: cmd))   %d", self.commandsSent.count)
+                    NSLog("parseForAcknowledgement cmd:  \(String(describing: cmdInfo.cmd))   %d", self.cmdInfoList.count)
                 }
-                if self.btDataStreamAscii.hasPrefix(cmd) {
-                    foundCmdAck = cmd
-                    self.commandsSent.remove(at: index)
-                    return foundCmdAck
-                }
-                index = index + 1
+                
             }
             
             //If not found - trim the leading characters
@@ -499,12 +494,35 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         }
         
-        return foundCmdAck
+        return notFound
         
     }
     
     
+    func removeDuplicateCommands(mCmdInfo: CmdInfo) {
 
+        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+            if cmdInfo.cmd == mCmdInfo.cmd {
+                self.cmdInfoList.remove(at: index)
+            }
+        }
+    }
+    
+    
+    func checkTimedout() {
+
+        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+            let currentTime = Date()
+            
+            if cmdInfo.endTime > currentTime {
+                cmdInfo.timedoutAt = currentTime
+                cmdInfo.cmdStatus = Constants.timedOut
+                self.cmdInfoList.remove(at: index)
+                
+                NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
+            }
+        }
+    }
     
     
     
