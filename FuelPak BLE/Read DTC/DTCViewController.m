@@ -25,20 +25,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
     [self initData];
     
-    if ([[Bike sharedInstance] isConnected]) {
+    [self readDtcShortDescriptionFromFile];
+    
+    if ([[Bike sharedInstance] isDemoMode]) {
+        [self populateDemoData];
+    }else {
         [self addObservers];
         [self sendReadDtcCommands];
-    }else {
-        [self readDtcShortDescriptionFromFile];
     }
     
     
     
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+
     
 //    self readDtcShortDescriptionFromFile];
 //    [self updateTheme];
@@ -454,37 +458,27 @@
 
 - (void) readDtcShortDescriptionFromFile
 {
+
+    self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
+    
+}
+
+- (void) populateDemoData
+{
     TCCellData *tmpCellData;
     NSString *troubleCode;
     NSString *codeShortDescription;
-
-//    
-//    NSDictionary *dtcDictionary;
-//    dtcDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtcShortDescription" ofType:@"plist"]];
-//    for(NSString *key in [dtcDictionary allKeys]) {
-//        NSLog(@"%@   %@ ", key, [dtcDictionary objectForKey:key]);
-//    }
     
-    
-    if ( self.dtcdict == nil )
-    {
-
-        self.dtcdict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"dtc_generic" ofType:@"plist"]];  //[[NSMutableArray alloc] initWithContentsOfFile:path];
+    for(NSString *key in [self.dtcdict allKeys]) {
+        //            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
         
-        for(NSString *key in [self.dtcdict allKeys]) {
-//            NSLog(@"%@   %@ ", key, [self.dtcdict objectForKey:key]);
-            
-            troubleCode = key;
-            codeShortDescription = [self.dtcdict objectForKey:troubleCode];
-            
-            tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
-            [listOfItems addObject:tmpCellData];
-        }
+        troubleCode = key;
+        codeShortDescription = [self.dtcdict objectForKey:troubleCode];
         
-        
-
-
+        tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+        [listOfItems addObject:tmpCellData];
     }
+
 }
 
 
@@ -588,20 +582,37 @@
     NSArray *troubleCodeArr;
     
     cmdResponseCounter = cmdResponseCounter + 1;
-    if (cmdResponseCounter>=3) {
+    troubleCodeArr = [BluetoothUtil sharedInstance].respUttCommand;
+    
+    listOfItems.removeAllObjects;
+    for (int ii=0; ii<troubleCodeArr.count  ; ii++) {
+        troubleCode = troubleCodeArr[ii];
+        codeShortDescription = [self.dtcdict objectForKey:troubleCode];
         
-        troubleCodeArr = [BluetoothUtil sharedInstance].respUttCommand;
-        for (int ii=0; ii<troubleCodeArr.count  ; ii++) {
-            troubleCode = troubleCodeArr[ii];
-            codeShortDescription = [self.dtcdict objectForKey:troubleCode];
-            
-            NSLog(@"%@   %@ ", troubleCode, codeShortDescription);
-            
-            TCCellData *tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
-            [listOfItems addObject:tmpCellData];
-            
-        }
+        NSLog(@"%@   %@ ", troubleCode, codeShortDescription);
+        
+        TCCellData *tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+        [listOfItems addObject:tmpCellData];
+        
     }
+    [self.tableView reloadData];
+    
+    
+//    if (cmdResponseCounter>=3) {
+//
+//        troubleCodeArr = [BluetoothUtil sharedInstance].respUttCommand;
+//        for (int ii=0; ii<troubleCodeArr.count  ; ii++) {
+//            troubleCode = troubleCodeArr[ii];
+//            codeShortDescription = [self.dtcdict objectForKey:troubleCode];
+//
+//            NSLog(@"%@   %@ ", troubleCode, codeShortDescription);
+//
+//            TCCellData *tmpCellData = [[TCCellData alloc]initWithTroubleCode:troubleCode troubleCodeDescription:[self getTroubleCodeDescription:troubleCode]];
+//            [listOfItems addObject:tmpCellData];
+//
+//        }
+//        [self.tableView reloadData];
+//    }
 }
 
 
