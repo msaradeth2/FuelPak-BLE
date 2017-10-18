@@ -382,8 +382,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     @objc func parseBtDataStream() {
         var byteBuffer: Array<UInt8> = [UInt8]()
-//        var asciiBuffer: String = ""
-        
+ 
         let offset = (6 + 6 + 6) * 2
         let offsetAscii = 6 + 6 + 6
         
@@ -391,10 +390,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             return
         }
         
-//        testDataStreamBytes(bytesArr: self.btDataStreamBytes, packSize: 64)
-
         //Get first Acknowledgement for the command found in btDataStream
-//        Util.sharedInstance.allPacketsArrived(rawData: <#T##String#>, hexData: <#T##String#>)
         let cmd = parseForAcknowledgement()
         if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
             self.isParsingBtDataStream = false
@@ -415,15 +411,10 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             return
         }
         
-        //Get the reponse for a command from btDataStreamBytes
+        //Get the reponse for a command
         byteBuffer.append(contentsOf: self.btDataStreamBytes.prefix(packetSize))
-//        asciiBuffer.append(contentsOf: self.btDataStreamAscii.prefix(packetSize))
 
-
-        //Get data for the command from btDataStreamBytes
-//        let dataBufferAscii0 = String(data: mData, encoding: String.Encoding.utf8)!
-//        let dataBufferAscii = Util.sharedInstance.convertBytesToAscii(byteBuffer: byteBuffer, length: byteBuffer.count)
-        
+        //Get data for the command)
         let dataBufferAscii = String(self.btDataStreamAscii.prefix(packetSize))
         let dataBufferHex = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
         
@@ -448,66 +439,11 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.btDataStreamBytes.removeFirst(packetSize)
         self.btDataStreamAscii.removeFirst(packetSize)
         
-        
-        
-//        self.btDataStreamAscii = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count-packetSizeAscii) )
-//        
-//        let x = self.btDataStreamBytes
-//        
-//        
-//        self.btDataStreamBytes.removeFirst(packetSizeBytes)
-//        let x2 = self.btDataStreamBytes
-//        
-//        print("convertBytesToHex: ", x.count, x2.count)
-//        
-//        print ("convertBytesToHex x :", x)
-//        print ("convertBytesToHex x2:", x2)
-        
-        
-//        self.btDataStreamHex = String(self.btDataStreamHex.suffix(self.btDataStreamHex.count-packetSizeHex))
-        
         self.isParsingBtDataStream = false
         
     }
     
-    func testDataStreamBytes(byteBuffer: Array<UInt8>, packSize: Int) -> String {
-        
-       
-        print("testDataStreamBytes bytesArr:  ", byteBuffer.count, byteBuffer)
-        let x1 = byteBuffer
-        var x2 = x1
-        
-        var byteArray: Array<UInt8> = [UInt8]()
-        
-        var hex = ""
-        var ch = ""
-        var ii = 0
-        for byte in x1 {
-            byteArray.removeAll()
-            byteArray.append(byte)
 
-            hex = Util.sharedInstance.convertBytesToHex(byteBuffer: byteBuffer)
-            ch = Util.sharedInstance.convertHexToAscii(text: hex)
-            
-            let tmpStr = String(self.btDataStreamAscii.suffix(self.btDataStreamAscii.count - ii))
-            let tmpAsciiVal = String(tmpStr.prefix(1))
-            
-            print("testDataStreamBytes byte:  ", ii, byte, tmpAsciiVal, ch)
-                
-            x2.removeFirst(1)
-            
-            print("testDataStreamBytes x1:  ", x1.count,  x1)
-            print("testDataStreamBytes x2:  ", x2.count, x2)
-
-            ii = ii + 1
-            
-        }
-        
-        return ""
-        
-        
-    }
-    
     
     
     func parseForAcknowledgement() -> String {
