@@ -96,10 +96,16 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
+NSLog("write: \(String(describing: cmd))")
+        
+        if Bike.sharedInstance.isConnected() {
+            peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
+            self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName, caller: caller))
+        }else {
+            NSLog("write: Not connected)")
+        }
+        
 
-        peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-    
-        self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName, caller: caller))
         
         
         if Constants.debugOn {
@@ -413,7 +419,9 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
         //Get first Acknowledgement for the command found in btDataStream
         let cmdInfo = parseForAcknowledgement()
-        checkTimedout() //handle timeout
+        
+        //Check and handle timeout
+        checkTimedout()
         
         if cmdInfo.cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
             self.isParsingBtDataStream = false
@@ -483,7 +491,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                 }
                 
                 if Constants.debugOn {
-                    NSLog("parseForAcknowledgement cmd:  \(String(describing: cmdInfo.cmd))   %d", self.cmdInfoList.count)
+                    NSLog("Mike parseForAcknowledgement cmd:  \(String(describing: cmdInfo.cmd))   %d", self.cmdInfoList.count)
                 }
                 
             }
@@ -498,44 +506,43 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
     
+
     
     func removeDuplicateCommands(mCmdInfo: CmdInfo) {
-        var exitedWanted: Bool = false
+        var newList: [CmdInfo] = []
         
-        while !exitedWanted {
-            exitedWanted = true
-            
-            for (index, cmdInfo) in self.cmdInfoList.enumerated() {
-                if cmdInfo.cmd == mCmdInfo.cmd {
-                    self.cmdInfoList.remove(at: index)
-                    exitedWanted = false
-                    break
-                }
+        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+            if cmdInfo.cmd == mCmdInfo.cmd {
+                print("Mike removeDuplicateCommands: ", index, cmdInfo.cmd)
+                
+            }else {
+                newList.append(cmdInfo)
             }
         }
+
+        self.cmdInfoList = newList
     }
     
     
     func checkTimedout() {
-        var exitedWanted: Bool = false
+        var newList: [CmdInfo] = []
         
-        while !exitedWanted {
-            exitedWanted = true
+        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+            let currentTime = Date()
             
-            for (index, cmdInfo) in self.cmdInfoList.enumerated() {
-                let currentTime = Date()
+            if currentTime > cmdInfo.endTime {
+                //Handle Timeout
+                cmdInfo.timedoutAt = currentTime
+                cmdInfo.cmdStatus = Constants.timedOut
+                NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
+                print("checkTimedout Time Out:", index, cmdInfo.cmd)
                 
-                if currentTime > cmdInfo.endTime {
-                    cmdInfo.timedoutAt = currentTime
-                    cmdInfo.cmdStatus = Constants.timedOut
-                    NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
-                    
-                    self.cmdInfoList.remove(at: index)
-                    exitedWanted = false
-                    break
-                }
+            }else {
+                newList.append(cmdInfo)
             }
         }
+        
+        self.cmdInfoList = newList
     }
     
     

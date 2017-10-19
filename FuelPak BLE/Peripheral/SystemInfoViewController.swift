@@ -308,15 +308,25 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         if handledTimeout(notification: notification) {
             //If time out - No UI update
             timeoutCounter = timeoutCounter + 1
-            sendCommand(cmdNum: cmdResponseCounter) //Resend command
+            if timeoutCounter < 3 {
+                sendCommand(cmdNum: cmdResponseCounter) //Resend command
+            }
             return
-        }else {
+        }
+        
+        if cmdResponseCounter < 3 {
             cmdResponseCounter = cmdResponseCounter + 1
             timeoutCounter = 0
             sendCommand(cmdNum: cmdResponseCounter)
         }
         
-
+        updateUI()
+        
+    }
+    
+    
+    func updateUI() {
+        
         //Update UI
         listOfItems.removeAll()
         
@@ -337,8 +347,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         listOfItems[listOfTitle[14]] = Bike.sharedInstance.VINyear
         
         tableView.reloadData()
-
-        
     }
     
     
