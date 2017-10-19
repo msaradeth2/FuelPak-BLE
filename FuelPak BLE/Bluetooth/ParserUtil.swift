@@ -89,9 +89,8 @@ final class ParserUtil: NSObject {
             print("Bike.sharedInstance.VINnumber2:  ", Bike.sharedInstance.VINnumber)
             print("VINyear:  ", Bike.sharedInstance.VINyear)
         }
-
         
-        NotificationCenter.default.post(name: Constants.vinCommandNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.vinCommandNotification, object: cmdInfo)
 
     }
     
@@ -123,7 +122,7 @@ final class ParserUtil: NSObject {
 //        Bike.sharedInstance.DEVlinkedvin = Util.sharedInstance.convertHexToAscii(text: String(describing: actualHexData.substring(with: NSMakeRange(256, 34))))
 
         
-        NotificationCenter.default.post(name: Constants.devCommandNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.devCommandNotification, object: cmdInfo)
     }
 
     
@@ -156,7 +155,7 @@ final class ParserUtil: NSObject {
         
 
         
-        NotificationCenter.default.post(name: Constants.ecmCommandNotification, object: nil)
+        NotificationCenter.default.post(name: Constants.ecmCommandNotification, object: cmdInfo)
     }
     
     
@@ -189,7 +188,7 @@ final class ParserUtil: NSObject {
         print("dtcCodesArr.count  : ", dtcCodesArr.count)
         print("dtcCodesArr  : ", dtcCodesArr)
                 
-        NotificationCenter.default.post(name: Constants.uttCommandNotification, object: nil)        
+        NotificationCenter.default.post(name: Constants.uttCommandNotification, object: cmdInfo)        
         
     }
     

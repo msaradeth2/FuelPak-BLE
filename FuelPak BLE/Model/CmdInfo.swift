@@ -17,6 +17,7 @@ class CmdInfo: NSObject {
     var startTime: Date = Date()
     var endTime: Date = Date()
     var timedoutAt: Date = Date()
+    var responseTime: Double = 0.0
     var cmdCode: Constants.CommandCode
     var cmdStatus: String = ""
     var caller: String = ""

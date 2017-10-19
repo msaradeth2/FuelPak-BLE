@@ -435,7 +435,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.isParsingBtDataStream = true
         removeDuplicateCommands(mCmdInfo: cmdInfo)  //duplicate commands can share same response
         
-        
+        cmdInfo.responseTime = Date().timeIntervalSince1970 - cmdInfo.startTime.timeIntervalSince1970
 
         //Get packet size
         let packetSize = Util.sharedInstance.getPacketSize(asciiBuffer: self.btDataStreamAscii)
