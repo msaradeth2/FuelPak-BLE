@@ -96,16 +96,16 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
-NSLog("write: \(String(describing: cmd))")
+        
+        NSLog("Mike write: \(String(describing: cmd))")
         
         if Bike.sharedInstance.isConnected() {
-            peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
-            self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName, caller: caller))
+            peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)            
         }else {
             NSLog("write: Not connected)")
         }
         
-
+        self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName, caller: caller))
         
         
         if Constants.debugOn {
@@ -527,6 +527,8 @@ NSLog("write: \(String(describing: cmd))")
     func checkTimedout() {
         var newList: [CmdInfo] = []
         
+        print("Mike in func checkTimedout:  self.cmdInfoList.count=", self.cmdInfoList.count)
+        
         for (index, cmdInfo) in self.cmdInfoList.enumerated() {
             let currentTime = Date()
             
@@ -535,7 +537,7 @@ NSLog("write: \(String(describing: cmd))")
                 cmdInfo.timedoutAt = currentTime
                 cmdInfo.cmdStatus = Constants.timedOut
                 NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
-                print("checkTimedout Time Out:", index, cmdInfo.cmd)
+                print("Mike checkTimedout:  Command timedout:", index, cmdInfo.cmd)
                 
             }else {
                 newList.append(cmdInfo)

@@ -123,9 +123,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
-        timeoutCounter = 0
-        
-//        sendCommand(cmdCode: CommandCode.ALL)
+        resetCounter()
         sendCommand(cmdNum: 0)  //Send DEV command
 
     }
@@ -207,7 +205,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func sendCommand(cmdNum: Int) {
         switch cmdNum {
         case 0:
-            cmdResponseCounter = 0
             sendCommand(cmdCode: .UDEV00)
             
         case 1:
@@ -237,7 +234,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification, caller: Constants.systemInfoViewController)
             
         case .ALL:
-            cmdResponseCounter = 0  //reset counter
             sendCommand(cmdCode: .UVIN00)
             sendCommand(cmdCode: .UECM00)
             sendCommand(cmdCode: .UDEV00)
@@ -277,11 +273,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @objc func sendAllCommands(notification: NSNotification) {
 
-        timeoutCounter = 0
-        
+        resetCounter()
         sendCommand(cmdNum: 0)  //send the first command
-//        sendCommand(cmdCode: .ALL)
-
     }
     
     @objc func updateUI(notification: NSNotification) {
@@ -305,6 +298,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func notificationCallback(notification: NSNotification) {
         
+        print("Mike notificationCallback:", cmdResponseCounter)
         if handledTimeout(notification: notification) {
             //If time out - No UI update
             timeoutCounter = timeoutCounter + 1
@@ -314,7 +308,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             return
         }
         
-        if cmdResponseCounter < 3 {
+        if cmdResponseCounter < 2 {
             cmdResponseCounter = cmdResponseCounter + 1
             timeoutCounter = 0
             sendCommand(cmdNum: cmdResponseCounter)
@@ -389,6 +383,10 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         print("exitViewController")
     }
     
+    func resetCounter() {
+        timeoutCounter = 0
+        cmdResponseCounter = 0
+    }
     
     func updateTable() {
         
