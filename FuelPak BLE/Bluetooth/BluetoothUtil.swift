@@ -92,14 +92,14 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK:  Write Command
     
-    @objc public func write(cmd: String, timeoutInSeconds: Double, notificationName: Notification.Name) {
+    @objc public func write(cmd: String, timeoutInSeconds: Double, notificationName: Notification.Name, caller: String) {
 
         var bytesData = [UInt8] (cmd.utf8)
         let writeData = Data(bytes: &bytesData, count: bytesData.count)
 
         peripheralInstance!.writeValue(writeData, for: characteristicInstance! as CBCharacteristic, type:CBCharacteristicWriteType.withResponse)
     
-        self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName))
+        self.cmdInfoList.append(CmdInfo(cmd: cmd, timeoutInSeconds: timeoutInSeconds, notificationName: notificationName, caller: caller))
         
         
         if Constants.debugOn {
@@ -412,7 +412,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         //Get first Acknowledgement for the command found in btDataStream
-        let cmd = parseForAcknowledgement()        
+        let cmd = parseForAcknowledgement()
         checkTimedout() //handle timeout
         
         if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
@@ -500,26 +500,40 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     
     func removeDuplicateCommands(mCmdInfo: CmdInfo) {
-
-        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
-            if cmdInfo.cmd == mCmdInfo.cmd {
-                self.cmdInfoList.remove(at: index)
+        var exitedWanted: Bool = false
+        
+        while !exitedWanted {
+            exitedWanted = true
+            
+            for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+                if cmdInfo.cmd == mCmdInfo.cmd {
+                    self.cmdInfoList.remove(at: index)
+                    exitedWanted = false
+                    break
+                }
             }
         }
     }
     
     
     func checkTimedout() {
-
-        for (index, cmdInfo) in self.cmdInfoList.enumerated() {
-            let currentTime = Date()
+        var exitedWanted: Bool = false
+        
+        while !exitedWanted {
+            exitedWanted = true
             
-            if cmdInfo.endTime > currentTime {
-                cmdInfo.timedoutAt = currentTime
-                cmdInfo.cmdStatus = Constants.timedOut
-                self.cmdInfoList.remove(at: index)
+            for (index, cmdInfo) in self.cmdInfoList.enumerated() {
+                let currentTime = Date()
                 
-                NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
+                if cmdInfo.endTime > currentTime {
+                    cmdInfo.timedoutAt = currentTime
+                    cmdInfo.cmdStatus = Constants.timedOut
+                    NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
+                    
+                    self.cmdInfoList.remove(at: index)
+                    exitedWanted = false
+                    break
+                }
             }
         }
     }

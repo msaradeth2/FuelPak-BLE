@@ -45,9 +45,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     private var listOfTitle: [String] = []
     private var listOfItemsSection_0: [String] = []
     private var cmdResponseCounter = 0
-    
-    
-    
+    private var caller: String = "SystemInfoViewController"
     
     
     
@@ -206,20 +204,20 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     func sendCommand(cmdCode: CommandCode) {
         
         switch cmdCode {
-        case .UVIN00:
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.vinCommandNotification)
-            
         case .UDEV00:
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification)
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification, caller: Constants.systemInfoViewController)
             
+        case .UVIN00:
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.vinCommandNotification, caller: Constants.systemInfoViewController)
+
         case .UECM00:
-            BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification)
+            BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification, caller: Constants.systemInfoViewController)
             
         case .ALL:
             cmdResponseCounter = 0  //reset counter
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification)
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.devCommandNotification)
-            BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification)
+            sendCommand(cmdCode: .UDEV00)
+            sendCommand(cmdCode: .UVIN00)
+            sendCommand(cmdCode: .UECM00)
         }
         
     }
@@ -312,13 +310,12 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         var cmdInfo: CmdInfo
         var timedout: Bool = false
         
-        guard let userInfo = notification.userInfo else { return false}
-        let cmdStatus = userInfo[Constants.cmdStatus] as! String
+        guard let notificationObject = notification.object else { return false}
+        cmdInfo = notificationObject as! CmdInfo
         
-        if cmdStatus == Constants.timedOut {
-            guard let notificationObject = notification.object else { return false}
-            cmdInfo = notificationObject as! CmdInfo
-                        
+        
+        if cmdInfo.cmdStatus == Constants.timedOut && cmdInfo.caller == Constants.systemInfoViewController {
+            
             switch cmdInfo.cmdCode {
             case .UDEV00:
                 print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)

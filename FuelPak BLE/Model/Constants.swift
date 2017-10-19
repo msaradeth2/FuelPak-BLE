@@ -56,9 +56,14 @@ final class Constants: NSObject {
     @objc static let debugOn4 =  true;
  
     // MARK:  Define Notification Constant Variables
-    static let timedOut: String = "timedOut"
-    static let cmdStatus: String = "cmdStatus"
-    static let cmdCode: String = "cmdCode"
+    @objc static let timedOut: String = "timedOut"
+    @objc static let cmdStatus: String = "cmdStatus"
+    @objc static let cmdCode: String = "cmdCode"
+    
+    @objc static let systemInfoViewController: String = "SystemInfoViewController"
+    @objc static let dtcViewController: String = "DTCViewController"
+    @objc static let peripheralViewController: String = "PeripheralViewControllers"
+    @objc static let utilClass: String = "utilClass"
     
     
     

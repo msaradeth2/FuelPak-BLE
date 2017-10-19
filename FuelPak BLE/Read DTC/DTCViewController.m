@@ -628,9 +628,9 @@
 {
     cmdResponseCounter = 0;
     
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
-    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT000" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification caller: Constants.dtcViewController];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT100" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification caller: Constants.dtcViewController];
+    [[BluetoothUtil sharedInstance] writeWithCmd: @"UTT200" timeoutInSeconds: 4 notificationName: Constants.uttCommandNotification caller: Constants.dtcViewController];
 
 }
 
