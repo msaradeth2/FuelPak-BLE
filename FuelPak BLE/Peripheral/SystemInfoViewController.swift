@@ -46,6 +46,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     private var listOfItemsSection_0: [String] = []
     private var cmdResponseCounter = 0
     private var caller: String = "SystemInfoViewController"
+    private var timeoutCounter = 0
     
     
     
@@ -122,8 +123,10 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
+        timeoutCounter = 0
+        
 //        sendCommand(cmdCode: CommandCode.ALL)
-        sendCommandByNumber(cmdCounter: 0)  //Send DEV command
+        sendCommand(cmdNum: 0)  //Send DEV command
 
     }
     
@@ -201,8 +204,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     // MARK:  Send Commands
-    func sendCommandByNumber(cmdCounter: Int) {
-        switch cmdCounter {
+    func sendCommand(cmdNum: Int) {
+        switch cmdNum {
         case 0:
             cmdResponseCounter = 0
             sendCommand(cmdCode: .UDEV00)
@@ -213,8 +216,6 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         case 2:
            sendCommand(cmdCode: .UECM00)
             
-        
-            
         default:
             break
         }
@@ -224,22 +225,22 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK:  Send Commands
     func sendCommand(cmdCode: CommandCode) {
-        
+
         switch cmdCode {
         case .UDEV00:
             BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 1, notificationName: Constants.devCommandNotification, caller: Constants.systemInfoViewController)
             
         case .UVIN00:
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 0, notificationName: Constants.vinCommandNotification, caller: Constants.systemInfoViewController)
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.vinCommandNotification, caller: Constants.systemInfoViewController)
 
         case .UECM00:
             BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification, caller: Constants.systemInfoViewController)
             
         case .ALL:
             cmdResponseCounter = 0  //reset counter
-            sendCommand(cmdCode: .UDEV00)
             sendCommand(cmdCode: .UVIN00)
             sendCommand(cmdCode: .UECM00)
+            sendCommand(cmdCode: .UDEV00)
         }
         
     }
@@ -276,7 +277,10 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @objc func sendAllCommands(notification: NSNotification) {
 
-        sendCommandByNumber(cmdCounter: 0)  //send the first command
+        timeoutCounter = 0
+        
+        sendCommand(cmdNum: 0)  //send the first command
+//        sendCommand(cmdCode: .ALL)
 
     }
     
@@ -296,16 +300,24 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
+    // MARK: Notification Callback - process response
+    
     
     @objc func notificationCallback(notification: NSNotification) {
         
         if handledTimeout(notification: notification) {
+            //If time out - No UI update
+            timeoutCounter = timeoutCounter + 1
+            sendCommand(cmdNum: cmdResponseCounter) //Resend command
             return
+        }else {
+            cmdResponseCounter = cmdResponseCounter + 1
+            timeoutCounter = 0
+            sendCommand(cmdNum: cmdResponseCounter)
         }
         
-        cmdResponseCounter = cmdResponseCounter + 1
-        sendCommandByNumber(cmdCounter: cmdResponseCounter)
-        
+
+        //Update UI
         listOfItems.removeAll()
         
         listOfItems[listOfTitle[0]] = Bike.sharedInstance.VINnumber
@@ -334,7 +346,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         var cmdInfo: CmdInfo
         var timedout: Bool = false
         
-        guard let notificationObject = notification.object else { return false}
+        guard let notificationObject = notification.object else { return false} //No time out if return false
         cmdInfo = notificationObject as! CmdInfo
         
         
@@ -342,15 +354,15 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
             
             switch cmdInfo.cmdCode {
             case .UDEV00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
+                print("Timed Out:", cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
                 
             case .UVIN00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
+                print("Timed Out:", cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
                 
             case .UECM00:
-                print(cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
+                print("Timed Out:", cmdInfo.cmd, cmdInfo.startTime, cmdInfo.endTime, cmdInfo.timedoutAt)
                 timedout = true
 
             default:

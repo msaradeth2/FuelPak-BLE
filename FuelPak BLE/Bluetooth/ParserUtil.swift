@@ -38,7 +38,8 @@ final class ParserUtil: NSObject {
     
     
     // MARK: - Parse Reponses to Commmand
-    public func parsePacket(cmd: String, data: String, hexData: String) {
+    public func parsePacket(cmdInfo: CmdInfo, data: String, hexData: String) {
+        let cmd = cmdInfo.cmd
         
         if Constants.debugOn1 {
             NSLog("parsePacket cmd: \(String(describing: cmd))")
@@ -50,23 +51,23 @@ final class ParserUtil: NSObject {
         
         //UVIN00 Command
         if (cmd == "UVIN00" && data.substring(with: NSMakeRange(7, 3)) == "RVN") {
-            parseVinCmd(cmd: cmd, data: data, hexData: hexData)
+            parseVinCmd(cmdInfo: cmdInfo, data: data, hexData: hexData)
         }
         
         //UDEV00 Command
         if (cmd == "UDEV00" && data.substring(with: NSMakeRange(7, 3)) == "RDV") {
-            parseDevCmd(cmd: cmd, data: data, hexData: hexData)
+            parseDevCmd(cmdInfo: cmdInfo, data: data, hexData: hexData)
         }
         
         
         //UECM00 Command
         if (cmd == "UECM00" && data.substring(with: NSMakeRange(7, 3)) == "REM") {
-            parseEcmCmd(cmd: cmd, data: data, hexData: hexData)
+            parseEcmCmd(cmdInfo: cmdInfo, data: data, hexData: hexData)
         }
         
         //UECM00, UECM01, UECM02 Command URT906DTC
         if (cmd.prefix(3) == "UTT" && data.substring(with: NSMakeRange(7, 2)) == "RT") {
-            parseUttCmd(cmd: cmd, data: data, hexData: hexData)
+            parseUttCmd(cmdInfo: cmdInfo, data: data, hexData: hexData)
         }
         
   
@@ -75,7 +76,7 @@ final class ParserUtil: NSObject {
     
     
     // MARK: - Parse VIN Commmand
-    public func parseVinCmd(cmd: String, data: String, hexData: String) {
+    public func parseVinCmd(cmdInfo: CmdInfo, data: String, hexData: String) {
 //        if Constants.debugOn {
 //            print("data     : ", data)
 //            print("hexData  : ", hexData)
@@ -96,7 +97,7 @@ final class ParserUtil: NSObject {
     
     
     // MARK: - Parse DEV Commmand
-    public func parseDevCmd(cmd: String, data: String, hexData: String) {
+    public func parseDevCmd(cmdInfo: CmdInfo, data: String, hexData: String) {
         if Constants.debugOn {NSLog("parseDevCmd data: \(String(describing: data))")}
         
         Bike.sharedInstance.firmwareVersion = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(30, 36)))).trim()
@@ -127,7 +128,7 @@ final class ParserUtil: NSObject {
 
     
     // MARK: - Parse ECM Commmand
-    public func parseEcmCmd(cmd: String, data: String, hexData: String) {
+    public func parseEcmCmd(cmdInfo: CmdInfo, data: String, hexData: String) {
 //        if Constants.debugOn {NSLog("parseEcmCmd data: \(String(describing: data))")}
 
 //        Bike.sharedInstance.ECMversion = convertHexToDecimal(hexString: String(describing: actualHexData.substring(with: NSMakeRange(24, 4))))
@@ -161,7 +162,7 @@ final class ParserUtil: NSObject {
     
     
     // MARK: - Parse UTT Commmand - Get DTC codes
-    public func parseUttCmd(cmd: String, data: String, hexData: String) {
+    public func parseUttCmd(cmdInfo: CmdInfo, data: String, hexData: String) {
         let dataOffset = 8
 
         let numberOfDtcCodesStr = Util.sharedInstance.convertHexToAscii(text: String(describing: hexData.substring(with: NSMakeRange(2, 6))))

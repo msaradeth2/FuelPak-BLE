@@ -412,19 +412,21 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         //Get first Acknowledgement for the command found in btDataStream
-        let cmd = parseForAcknowledgement()
+        let cmdInfo = parseForAcknowledgement()
         checkTimedout() //handle timeout
         
-        if cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
+        if cmdInfo.cmd.count==0 || !(Util.sharedInstance.allPacketsArrived(asciiBuffer: self.btDataStreamAscii) ) {
             self.isParsingBtDataStream = false
             return
         }
         if Constants.debugOn {
-            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   self.btDataStreamAscii.count=%",  self.btDataStreamAscii.count)
+            NSLog("parseBtDataStream cmd: \(String(describing: cmdInfo.cmd))   self.btDataStreamAscii.count=%",  self.btDataStreamAscii.count)
         }
         
         //Start Parsing Data - Only allow one parsing process at a time
         self.isParsingBtDataStream = true
+        removeDuplicateCommands(mCmdInfo: cmdInfo)  //duplicate commands can share same response
+        
         
 
         //Get packet size
@@ -449,13 +451,13 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         
         if Constants.debugOn4 {
-            NSLog("parseBtDataStream cmd: \(String(describing: cmd))   packetSize=%d, actualDataBufferHex.count=%d   actualDataBufferAscii.count=%d ", packetSize, actualDataBufferHex.count, actualDataBufferAscii.count)
+            NSLog("parseBtDataStream cmd: \(String(describing: cmdInfo.cmd))   packetSize=%d, actualDataBufferHex.count=%d   actualDataBufferAscii.count=%d ", packetSize, actualDataBufferHex.count, actualDataBufferAscii.count)
             NSLog("parseBtDataStream actualDataBufferAscii: \(String(describing: actualDataBufferAscii))")
             NSLog("parseBtDataStream actualDataBufferHex: \(String(describing: actualDataBufferHex))")
         }
         
         //Parse response found for the command sent
-        ParserUtil.sharedInstance.parsePacket(cmd: cmd, data: dataBufferAscii, hexData: actualDataBufferHex)
+        ParserUtil.sharedInstance.parsePacket(cmdInfo: cmdInfo, data: dataBufferAscii, hexData: actualDataBufferHex)
 
         
         //Remove response from btDataStreamBytes
@@ -469,17 +471,15 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
 
     
     
-    func parseForAcknowledgement() -> String {
-        let notFound: String = ""
+    func parseForAcknowledgement() -> CmdInfo {
+        let notFound: CmdInfo = CmdInfo(cmd: "", timeoutInSeconds: 0, notificationName: Constants.commandTimeoutNotification, caller: "")
         
         while self.btDataStreamAscii.count > 0 {
             for (index, cmdInfo) in self.cmdInfoList.enumerated() {
 
                 if self.btDataStreamAscii.hasPrefix(cmdInfo.cmd) {
                     self.cmdInfoList.remove(at: index)
-                    removeDuplicateCommands(mCmdInfo: cmdInfo)  //duplicate commands can share same response
-                    
-                    return cmdInfo.cmd
+                    return cmdInfo
                 }
                 
                 if Constants.debugOn {
@@ -525,7 +525,7 @@ final class BluetoothUtil: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             for (index, cmdInfo) in self.cmdInfoList.enumerated() {
                 let currentTime = Date()
                 
-                if cmdInfo.endTime > currentTime {
+                if currentTime > cmdInfo.endTime {
                     cmdInfo.timedoutAt = currentTime
                     cmdInfo.cmdStatus = Constants.timedOut
                     NotificationCenter.default.post(name: cmdInfo.notificationName, object: cmdInfo)    //Send timeout to each caller base on caller name
