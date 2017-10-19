@@ -122,7 +122,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func evtRefreshButton(_ sender: Any) {
         print("evtRefreshButton")
         
-        sendCommand(cmdCode: CommandCode.ALL)
+//        sendCommand(cmdCode: CommandCode.ALL)
+        sendCommandByNumber(cmdCounter: 0)  //Send DEV command
 
     }
     
@@ -199,16 +200,37 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    // MARK:  Send Commands
+    func sendCommandByNumber(cmdCounter: Int) {
+        switch cmdCounter {
+        case 0:
+            cmdResponseCounter = 0
+            sendCommand(cmdCode: .UDEV00)
+            
+        case 1:
+            sendCommand(cmdCode: .UVIN00)
+            
+        case 2:
+           sendCommand(cmdCode: .UECM00)
+            
+        
+            
+        default:
+            break
+        }
+        
+    }
+    
     
     // MARK:  Send Commands
     func sendCommand(cmdCode: CommandCode) {
         
         switch cmdCode {
         case .UDEV00:
-            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 0.25, notificationName: Constants.devCommandNotification, caller: Constants.systemInfoViewController)
+            BluetoothUtil.sharedInstance.write(cmd: "UDEV00", timeoutInSeconds: 1, notificationName: Constants.devCommandNotification, caller: Constants.systemInfoViewController)
             
         case .UVIN00:
-            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 1, notificationName: Constants.vinCommandNotification, caller: Constants.systemInfoViewController)
+            BluetoothUtil.sharedInstance.write(cmd: "UVIN00", timeoutInSeconds: 0, notificationName: Constants.vinCommandNotification, caller: Constants.systemInfoViewController)
 
         case .UECM00:
             BluetoothUtil.sharedInstance.write(cmd: "UECM00", timeoutInSeconds: 1, notificationName: Constants.ecmCommandNotification, caller: Constants.systemInfoViewController)
@@ -254,7 +276,7 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @objc func sendAllCommands(notification: NSNotification) {
 
-        sendCommand(cmdCode: CommandCode.ALL)
+        sendCommandByNumber(cmdCounter: 0)  //send the first command
 
     }
     
@@ -282,6 +304,8 @@ class SystemInfoViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
         cmdResponseCounter = cmdResponseCounter + 1
+        sendCommandByNumber(cmdCounter: cmdResponseCounter)
+        
         listOfItems.removeAll()
         
         listOfItems[listOfTitle[0]] = Bike.sharedInstance.VINnumber

@@ -169,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FuelPak BLE/Bluetooth/BluetoothUtil.swift"
-            timestampString = "530120251.925155"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.544446"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
-            landmarkName = "checkTimedout()"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
+            landmarkName = "handledTimeout(notification:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,13 +185,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FuelPak BLE/Bluetooth/BluetoothUtil.swift"
-            timestampString = "530120251.925452"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.544792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
-            landmarkName = "checkTimedout()"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "notificationCallback(notification:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -201,13 +201,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FuelPak BLE/Bluetooth/BluetoothUtil.swift"
-            timestampString = "530120271.813317"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
-            landmarkName = "checkTimedout()"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
+            landmarkName = "handledTimeout(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.5452"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
+            landmarkName = "notificationCallback(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.545399"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "notificationCallback(notification:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FuelPak BLE/Peripheral/SystemInfoViewController.swift"
+            timestampString = "530122768.545597"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
+            landmarkName = "handledTimeout(notification:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
